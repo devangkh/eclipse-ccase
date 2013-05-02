@@ -139,6 +139,13 @@
 				icon="icons/full/arrow_merge.png"
 				menubarPath="team.main/group2">
 			</action>
+			<action
+				class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
+				id="net.sourceforge.eclipseccase.ui.popups.label"
+				label="Label"
+				icon="icons/full/arrow_merge.png"
+				menubarPath="team.main/group2">
+			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.MkBrTypeAction"
 				icon="icons/full/branch.png" id="net.sourceforge.eclipseccase.popups.mkbrtype"
 				label="Make &amp;Branch Type" menubarPath="team.main/group2">
@@ -342,6 +349,15 @@
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.mkbrtype"
 				icon="icons/full/branch.png" id="net.sourceforge.eclipseccase.ui.actionset.mkbrtype"
 				label="Make &amp;Branch Type" menubarPath="eclipseccase_menu/group2">
+				<enablement>
+					<pluginState id="net.sourceforge.eclipseccase" value="activated">
+					</pluginState>
+				</enablement>
+			</action>
+			<action class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
+				definitionId="net.sourceforge.eclipseccase.ui.actionset.label"
+				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
+				label="Label" menubarPath="eclipseccase_menu/group2" toolbarPath="Normal/additions">
 				<enablement>
 					<pluginState id="net.sourceforge.eclipseccase" value="activated">
 					</pluginState>
