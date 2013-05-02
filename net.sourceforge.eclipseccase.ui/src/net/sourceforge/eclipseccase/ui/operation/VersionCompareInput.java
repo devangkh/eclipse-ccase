@@ -43,9 +43,14 @@ public class VersionCompareInput extends SaveableCompareEditorInput {
 	 */
 	public VersionCompareInput(CompareConfiguration configuration, IFile resource, String leftVersion, String rightVersion, IWorkbenchPage wp, ClearCaseProvider provider) {
 		super(configuration, wp);
-		// creates a local file and make it included into the save process to
-		// handle an eventual change.
-		left = createFileElement(resource);
+		
+		if(provider.isCheckedOut(resource)){
+			// creates a local file and make it included into the save process to
+			// handle an eventual change. This is only valid for checked-out file.
+			left = createFileElement(resource);
+		}else{
+			left = new ClearCaseResourceNode(resource, leftVersion, provider);
+		}
 		// right is always a clearcase element
 		right = new ClearCaseResourceNode(resource, rightVersion, provider);
 		this.provider = provider;
