@@ -5,7 +5,9 @@
 
 2.2.31
 ====
+Bugs:
 
+#356 Compare selected versions always uses LATEST instead of selected version
 
 
 2.2.30
