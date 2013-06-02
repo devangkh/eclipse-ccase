@@ -2,11 +2,14 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.32
+=====
 
 2.2.31
 ====
 Bugs:
-
+#350 Compare with Predecessor not working with BeyondCompare 
+#349 Using BeyondCompare blocks Eclipse
 #356 Compare selected versions always uses LATEST instead of selected version
 
 
