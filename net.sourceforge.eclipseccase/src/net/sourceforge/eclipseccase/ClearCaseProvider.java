@@ -466,7 +466,15 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 		return false;
 	}
-
+	
+	
+	public IStatus createLabel(String name,String comment){
+		HashMap<Integer, String> args = new HashMap<Integer, String>();
+		args.put(Integer.valueOf(ClearCase.COMMENT), comment);
+		ClearCasePlugin.getEngine().createLabel(ClearCase.COMMENT,args,name);
+		
+		return null;
+	}
 	public boolean createMergeArrow(String linkDestination,
 			String linkSourceVersion) {
 		ClearCasePlugin.getEngine().makeMergeArrow(linkDestination,
@@ -2242,6 +2250,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	public boolean isInsideView(IResource resource) {
 		return StateCacheFactory.getInstance().get(resource).isInsideView();
 	}
+	
 
 	/**
 	 * Get the StateCache for an element
@@ -2377,6 +2386,8 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 		return success;
 	}
+	
+	
 
 	/**
 	 * Shows a message dialog where user can select: Yes=0 No=1 Cancel=2

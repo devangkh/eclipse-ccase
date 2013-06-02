@@ -89,7 +89,8 @@ public class LabelMainPage extends WizardPage implements Listener{
 	 */
 
 	public IWizardPage getNextPage() {
-		// saveDataToModel();
+		saveToLabelData();
+		
 		if (useExistingLabel.getSelection()) {
 			UseExistingLabelPage page = ((LabelWizard) getWizard()).useExistingLabelPage;
 			page.onEnterPage();
@@ -118,6 +119,14 @@ public class LabelMainPage extends WizardPage implements Listener{
 	public void handleEvent(Event event) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	private void saveToLabelData(){
+		LabelWizard wizard = (LabelWizard)getWizard();
+		LabelData data = wizard.labelData;
+		data.setResource(resources);
+		data.setProvider(provider);
 	}
 	
 	

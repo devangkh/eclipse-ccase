@@ -40,6 +40,8 @@ import net.sourceforge.eclipseccase.ui.ClearCaseUI;
  * 
  */
 public class LabelWizard extends ResizableWizard implements INewWizard {
+	
+	LabelData labelData;
 
 	CreateLabelPage createLabelPage;
 
@@ -60,6 +62,7 @@ public class LabelWizard extends ResizableWizard implements INewWizard {
 		setNeedsProgressMonitor(true);
 		this.resources = resources;
 		this.provider = provider;
+		labelData = new LabelData();
 	}
 
 	
