@@ -5,6 +5,8 @@
 2.2.32
 =====
 
+Bug #357 java.lang.ClassNotFoundException: net.sourceforge.eclipseccase.views.ActivitiesView .
+
 2.2.31
 ====
 Bugs:

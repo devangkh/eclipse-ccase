@@ -661,11 +661,12 @@
 			id="net.sourceforge.eclipseccase.views.MergeView" name="Merge Results"
 			restorable="true">
 		</view>
+		<!-- No matching class file in repos Ticket #357
 		<view category="org.eclipse.team.ui"
 			class="net.sourceforge.eclipseccase.views.ActivitiesView" icon="icons/full/clearcase.png"
 			id="net.sourceforge.eclipseccase.views.ActivitiesView" name="Activities"
 			restorable="true">
-		</view>
+		</view>-->
   <view
         category="org.eclipse.team.ui"
         class="net.sourceforge.eclipseccase.views.historyviewer.JFHistoryViewer"
