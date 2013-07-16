@@ -9,7 +9,7 @@
  *     eraonel - inital API and implementation
  *     IBM Corporation - concepts and ideas from Eclipse
  *******************************************************************************/
-package net.sourceforge.eclipseccase.ui.wizards;
+package net.sourceforge.eclipseccase.ui.wizards.label;
 
 import net.sourceforge.eclipseccase.ClearCaseProvider;
 
@@ -25,7 +25,14 @@ public class LabelData {
 	
 	private IResource [] resource;
 	private ClearCaseProvider provider;
+	private String labelName;
+	private String comment;
 	
+	
+	public LabelData(IResource[] resource,ClearCaseProvider provider){
+		this.resource = resource;
+		this.provider = provider;
+	}
 	
 	public IResource[] getResource() {
 		return resource;
@@ -38,6 +45,22 @@ public class LabelData {
 	}
 	public void setProvider(ClearCaseProvider provider) {
 		this.provider = provider;
+	}
+
+	public String getLabelName() {
+		return labelName;
+	}
+
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	

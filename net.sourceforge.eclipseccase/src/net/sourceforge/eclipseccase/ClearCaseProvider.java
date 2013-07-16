@@ -27,7 +27,6 @@ import net.sourceforge.clearcase.events.OperationListener;
 import net.sourceforge.clearcase.utils.Os;
 import net.sourceforge.eclipseccase.ClearCasePreferences;
 
-import org.eclipse.core.internal.resources.OS;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.resources.team.FileModificationValidator;
 import org.eclipse.core.resources.team.IMoveDeleteHook;
@@ -71,6 +70,12 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	CheckoutReservedOperation CO_RESERVED = new CheckoutReservedOperation();
 
+	UpdateOperation UPDATE = new UpdateOperation();
+
+	DeleteOperation DELETE = new DeleteOperation();
+
+	AttachLabelOperation ATTACH_LBL = new AttachLabelOperation();
+
 	private final IMoveDeleteHook moveHandler = new MoveHandler(this);
 
 	private String comment = ""; //$NON-NLS-1$
@@ -111,10 +116,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 	public ClearCaseProvider() {
 		super();
 	}
-
-	UpdateOperation UPDATE = new UpdateOperation();
-
-	DeleteOperation DELETE = new DeleteOperation();
 
 	/**
 	 * Checks if the monitor has been canceled.
@@ -320,6 +321,15 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 	}
 
+	public void attchLabel(IResource[] resources, int depth,
+			IProgressMonitor progress) throws TeamException {
+		try {
+			execute(ATTACH_LBL, resources, depth, progress);
+		} finally {
+			setComment("");
+		}
+	}
+
 	/*
 	 * @see SimpleAccessOperations#moved(IPath, IResource, IProgressMonitor)
 	 */
@@ -372,23 +382,18 @@ public class ClearCaseProvider extends RepositoryProvider {
 		return StateCacheFactory.getInstance().get(resource).getVersion();
 	}
 
+	/**
+	 * Output from command: version
+	 * "/vobs/rnc/rrt/roam2/roamSs/RoamTb_swb/cc_test/edu.washington.cs.money/edu/washington/cs/money/Bank.java@@/main/dev/10"
+	 * created 2012-09-26T08:22:51+02:00 by Petterson Mikael
+	 * (eraonel.rnckidc@esekilxxen1251) Element Protection: User : eraonel : r-x
+	 * Group: rnckidc : r-x Other: : --- element type: java_source predecessor
+	 * version: /main/dev/9 Labels: ROAMTB_MAIN_4.1_001
+	 */
 	public String getVersionForLatest(String element) {
 		String result = "";
-		// version
-		// "/vobs/rnc/rrt/roam2/roamSs/RoamTb_swb/cc_test/edu.washington.cs.money/edu/washington/cs/money/Bank.java@@/main/dev/10"
-		// created 2012-09-26T08:22:51+02:00 by Petterson Mikael
-		// (eraonel.rnckidc@esekilxxen1251)
-		// Element Protection:
-		// User : eraonel : r-x
-		// Group: rnckidc : r-x
-		// Other: : ---
-		// element type: java_source
-		// predecessor version: /main/dev/9
-		// Labels:
-		// ROAMTB_MAIN_4.1_001
-
-		String[] output = ClearCasePlugin.getEngine().describe(element,
-				ClearCase.NONE, null);
+		String[] output = ClearCasePlugin.getEngine().describe(ClearCase.NONE,
+				null, element);
 		Pattern p = Pattern.compile("^version \\\"(.*)\\\""); //$NON-NLS-1$
 		Matcher m = p.matcher(output[0]);
 		if (m.find()) {
@@ -442,8 +447,11 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	}
 
-	public String[] describe(String element, int flag, String format) {
-		return ClearCasePlugin.getEngine().describe(element, flag, format);
+	public String[] lastModifiedResoure(String element) {
+		HashMap<Integer, String> args = new HashMap<Integer, String>();
+		args.put(Integer.valueOf(ClearCase.FORMAT), "%c");
+		return ClearCasePlugin.getEngine().describe(ClearCase.FORMAT, args,
+				element);
 	}
 
 	public void compareWithVersion(String element1, String element2) {
@@ -466,15 +474,53 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 		return false;
 	}
-	
-	
-	public IStatus createLabel(String name,String comment){
+
+	/**
+	 * Creates a label in clearcase.
+	 * 
+	 * @param name
+	 * @param comment
+	 * @return
+	 */
+	public IStatus createLabel(String name, String comment) {
 		HashMap<Integer, String> args = new HashMap<Integer, String>();
 		args.put(Integer.valueOf(ClearCase.COMMENT), comment);
-		ClearCasePlugin.getEngine().createLabel(ClearCase.COMMENT,args,name);
-		
-		return null;
+		ClearCaseElementState state = ClearCasePlugin.getEngine().createLabel(
+				ClearCase.COMMENT, args, name);
+		if (state.state == ClearCase.LABEL_CREATED) {
+			return new Status(IStatus.OK, "not_used", 0, "", null);
+		} else {
+			return new Status(IStatus.ERROR, "not_used", 0,
+					"Operation 'create label' failed", null);
+		}
+
 	}
+
+	/**
+	 * Attaches a label to all elements.
+	 * 
+	 * @param element
+	 * @param comment
+	 * @param labelName
+	 * @param recursive
+	 * @return
+	 */
+	public IStatus attachLabel(List<String> element, String comment,
+			String labelName, boolean recursive) {
+		HashMap<Integer, String> args = new HashMap<Integer, String>();
+		args.put(Integer.valueOf(ClearCase.COMMENT), comment);
+		if (recursive == true) {
+			ClearCasePlugin.getEngine().attatchLabel(
+					ClearCase.COMMENT | ClearCase.RECURSIVE, args, element,
+					labelName);
+		} else {
+			ClearCasePlugin.getEngine().attatchLabel(ClearCase.COMMENT, args,
+					element, labelName);
+		}
+		return new Status(IStatus.OK, "not_used", 0, "", null);
+
+	}
+
 	public boolean createMergeArrow(String linkDestination,
 			String linkSourceVersion) {
 		ClearCasePlugin.getEngine().makeMergeArrow(linkDestination,
@@ -502,9 +548,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 				"%En\tPredecessor: %[version_predecessor]p\tView: %Tf\tStatus: %Rf\n");
 		String[] output = ClearCasePlugin.getEngine().findCheckouts(
 				ClearCase.FORMAT, args, new String[] { element });
-		//if no checkouts findCheckouts returns null.
+		// if no checkouts findCheckouts returns null.
 
-		if (output != null && output.length > 0 ) {
+		if (output != null && output.length > 0) {
 			// Check if line ends with these keywords.
 			Pattern pattern = Pattern.compile(".*View:\\s(.*)\\sStatus:.*");
 			String[] safeOutput = new String[output.length];
@@ -733,6 +779,40 @@ public class ClearCaseProvider extends RepositoryProvider {
 		return new ArrayList<String>(Arrays.asList(output));
 
 	}
+	
+	/**
+	 * output from cc should be:
+	 * (BUG_2234, BUG_267)
+	 * We make a list out of this.
+	 * @param resources
+	 * @return
+	 */
+	public List<String> getLabels(IResource[] resources) {
+		
+		List<String> result = new ArrayList<String>();
+		
+		if (resources.length > 0) {
+			IResource aResource = resources[0];
+			String element = aResource.getLocation().toOSString();
+			HashMap<Integer, String> args = new HashMap<Integer, String>();
+			args.put(Integer.valueOf(ClearCase.FORMAT), "%l");
+			String[] output = ClearCasePlugin.getEngine().describe(ClearCase.FORMAT,
+					args, element);
+			
+			for (String line : output) {
+				line.replaceAll("[()]","");
+				String [] labels = line.split(",");
+				for (String aLabel : labels) {
+					result.add(aLabel);
+				}
+			}
+			
+			 
+			
+		}
+		return result;
+		//return new ArrayList<String>(Arrays.asList(output));
+	}
 
 	/**
 	 * 
@@ -788,11 +868,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 
 	}
-
-	// public String getStream(String viewName) {
-	// return ClearCasePlugin.getEngine().getStream(
-	// ClearCase.SHORT | ClearCase.VIEW, viewName);
-	// }
 
 	public String getCurrentStream() {
 		String result = "";
@@ -1823,6 +1898,17 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 	}
 
+	private final class AttachLabelOperation implements IIterativeOperation {
+
+		@Override
+		public IStatus visit(IResource resource, int depth,
+				IProgressMonitor progress) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+
 	private final class CheckoutUnreservedOperation implements
 			IIterativeOperation {
 
@@ -2250,7 +2336,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 	public boolean isInsideView(IResource resource) {
 		return StateCacheFactory.getInstance().get(resource).isInsideView();
 	}
-	
 
 	/**
 	 * Get the StateCache for an element
@@ -2386,8 +2471,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 		return success;
 	}
-	
-	
 
 	/**
 	 * Shows a message dialog where user can select: Yes=0 No=1 Cancel=2

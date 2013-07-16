@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.sourceforge.eclipseccase.ui.actions;
 
-import net.sourceforge.eclipseccase.ui.wizards.LabelWizard;
+import net.sourceforge.eclipseccase.ui.wizards.label.LabelWizard;
 
 import net.sourceforge.eclipseccase.ui.wizards.MergeWizard;
 

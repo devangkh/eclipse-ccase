@@ -270,7 +270,7 @@ public class CheckinWizardPage extends WizardPage {
 		ClearCaseProvider provider = ClearCaseProvider.getClearCaseProvider(lastModifiedResource);
 		if (provider != null) {
 			String element = lastModifiedResource.getLocation().toOSString();
-			String[] output = provider.describe(element, ClearCase.FORMAT, "%c");
+			String [] output = provider.lastModifiedResoure(element);
 			if (output.length > 0) {
 				for (int i = 0; i < output.length; i++) {
 					comment.append(output[i] + "\n");

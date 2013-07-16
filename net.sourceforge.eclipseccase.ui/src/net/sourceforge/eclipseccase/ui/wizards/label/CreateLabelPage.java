@@ -1,23 +1,12 @@
-package net.sourceforge.eclipseccase.ui.wizards;
-
-import org.eclipse.core.resources.IResource;
-
-import net.sourceforge.eclipseccase.ClearCaseProvider;
+package net.sourceforge.eclipseccase.ui.wizards.label;
 
 import org.eclipse.core.runtime.IStatus;
-
 import org.eclipse.core.runtime.Status;
-
-import org.eclipse.jface.dialogs.MessageDialog;
-
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.wizard.WizardPage;
-
 import org.eclipse.swt.SWT;
-
 import org.eclipse.swt.layout.GridData;
-
 import org.eclipse.swt.layout.GridLayout;
-
 import org.eclipse.swt.widgets.*;
 
 public class CreateLabelPage extends WizardPage implements Listener {
@@ -27,36 +16,46 @@ public class CreateLabelPage extends WizardPage implements Listener {
 	Text labelCommentText;
 
 	Button createLabelButton;
+	
+	private static boolean inTest = false;
 
-	Button labelCodeButton;
-
-	private String EMPTY_STRING = "";
+	private static final String EMPTY_STRING = "";
 
 	// emptyLabel holds an error if there is not label name entered.
-	private IStatus emptyLabel;
+	private IStatus emptyLabelStatus;
 
-	private ClearCaseProvider provider;
+	private String myLabel = EMPTY_STRING;
 
-	private IResource[] resources;
+	private String myComment = EMPTY_STRING;
+
+	private LabelData data;
+
 
 	protected CreateLabelPage(String pageName) {
 		super(pageName);
-		LabelWizard wizard = (LabelWizard) getWizard();
-		LabelData data = wizard.labelData;
-		provider = data.getProvider();
-		resources = data.getResource();
+		setTitle("Create Lable");
+		setDescription("Create a new label  in clearcase");
+
 	}
 
 	public void createControl(Composite parent) {
-
 		// create the composite to hold the widgets
+		GridLayout layout = new GridLayout();
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		createTextInput(composite);
+		setControl(composite);
+		emptyLabelStatus = new Status(IStatus.OK, "not_used", 0, "", null);
+		loadData();
+		setPageComplete(false);
 
+	}
+
+	protected void createTextInput(Composite composite) {
 		GridData gd;
 
-		Composite composite = new Composite(parent, SWT.NULL);
-
 		// create the desired layout for this wizard page
-
 		GridLayout gl = new GridLayout();
 
 		int ncol = 4;
@@ -81,8 +80,9 @@ public class CreateLabelPage extends WizardPage implements Listener {
 
 		// create label comment
 
-		new Label(composite,SWT.NONE).setText("Comment:");
+		new Label(composite, SWT.NONE).setText("Comment:");
 		labelCommentText = new Text(composite, SWT.BORDER);
+		labelCommentText.setBounds(10, 10, 200, 200);
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 
@@ -90,7 +90,7 @@ public class CreateLabelPage extends WizardPage implements Listener {
 
 		labelCommentText.setLayoutData(gd);
 
-		// create Lable Button
+		// create Label Button
 
 		createLabelButton = new Button(composite, SWT.PUSH);
 
@@ -100,29 +100,16 @@ public class CreateLabelPage extends WizardPage implements Listener {
 
 		createLabelButton.setEnabled(false);
 
-		labelCodeButton = new Button(composite, SWT.PUSH);
-
-		labelCodeButton.setText("Label");
-
-		labelCodeButton.addListener(SWT.Selection, this);
-
-		labelCodeButton.setEnabled(false);
-
 		gd = new GridData();
 
 		gd.horizontalAlignment = GridData.END;
 
 		createLabelButton.setLayoutData(gd);
 
-		setControl(composite);
-
 	}
 
 	public void handleEvent(Event event) {
-		// Initialize a variable with the no error status
-		Status status = new Status(IStatus.OK, "not_used", 0, "", null);
-		// TODO:Add more label handling as well as support for some format check
-		// of label using regexp.
+		new Status(IStatus.OK, "not_used", 0, "", null);
 
 		// will be called when text is written then we can enable button.
 		if (event.widget == labelText) {
@@ -131,38 +118,24 @@ public class CreateLabelPage extends WizardPage implements Listener {
 
 		if (event.widget == createLabelButton) {
 			if (labelText.getText().equals(EMPTY_STRING) || labelText.getText().matches("\\s*")) {
-				status = new Status(IStatus.ERROR, "not_used", 0, "Label cannot be empty", null);
-				emptyLabel = status;
-				setStatus(emptyLabel);
+				emptyLabelStatus = new Status(IStatus.ERROR, "not_used", 0, "Label cannot be empty", null);
+				setStatus(emptyLabelStatus);
 
 			}
 
-			String myLabel = labelText.getText();
-			String myComment = labelCommentText.getText();
-			// TODO:Issue create label command.
-			if (createLabel(myLabel,myComment).getCode() == IStatus.OK) {
-				labelCodeButton.setEnabled(true);
+			myLabel = labelText.getText();
+			myComment = labelCommentText.getText();
+
+			if (createLabel(myLabel, myComment).getCode() == IStatus.OK) {
 				createLabelButton.setEnabled(false);
 				// Lock input field.
 				labelText.setEditable(false);
-
+				saveData();
+				setPageComplete(true);
+				setStatus(new Status(IStatus.OK, "not_used", 0, "Created label " + myLabel, null));
 			}
-
+					
 		}
-
-		if (event.widget == labelCodeButton) {
-			status = new Status(IStatus.INFO, "not_used", 0, "Start labeling selected resorces ....", null);
-
-			setStatus(status);
-//			if (labelResources(resources) == IStatus.OK) {
-//
-//			}
-
-		}
-
-		setPageComplete(isPageComplete());
-
-		getWizard().getContainer().updateButtons();
 
 	}
 
@@ -171,8 +144,9 @@ public class CreateLabelPage extends WizardPage implements Listener {
 	 */
 	private void setStatus(IStatus status) {
 		String message = status.getMessage();
-		if (message.length() == 0)
+		if (message.length() == 0) {
 			message = null;
+		}
 		switch (status.getSeverity()) {
 		case IStatus.OK:
 			setErrorMessage(null);
@@ -180,11 +154,11 @@ public class CreateLabelPage extends WizardPage implements Listener {
 			break;
 		case IStatus.WARNING:
 			setErrorMessage(null);
-			setMessage(message, WizardPage.WARNING);
+			setMessage(message, IMessageProvider.WARNING);
 			break;
 		case IStatus.INFO:
 			setErrorMessage(null);
-			setMessage(message, WizardPage.INFORMATION);
+			setMessage(message, IMessageProvider.INFORMATION);
 			break;
 		default:
 			setErrorMessage(message);
@@ -193,32 +167,45 @@ public class CreateLabelPage extends WizardPage implements Listener {
 		}
 	}
 
-	private IStatus createLabel(String name,String comment) {
-		System.out.println("createLabel()");
+	private IStatus createLabel(String name, String comment) {
+		System.out.println("createLabel() not for real.");
 		Status status = new Status(IStatus.OK, "not_used", 0, "", null);
-		provider.createLabel(name,comment);
-
+		//TODO:Remove simulation ...
+		System.out.println("createLabel() not for real.");
+		// IStatus s = data.getProvider().createLabel(name,comment);
 		return status;
 	}
 
-	private IStatus labelResources(IResource [] resources){
-		System.out.println("labelResources()");
-		Status status = new Status(IStatus.OK, "not_used", 0, "", null);
-		return null;
+	/**
+	 * Saves data to a model
+	 */
+	private void saveData() {
+		LabelWizard wizard = (LabelWizard) getWizard();
+		LabelData data = wizard.getData();
+		data.setLabelName(myLabel);
+		data.setComment(myComment);
+
+	}
+
+	private void loadData() {
+		LabelWizard wizard = (LabelWizard) getWizard();
+		data = wizard.getData();
 	}
 
 	/*
-	 * 
-	 * Sets the completed field on the wizard class when all the information is
-	 * 
-	 * entered and the wizard can be completed
+	 * Disable next button.
 	 */
-
 	@Override
-	public boolean isPageComplete() {
+	public boolean canFlipToNextPage() {
+		return false;
+	}
+	
+	public static boolean isInTest() {
+		return inTest;
+	}
 
-		return true;
-
+	public static void setInTest(boolean inTest) {
+		CreateLabelPage.inTest = inTest;
 	}
 
 }
