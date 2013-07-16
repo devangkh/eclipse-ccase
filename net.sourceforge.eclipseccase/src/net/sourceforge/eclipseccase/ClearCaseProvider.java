@@ -74,7 +74,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	DeleteOperation DELETE = new DeleteOperation();
 
-	AttachLabelOperation ATTACH_LBL = new AttachLabelOperation();
 
 	private final IMoveDeleteHook moveHandler = new MoveHandler(this);
 
@@ -321,14 +320,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 	}
 
-	public void attchLabel(IResource[] resources, int depth,
-			IProgressMonitor progress) throws TeamException {
-		try {
-			execute(ATTACH_LBL, resources, depth, progress);
-		} finally {
-			setComment("");
-		}
-	}
 
 	/*
 	 * @see SimpleAccessOperations#moved(IPath, IResource, IProgressMonitor)
@@ -1898,16 +1889,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 	}
 
-	private final class AttachLabelOperation implements IIterativeOperation {
-
-		@Override
-		public IStatus visit(IResource resource, int depth,
-				IProgressMonitor progress) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-	}
+	
 
 	private final class CheckoutUnreservedOperation implements
 			IIterativeOperation {
