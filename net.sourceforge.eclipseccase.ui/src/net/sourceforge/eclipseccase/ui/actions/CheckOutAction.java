@@ -17,24 +17,21 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.Window;
 
 public class CheckOutAction extends ClearCaseWorkspaceAction {
-	
-	
-
 
 	@Override
 	public void execute(IAction action) {
 
 		final IResource[] resources = getSelectedResources();
 		final ClearCaseProvider provider = ClearCaseProvider.getClearCaseProvider(resources[0]);
-				
-		if (PreventCheckoutHelper.isPreventedFromCheckOut(provider, resources, ClearCasePreferences.isSilentPrevent())){
+
+		if (PreventCheckoutHelper.isPreventedFromCheckOut(provider, resources, ClearCasePreferences.isSilentPrevent())) {
 			return;
 		}
-		
-		if(!PreventCheckoutHelper.isPromtedCoTypeOk()){
+
+		if (!PreventCheckoutHelper.isPromtedCoTypeOk()) {
 			return;
 		}
-		
+
 		String maybeComment = "";
 		int maybeDepth = IResource.DEPTH_ZERO;
 
@@ -48,62 +45,61 @@ public class CheckOutAction extends ClearCaseWorkspaceAction {
 
 		final String comment = maybeComment;
 		final int depth = maybeDepth;
-		
-		
-		IWorkspaceRunnable my2Runnable = new IWorkspaceRunnable() {
 
-			public void run(IProgressMonitor monitor) throws CoreException {
-				// UCM checkout.
-				if (ClearCasePreferences.isUCM() && !ClearCasePreferences.isUseClearDlg()) {
+		// UCM checkout.
+		if (ClearCasePreferences.isUCM() && !ClearCasePreferences.isUseClearDlg()) {
+			IWorkspaceRunnable my2Runnable = new IWorkspaceRunnable() {
+
+				public void run(IProgressMonitor monitor) throws CoreException {
 					if (!UcmActivity.checkoutWithActivity(provider, resources, getShell()))
 						// no checkout
 						return;
+
 				}
+			};
 
-			}
-		};
+			executeInBackground(my2Runnable, "UCM checkout ...");
 
-		executeInBackground(my2Runnable, "UCM checkout ...");
+		} else {
+			IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 
-		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+				public void run(IProgressMonitor monitor) throws CoreException {
 
-			public void run(IProgressMonitor monitor) throws CoreException {
+					try {
+						IResource[] resources = getSelectedResources();
+						beginTask(monitor, "Checking out...", resources.length);
 
-				try {
-					IResource[] resources = getSelectedResources();
-					beginTask(monitor, "Checking out...", resources.length);
+						if (ClearCasePreferences.isUseClearDlg()) {
+							monitor.subTask("Executing ClearCase user interface...");
+							ClearDlgHelper.checkout(resources);
+						} else {
+							// Sort resources with directories last so that the
+							// modification of a
+							// directory doesn't abort the modification of files
+							// within
+							// it.
+							List resList = Arrays.asList(resources);
+							Collections.sort(resList, new DirectoryLastComparator());
 
-					if (ClearCasePreferences.isUseClearDlg()) {
-						monitor.subTask("Executing ClearCase user interface...");
-						ClearDlgHelper.checkout(resources);
-					} else {
-						// Sort resources with directories last so that the
-						// modification of a
-						// directory doesn't abort the modification of files
-						// within
-						// it.
-						List resList = Arrays.asList(resources);
-						Collections.sort(resList, new DirectoryLastComparator());
-
-						ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
-						for (int i = 0; i < resources.length; i++) {
-							IResource resource = resources[i];
-							if (provider != null) {
-								provider.setComment(comment);
-								provider.setOperationListener(opListener);
-								provider.checkout(new IResource[] { resource }, depth, subMonitor(monitor));
+							ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
+							for (int i = 0; i < resources.length; i++) {
+								IResource resource = resources[i];
+								if (provider != null) {
+									provider.setComment(comment);
+									provider.setOperationListener(opListener);
+									provider.checkout(new IResource[] { resource }, depth, subMonitor(monitor));
+								}
 							}
 						}
+					} finally {
+						monitor.done();
+						updateActionEnablement();
 					}
-				} finally {
-					monitor.done();
-					updateActionEnablement();
 				}
-			}
-		};
+			};
 
-		executeInBackground(runnable, "Checking out resources from ClearCase");
-
+			executeInBackground(runnable, "Checking out resources from ClearCase");
+		}
 	}
 
 	@Override
@@ -121,7 +117,5 @@ public class CheckOutAction extends ClearCaseWorkspaceAction {
 		}
 		return true;
 	}
-
-	
 
 }
