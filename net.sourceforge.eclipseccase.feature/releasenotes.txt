@@ -5,7 +5,7 @@ come with no warranty (see the license.html shipped with
 the feature(s) and the Common Public License 1.0 for more
 details).
 
-This is our 2.2.9 release. Please see CHANGELOG
+This is our 2.2.32 release. Please see CHANGELOG
 and for more information.
 
 

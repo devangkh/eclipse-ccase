@@ -5,7 +5,17 @@
 2.2.32
 =====
 
-Bug #357 java.lang.ClassNotFoundException: net.sourceforge.eclipseccase.views.ActivitiesView .
+Bugs:
+
+ #357 java.lang.ClassNotFoundException: net.sourceforge.eclipseccase.views.ActivitiesView .
+ #361 select activity name while check out file from eclipse 
+
+Features:
+#120 Add Capability To Label Files Upon Check-In 
+
+Patch:
+
+#12 Add Compare with other View functionality ( Thanks to M. Overdijk).
 
 2.2.31
 ====
