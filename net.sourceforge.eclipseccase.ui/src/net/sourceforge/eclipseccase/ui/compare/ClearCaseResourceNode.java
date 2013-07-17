@@ -42,8 +42,7 @@ import org.eclipse.swt.graphics.Image;
 public class ClearCaseResourceNode extends BufferedContent implements ITypedElement {
 
 	private final IResource resource;
-
-	// Version extended path e.g /path/to/file/FileName.java@@/main/dev/2
+	//Version extended path e.g /path/to/file/FileName.java@@/main/dev/2 
 	private final String vextPath;
 
 	private final ClearCaseProvider provider;
@@ -52,16 +51,6 @@ public class ClearCaseResourceNode extends BufferedContent implements ITypedElem
 		this.resource = resource;
 		this.vextPath = resource.getLocation().toOSString() + "@@" + version;
 		this.provider = provider;
-	}
-
-	public ClearCaseResourceNode(IResource resource, String version, ClearCaseProvider provider, boolean differentView) {
-		this.resource = resource;
-		this.provider = provider;
-		if (differentView) {
-			this.vextPath = "/view/" + version + resource.getLocation().toOSString();
-		} else {
-			this.vextPath = resource.getLocation().toOSString() + "@@" + version;
-		}
 	}
 
 	/**

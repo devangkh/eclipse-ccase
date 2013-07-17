@@ -128,11 +128,6 @@
 				icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.comparepredecessor2"
 				label="Predecessor" menubarPath="compareWithMenu/compareWithGroup">
 			</action>
-			<action
-               class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
-                icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.compareview2"
-              label="View" menubarPath="compareWithMenu/compareWithGroup">
-           </action>			
 			<action class="net.sourceforge.eclipseccase.ui.actions.GetConfigSpecAction"
 				icon="icons/full/get.png" id="net.sourceforge.eclipseccase.popups.getConfigSpec"
 				label="Get/Edit &amp;Config Spec" menubarPath="team.main/group2">
@@ -144,13 +139,13 @@
 				icon="icons/full/arrow_merge.png"
 				menubarPath="team.main/group2">
 			</action>
-			<action
+			<!--<action
 				class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
 				id="net.sourceforge.eclipseccase.ui.popups.label"
 				label="Label"
-				icon="icons/full/tag_green.png"
+				icon="icons/full/arrow_merge.png"
 				menubarPath="team.main/group2">
-			</action>
+			</action>-->
 			<action class="net.sourceforge.eclipseccase.ui.actions.MkBrTypeAction"
 				icon="icons/full/branch.png" id="net.sourceforge.eclipseccase.popups.mkbrtype"
 				label="Make &amp;Branch Type" menubarPath="team.main/group2">
@@ -182,11 +177,6 @@
 				icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.comparepredecessor"
 				label="Compare with Predecessor (external tool)" menubarPath="team.main/group2">
 			</action>
-			<action
-               class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
-               icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.compareview"
-               label="Compare with View" menubarPath="team.main/group2">
-           </action>
 			<!-- mike 20100903 In popupMenus it does not follow the same concept as actionSet. As a workaround
 			     I will put the menus under Team and group2. Not nice but it works.
 			<menu id="net.sourceforge.eclipseccase.ui.popups.checkedoutstate"
@@ -364,15 +354,16 @@
 					</pluginState>
 				</enablement>
 			</action>
+			<!--
 			<action class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.label"
-				icon="icons/full/tag_green.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
+				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
 				label="Label" menubarPath="eclipseccase_menu/group2" toolbarPath="Normal/additions">
 				<enablement>
 					<pluginState id="net.sourceforge.eclipseccase" value="activated">
 					</pluginState>
 				</enablement>
-			</action>
+			</action>-->
 			<action class="net.sourceforge.eclipseccase.ui.actions.MergeAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.mergebranch"
 				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.mergebranch"
@@ -493,21 +484,6 @@
 					</pluginState>
 				</enablement>	
 			</action>
-			<action
-                class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
-               definitionId="net.sourceforge.eclipseccase.ui.actionset.compareview"
-                icon="icons/full/diff.png"
-                id="net.sourceforge.eclipseccase.ui.actionset.compareview"
-                label="Co&amp;mpare with View"
-                menubarPath="eclipseccase_menu/group2"
-                style="push"
-               toolbarPath="Normal/additions"
-                               tooltip="Compare with View">
-               <enablement>
-                   <pluginState value="activated" id="net.sourceforge.eclipseccase">
-                    </pluginState>
-                </enablement>
-           </action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.UndoCheckOutAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.uncheckout"
 				icon="icons/full/uncheckout.png" id="net.sourceforge.eclipseccase.ui.actionset.uncheckout"
@@ -630,23 +606,9 @@
 			name="UnHijack">
 		</command>
 		<command categoryId="net.sourceforge.eclipseccase.category"
-			description="Hijack a file" id="net.sourceforge.eclipseccase.ui.actionset.hijack"
-			name="Hijack">
-		</command>
-		<command categoryId="net.sourceforge.eclipseccase.category"
 			description="Search File in Branch" id="net.sourceforge.eclipseccase.ui.actionset.branchsearch"
 			name="Search File in Branch">
 		</command>
-			<command name="Compare with View"
-            description="Opens the clearcase compare tool on the selected resource"
-           categoryId="net.sourceforge.eclipseccase.category"
-           id="net.sourceforge.eclipseccase.ui.actionset.compareview">
-        </command>
-        	<command name="Label"
-            description="Labels resources"
-           categoryId="net.sourceforge.eclipseccase.category"
-           id="net.sourceforge.eclipseccase.ui.actionset.label">
-        </command>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page name="%clearcasePreferences.name" category="org.eclipse.team.ui.TeamPreferences"
@@ -778,10 +740,6 @@
 			contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Alt+C Alt+C">
 		</key>
-		<key commandId="net.sourceforge.eclipseccase.ui.actionset.compareview"
-            contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="Alt+C Alt+W">
-        </key>
 		<key commandId="net.sourceforge.eclipseccase.ui.actionset.cancelRefreshes"
 			contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Alt+C Alt+Z">
@@ -797,10 +755,6 @@
 		<key commandId="net.sourceforge.eclipseccase.ui.actionset.unhijack"
 			contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Alt+C Alt+J">
-		</key>
-		<key commandId="net.sourceforge.eclipseccase.ui.actionset.hijack"
-			contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="Alt+C Alt+Y">
 		</key>
 		<!-- 3571949 Shortcut for Save/Clear/Refresh actions in configspec editor -->
 		<key commandId="net.sourceforge.eclipseccase.views.configspecview.refreshAction"
@@ -859,10 +813,7 @@
 		<key platform="gtk"
 			commandId="net.sourceforge.eclipseccase.ui.actionset.comparepredecessor"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C C">
-		</key><key platform="gtk"
-            commandId="net.sourceforge.eclipseccase.ui.actionset.compareview"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C W">
-        </key>	
+		</key>
 		<key platform="gtk"
 			commandId="net.sourceforge.eclipseccase.ui.actionset.cancelRefreshes"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C Z">
@@ -877,9 +828,6 @@
 		</key>
 		<key platform="gtk" commandId="net.sourceforge.eclipseccase.ui.actionset.unhijack"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C J">
-		</key>
-		<key platform="gtk" commandId="net.sourceforge.eclipseccase.ui.actionset.hijack"
-			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C Alt+Y">
 		</key>
 		<!-- 3571949 Shortcut for Save/Clear/Refresh actions in configspec editor -->
 		<key platform="gtk" commandId="net.sourceforge.eclipseccase.views.configspecview.refreshAction"

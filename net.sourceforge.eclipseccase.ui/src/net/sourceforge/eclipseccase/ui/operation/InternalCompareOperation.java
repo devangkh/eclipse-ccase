@@ -35,8 +35,6 @@ public class InternalCompareOperation {
 
 	private ClearCaseProvider provider;
 
-	private boolean differentView = false;
-
 	public InternalCompareOperation(IResource resource, String selectedFile, String comparableVersion, ClearCaseProvider provider) {
 		this.resource = resource;
 		this.selected = selectedFile;
@@ -46,15 +44,9 @@ public class InternalCompareOperation {
 		cmpConfig = new CompareConfiguration();
 	}
 
-	public InternalCompareOperation(IResource resource, String selectedFile, String comparableVersion, ClearCaseProvider provider, boolean differentView) {
-		this(resource, selectedFile, comparableVersion, provider);
-		this.differentView = differentView;
-	}
-
 	private void setup() {
 		cmpConfig = new CompareConfiguration();
-		cmpConfig.setLeftEditable(true);// lview private version or latest. Can
-										// be changed.
+		cmpConfig.setLeftEditable(true);// lview private version or latest. Can be changed.
 		cmpConfig.setRightEditable(false);
 
 	}
@@ -65,7 +57,7 @@ public class InternalCompareOperation {
 			IWorkbench wb = PlatformUI.getWorkbench();
 			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 			IWorkbenchPage page = win.getActivePage();
-			VersionCompareInput input = new VersionCompareInput(cmpConfig, (IFile) resource, selected, comparableVersion, page, provider, differentView);
+			VersionCompareInput input = new VersionCompareInput(cmpConfig, (IFile) resource, selected, comparableVersion, page, provider);
 			CompareUI.openCompareEditor(input);
 		}
 
