@@ -40,19 +40,23 @@ public class VersionCompareInput extends SaveableCompareEditorInput {
 	 * @param rightVersion
 	 * @param wp
 	 * @param provider
+	 * @param differentView
 	 */
-	public VersionCompareInput(CompareConfiguration configuration, IFile resource, String leftVersion, String rightVersion, IWorkbenchPage wp, ClearCaseProvider provider) {
+	public VersionCompareInput(CompareConfiguration configuration, IFile resource, String leftVersion, String rightVersion, IWorkbenchPage wp, ClearCaseProvider provider, boolean differentView) {
+
 		super(configuration, wp);
-		
-		if(provider.isCheckedOut(resource)){
-			// creates a local file and make it included into the save process to
-			// handle an eventual change. This is only valid for checked-out file.
+
+		if (provider.isCheckedOut(resource)) {
+			// creates a local file and make it included into the save process
+			// to
+			// handle an eventual change. This is only valid for checked-out
+			// file.
 			left = createFileElement(resource);
-		}else{
+		} else {
 			left = new ClearCaseResourceNode(resource, leftVersion, provider);
 		}
 		// right is always a clearcase element
-		right = new ClearCaseResourceNode(resource, rightVersion, provider);
+		right = new ClearCaseResourceNode(resource, rightVersion, provider, differentView);
 		this.provider = provider;
 
 		configuration.setLeftImage(CompareUI.getImage(resource));
@@ -64,6 +68,10 @@ public class VersionCompareInput extends SaveableCompareEditorInput {
 		if (right != null) {
 			configuration.setRightLabel(rightVersion);
 		}
+	}
+
+	public VersionCompareInput(CompareConfiguration configuration, IFile resource, String leftVersion, String rightVersion, IWorkbenchPage wp, ClearCaseProvider provider) {
+		this(configuration, resource, leftVersion, rightVersion, wp, provider, false);
 	}
 
 	@Override
