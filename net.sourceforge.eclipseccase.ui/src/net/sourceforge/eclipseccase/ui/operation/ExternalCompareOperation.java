@@ -58,14 +58,16 @@ public class ExternalCompareOperation extends Thread {
 						provider.copyVersionIntoSnapShot(tempFile.getPath(), vExtPath2);
 						System.out.println("TempFilePath is "+tempFile.getPath());
 						// now we should have the snapshot version.
-						
+						diff.twoWayDiff(vExtPath1, tempFile.getPath());
+					}else{
+						diff.twoWayDiff(vExtPath1, vExtPath2);
 					}
 				} catch (FileNotFoundException e) {
 					return new Status(IStatus.WARNING, "net.sourceforge.eclipseccase.ui.compare", "Internal, could not find file to compare with " + vExtPath1, e);
 				} catch (IOException e) {
 					return new Status(IStatus.WARNING, "net.sourceforge.eclipseccase.ui.compare", "Internal, Could not create temp file for predecessor: " + vExtPath1, e);
 				}
-				diff.twoWayDiff(vExtPath1, tempFile.getPath());
+				
 				monitor.done();
 				return Status.OK_STATUS;
 			}
