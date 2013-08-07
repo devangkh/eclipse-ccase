@@ -40,9 +40,9 @@ public class ExternalCompareOperation extends Thread {
 				// Dont use version extended path. Since view selects current version.
 				
 				String vExtPath1 = resource.getLocation().toOSString();//File in view.
-				System.out.println("Version one: "+vExtPath1);
+				//System.out.println("Version one: "+vExtPath1);
 				String vExtPath2 = resource.getLocation().toOSString() + "@@" + comparableVersion;
-				System.out.println("Version two: "+vExtPath2);
+				//System.out.println("Version two: "+vExtPath2);
 				
 				// Since we start eclipse in a view we also start external
 				// editor in a view and file not in snapshot view must be
