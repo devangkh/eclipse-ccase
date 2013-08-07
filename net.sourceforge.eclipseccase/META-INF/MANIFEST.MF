@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: net.sourceforge.eclipseccase; singleton:=true
-Bundle-Version: 2.2.32.qualifier
+Bundle-Version: 2.2.33.qualifier
 Bundle-Activator: net.sourceforge.eclipseccase.ClearCasePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

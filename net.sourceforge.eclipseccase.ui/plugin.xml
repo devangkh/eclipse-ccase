@@ -139,13 +139,13 @@
 				icon="icons/full/arrow_merge.png"
 				menubarPath="team.main/group2">
 			</action>
-			<!--<action
+			<action
 				class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
 				id="net.sourceforge.eclipseccase.ui.popups.label"
 				label="Label"
-				icon="icons/full/arrow_merge.png"
+				icon="icons/full/tag_green.png"
 				menubarPath="team.main/group2">
-			</action>-->
+			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.MkBrTypeAction"
 				icon="icons/full/branch.png" id="net.sourceforge.eclipseccase.popups.mkbrtype"
 				label="Make &amp;Branch Type" menubarPath="team.main/group2">
@@ -318,10 +318,8 @@
 				menubarPath="eclipseccase_menu/group2" toolbarPath="Normal/additions"
 				tooltip="Open a View to show all CheckedOut, Hijacked and View-Private Files">
 				<enablement>
-					<and>
 						<pluginState value="activated" id="net.sourceforge.eclipseccase">
 						</pluginState>
-					</and>
 				</enablement>
 			</action>
 			<action
@@ -354,16 +352,16 @@
 					</pluginState>
 				</enablement>
 			</action>
-			<!--
+			
 			<action class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.label"
-				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
+				icon="icons/full/tag_green.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
 				label="Label" menubarPath="eclipseccase_menu/group2" toolbarPath="Normal/additions">
 				<enablement>
 					<pluginState id="net.sourceforge.eclipseccase" value="activated">
 					</pluginState>
 				</enablement>
-			</action>-->
+			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.MergeAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.mergebranch"
 				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.mergebranch"
@@ -443,10 +441,8 @@
 				label="Reserved --&gt;Unreserved"
 				menubarPath="eclipseccase_menu/group2">
 				<enablement>
-					<and>
 						<pluginState value="activated" id="net.sourceforge.eclipseccase">
 						</pluginState>
-					</and>
 				</enablement>
 			</action>
 			<action
@@ -457,10 +453,8 @@
 				label="UnReserved --&gt;Reserved"
 				menubarPath="eclipseccase_menu/group2">
 				<enablement>
-					<and>
 						<pluginState value="activated" id="net.sourceforge.eclipseccase">
 						</pluginState>
-					</and>
 				</enablement>
 			</action>
 			
@@ -484,6 +478,7 @@
 					</pluginState>
 				</enablement>	
 			</action>
+			
 			<action class="net.sourceforge.eclipseccase.ui.actions.UndoCheckOutAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.uncheckout"
 				icon="icons/full/uncheckout.png" id="net.sourceforge.eclipseccase.ui.actionset.uncheckout"
@@ -606,6 +601,10 @@
 			name="UnHijack">
 		</command>
 		<command categoryId="net.sourceforge.eclipseccase.category"
+			description="Hijack a file" id="net.sourceforge.eclipseccase.ui.actionset.hijack"
+			name="Hijack">
+		</command>
+		<command categoryId="net.sourceforge.eclipseccase.category"
 			description="Search File in Branch" id="net.sourceforge.eclipseccase.ui.actionset.branchsearch"
 			name="Search File in Branch">
 		</command>
@@ -676,11 +675,14 @@
   </view>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
-		<page objectClass="org.eclipse.core.resources.IResource"
-			adaptable="true" name="ClearCase"
+		<page  name="ClearCase"
 			class="net.sourceforge.eclipseccase.ElementPropertyPage" id="net.sourceforge.eclipseccase.elementPropertyPage">
+			<enabledWhen>
+             	<instanceof value="org.eclipse.core.resources.IResource"/>
+          </enabledWhen>
 		</page>
 	</extension>
+	
 	<extension point="org.eclipse.team.core.projectSets">
 		<projectSets
 			class="net.sourceforge.eclipseccase.ClearCaseProjectSetSerializer"
