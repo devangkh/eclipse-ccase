@@ -5,6 +5,10 @@
 2.2.34
 =====
 
+Bugs:
+
+#366 Better fault message
+#359 eclipse UI frozen after changing config spec
 
 
 2.2.33
