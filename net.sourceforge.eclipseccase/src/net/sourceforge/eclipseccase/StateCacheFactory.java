@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -71,7 +72,9 @@ public class StateCacheFactory implements ISaveParticipant,
 	private static StateCacheFactory instance = new StateCacheFactory();
 
 	/** maps resources to caches */
-	Map<IResource, StateCache> cacheMap = new HashMap<IResource, StateCache>();
+	//Map<IResource, StateCache> cacheMap = new HashMap<IResource, StateCache>();
+	
+	Map<IResource, StateCache> cacheMap = new ConcurrentHashMap<IResource, StateCache>();
 
 	/** the listeners */
 	private List<IResourceStateListener> listeners = new ArrayList<IResourceStateListener>();
@@ -411,14 +414,7 @@ public class StateCacheFactory implements ISaveParticipant,
 						+ Integer.toString(saveNumber);
 				IPath statePath = ClearCasePlugin.getDefault()
 						.getStateLocation().append(saveFileName);
-
-				// save state cache
-				// ObjectOutputStream os = new ObjectOutputStream(
-				// new FileOutputStream(statePath.toFile()));
-				// Collection serList = new LinkedList(cacheMap.values());
-				// os.writeObject(serList);
-				// os.flush();
-				// os.close();
+			
 				OutputStream os = new BufferedOutputStream(
 						new FileOutputStream(statePath.toFile()));
 				try {
