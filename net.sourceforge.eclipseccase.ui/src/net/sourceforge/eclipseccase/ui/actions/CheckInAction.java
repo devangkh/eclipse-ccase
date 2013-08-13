@@ -11,6 +11,12 @@
  *******************************************************************************/
 package net.sourceforge.eclipseccase.ui.actions;
 
+import java.util.Iterator;
+
+import java.util.List;
+
+import java.util.ArrayList;
+
 import net.sourceforge.eclipseccase.ClearDlgHelper;
 
 import net.sourceforge.eclipseccase.ClearCasePreferences;
@@ -54,15 +60,36 @@ public class CheckInAction extends ClearCaseWorkspaceAction {
 
 		if (canContinue) {
 
-			final IResource[] resources = getSelectedResources();
-			if (resources.length > 0) {
+			//final IResource[] resources = getSelectedResources();
+			final List<IResource> resources = Arrays.asList(getSelectedResources());
+			final List<IResource> identical = new ArrayList<IResource>();
+			List<IResource> modified = new ArrayList<IResource>();
+			final ClearCaseProvider provider = new ClearCaseProvider();
+
+			if (resources.size() > 0) {
+				// check for identical resources
+				for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
+					IResource iResource = (IResource) iterator.next();
+					if(!provider.isDifferent(iResource.getLocation().toOSString())){
+						identical.add(iResource);
+					}
+				}
+				
+				if(identical.size() > 0 && !ClearCasePreferences.isCheckinIdenticalAllowed()){
+					//We have identical resources and we should not check them in.
+					//Remove from list of resources
+					modified = sortOutIdentical(resources,identical);
+				}else{
+					modified = resources;
+				}
+				
 				if (ClearCasePreferences.isUseClearDlg()) {
 
 					IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 						public void run(IProgressMonitor monitor) throws CoreException {
 							try {
 								monitor.subTask("Executing ClearCase user interface...");
-								ClearDlgHelper.checkin(resources);
+								ClearDlgHelper.checkin(resources.toArray(new IResource[resources.size()]));
 							} finally {
 								monitor.done();
 								updateActionEnablement();
@@ -72,10 +99,12 @@ public class CheckInAction extends ClearCaseWorkspaceAction {
 					executeInBackground(runnable, "Checking in ClearCase resources");
 				} else {
 
-					ClearCaseProvider provider = new ClearCaseProvider();
-					CheckinWizard wizard = new CheckinWizard(resources, provider);
-					WizardDialog dialog = new WizardDialog(getShell(), wizard);
-					dialog.open();
+					//ClearCaseProvider provider = new ClearCaseProvider();
+					//CheckinWizard wizard = new CheckinWizard(resources, provider);
+					//CheckinWizard wizard = new CheckinWizard(modified,identical,provider);
+					//CheckinWizard wizard = new CheckinWizard(resources.toArray(new IResource[resources.size()]), identical, provider)
+//					WizardDialog dialog = new WizardDialog(getShell(), wizard);
+//					dialog.open();
 				}
 			}
 		}
@@ -95,6 +124,17 @@ public class CheckInAction extends ClearCaseWorkspaceAction {
 				return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 
+	 * @param resources
+	 * @param identical
+	 * @return modified resources
+	 */
+	private List<IResource> sortOutIdentical(List<IResource> resources,List<IResource>identical){
+		resources.removeAll(identical);
+		return resources;
 	}
 
 }

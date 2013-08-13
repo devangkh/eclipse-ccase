@@ -2585,5 +2585,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 		return result;
 	}
+	
+	public boolean isDifferent(String element){
+		return ClearCasePlugin.getEngine().isDifferent(element);
+	}
 
 }

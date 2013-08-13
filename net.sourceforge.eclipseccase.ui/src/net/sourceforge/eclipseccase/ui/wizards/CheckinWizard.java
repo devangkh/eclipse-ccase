@@ -42,7 +42,9 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	private CheckinWizardPage page;
 
 	private IResource[] resources;
-
+	
+	private IResource[] identical;
+	
 	private IStructuredSelection selection;
 
 	private ClearCaseProvider provider;
@@ -54,12 +56,14 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	/**
 	 * Constructor for CheckinWizard.
 	 */
-	public CheckinWizard(IResource[] resources, ClearCaseProvider provider) {
+	public CheckinWizard(IResource[] resources, IResource [] identical, ClearCaseProvider provider) {
 		super(CHECKIN_WIZARD_DIALOG_SETTINGS, ClearCaseUI.getInstance().getDialogSettings());
 		setNeedsProgressMonitor(true);
 		this.resources = resources;
+		this.identical = identical;
 		this.provider = provider;
 	}
+	
 
 	/**
 	 * Adding the page to the wizard.
