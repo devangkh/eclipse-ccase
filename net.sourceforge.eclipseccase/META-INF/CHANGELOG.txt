@@ -13,7 +13,7 @@ Bugs:
 
 #366 Better fault message
 #359 eclipse UI frozen after changing config spec
-
+#360 Unable to hijack files (Eclipse 4.1) 
 
 2.2.33
 =====
@@ -23,6 +23,7 @@ Bugs:
 #362 exetrnel comapre not working after updating to latest plugin release.
 #364 SingleProcess timed out! Process will be restarted! 
 #365 An internal error occurred during: "Refreshing ClearCase Resource States". 
+
 
 Features:
 
