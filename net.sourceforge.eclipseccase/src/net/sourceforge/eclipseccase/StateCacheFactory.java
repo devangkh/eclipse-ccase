@@ -408,7 +408,6 @@ public class StateCacheFactory implements ISaveParticipant,
 						+ Integer.toString(saveNumber);
 				IPath statePath = ClearCasePlugin.getDefault()
 						.getStateLocation().append(saveFileName);
-
 				OutputStream os = new BufferedOutputStream(
 						new FileOutputStream(statePath.toFile()));
 				try {
