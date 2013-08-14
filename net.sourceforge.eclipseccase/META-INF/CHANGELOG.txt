@@ -5,6 +5,10 @@
 2.2.34
 =====
 
+Feature:
+
+125 	Compare with other View ( unix only).
+
 Bugs:
 
 #366 Better fault message
