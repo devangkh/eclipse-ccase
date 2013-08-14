@@ -1,5 +1,13 @@
 package net.sourceforge.eclipseccase.ui.operation;
 
+import org.eclipse.core.runtime.Status;
+
+import org.eclipse.core.runtime.IStatus;
+
+import org.eclipse.jface.dialogs.ErrorDialog;
+
+import org.eclipse.jface.dialogs.MessageDialog;
+
 import org.eclipse.compare.ITypedElement;
 
 import org.eclipse.compare.ResourceNode;
@@ -35,18 +43,30 @@ public class InternalCompareOperation {
 
 	private ClearCaseProvider provider;
 
-	public InternalCompareOperation(IResource resource, String selectedFile, String comparableVersion, ClearCaseProvider provider) {
+	private boolean differentView = false;
+	
+	private IWorkbenchPage page;
+
+	public InternalCompareOperation(IResource resource, String selectedFile, String comparableVersion, ClearCaseProvider provider,IWorkbenchPage page) {
 		this.resource = resource;
 		this.selected = selectedFile;
 		this.comparableVersion = comparableVersion;
 		this.provider = provider;
+		this.page = page;
 		setup();
 		cmpConfig = new CompareConfiguration();
+	}
+	
+	public InternalCompareOperation(IResource resource, String selectedFile, String comparableVersion, ClearCaseProvider provider, IWorkbenchPage page,boolean differentView) {
+		this(resource, selectedFile, comparableVersion, provider,page);
+		this.differentView = differentView;
+	
 	}
 
 	private void setup() {
 		cmpConfig = new CompareConfiguration();
-		cmpConfig.setLeftEditable(true);// lview private version or latest. Can be changed.
+		cmpConfig.setLeftEditable(true);// lview private version or latest. Can
+										// be changed.
 		cmpConfig.setRightEditable(false);
 
 	}
@@ -54,11 +74,11 @@ public class InternalCompareOperation {
 	public void execute() {
 		// execute
 		if (resource instanceof IFile) {
-			IWorkbench wb = PlatformUI.getWorkbench();
-			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
-			IWorkbenchPage page = win.getActivePage();
-			VersionCompareInput input = new VersionCompareInput(cmpConfig, (IFile) resource, selected, comparableVersion, page, provider);
+			VersionCompareInput input = new VersionCompareInput(cmpConfig, (IFile) resource, selected, comparableVersion, page, provider, differentView);
 			CompareUI.openCompareEditor(input);
+		}else{
+			//This is only for safety.
+			ErrorDialog.openError(page.getActivePart().getSite().getShell(), "Not a file", "You need to select a file!", new Status(IStatus.WARNING, "Selected resource is not a file", "", null));
 		}
 
 	}

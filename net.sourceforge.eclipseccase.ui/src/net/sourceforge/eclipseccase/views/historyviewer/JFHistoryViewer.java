@@ -1,6 +1,8 @@
 package net.sourceforge.eclipseccase.views.historyviewer;
 
 
+import org.eclipse.ui.IWorkbenchPage;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -305,7 +307,9 @@ public class JFHistoryViewer extends ViewPart {
 
 	private void compare() {
 		if (viewer.getTable().getSelectionCount() == 1 || viewer.getTable().getSelectionCount() == 2) {
-			CompareWithVersionAction action = new CompareWithVersionAction();
+			//CompareWithVersionAction action = new CompareWithVersionAction();
+			//Send along the active page.
+			CompareWithVersionAction action = new CompareWithVersionAction(getSite().getPage());
 			action.setResource(element);
 			if (viewer.getTable().getSelectionCount() == 1) {
 				action.setVersionB(viewer.getTable().getSelection()[0].getText(2));

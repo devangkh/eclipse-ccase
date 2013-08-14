@@ -1,6 +1,14 @@
 package net.sourceforge.eclipseccase.ui.actions;
 
 
+import org.eclipse.ui.PlatformUI;
+
+import org.eclipse.ui.IWorkbenchWindow;
+
+import org.eclipse.ui.IWorkbench;
+
+import org.eclipse.ui.IWorkbenchPage;
+
 import net.sourceforge.eclipseccase.ClearCaseProvider;
 import net.sourceforge.eclipseccase.ui.operation.CompareResourcesOperation;
 import org.eclipse.core.resources.IResource;
@@ -39,7 +47,15 @@ public class CompareWithPredecessorAction extends ClearCaseWorkspaceAction {
 		if (provider != null) {
 			String selectedVersion = provider.getVersion(resource);
 			String preVersion = provider.getPredecessorVersion(resource);
-			CompareResourcesOperation mainOp = new CompareResourcesOperation(resource, selectedVersion, preVersion, provider);
+			IWorkbenchPage page;
+			if(getWindow() == null){
+				IWorkbench wb = PlatformUI.getWorkbench();
+				   IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
+				   page = win.getActivePage();
+			}else{
+				page = getWindow().getActivePage();
+			}
+			CompareResourcesOperation mainOp = new CompareResourcesOperation(resource, selectedVersion, preVersion, provider,page);
 			mainOp.compare();
 
 		}
