@@ -1,5 +1,19 @@
 package net.sourceforge.eclipseccase.ui.wizards;
 
+import net.sourceforge.eclipseccase.CheckinIdenticalDialog;
+
+import org.eclipse.ui.PlatformUI;
+
+import org.eclipse.team.core.TeamException;
+
+import org.eclipse.ui.dialogs.ListSelectionDialog;
+
+import org.eclipse.jface.window.Window;
+
+import org.eclipse.jface.viewers.LabelProvider;
+
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+
 import org.eclipse.core.runtime.SubProgressMonitor;
 
 import java.util.Arrays;
@@ -64,7 +78,7 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 		this.provider = provider;
 	}
 	
-
+	
 	/**
 	 * Adding the page to the wizard.
 	 */
@@ -116,11 +130,29 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	}
 
 	/**
-	 * The worker method. It will gather resources that needs merge.
+	 * The worker method. It will check-in resources that has been modified and if there are resources that are identical we can 
+	 * optionally check-in these resources.
 	 */
 
 	private void doFinish(ClearCaseProvider provider, IResource[] resources, String comment,boolean isRecursive, IProgressMonitor monitor) throws CoreException {
 		int depth = isRecursive ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO;
+		checkinOperation(monitor, depth, "Checking in...", resources, comment);
+		
+		//We have identical resources that could be checked-in and we we don't just check them in.
+		if(identical.length > 0 && !ClearCasePreferences.isCheckinIdenticalAllowed()){
+			//Show a dialog saying that you have identical resources that are still checked out. Do you want to checkin these.
+					CheckinIdenticalDialog dialog = new CheckinIdenticalDialog(identical);
+					PlatformUI.getWorkbench().getDisplay().syncExec(dialog);
+					
+					IResource[] identicalSelectedForCheckin = (IResource [])dialog.getResult();
+					checkinOperation(monitor, depth, "Checking in identical resources ...", identicalSelectedForCheckin, comment);
+		}
+		
+		
+	}
+	
+	private void checkinOperation(IProgressMonitor monitor,int depth,String checkinMsg,IResource [] resources, String comment) throws TeamException {
+		try{
 		monitor.beginTask("Checking in...", resources.length);
 		ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
 		Arrays.sort(resources, new DirectoryLastComparator());
@@ -132,7 +164,9 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 				provider.checkin(new IResource[] { resource }, depth, new SubProgressMonitor(monitor, 1 * SCALE));
 			}
 		}
-
+		}finally {
+			monitor.done();
+		}
 	}
 
 	/**

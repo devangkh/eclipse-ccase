@@ -99,7 +99,7 @@ public class HijackAction extends ClearCaseWorkspaceAction {
 			ClearCaseProvider provider = ClearCaseProvider.getClearCaseProvider(resource);
 			if (provider == null || provider.isUnknownState(resource) || provider.isIgnored(resource) || !provider.isClearCaseElement(resource))
 				return false;
-			if (!provider.isHijacked(resource))
+			if (provider.isHijacked(resource))
 				return false;
 		}
 		return true;
