@@ -13,9 +13,13 @@ Feature:
 
 Bugs:
 
-#366 Better fault message
-#359 eclipse UI frozen after changing config spec
-#360 Unable to hijack files (Eclipse 4.1) 
+366 Better fault message
+359 eclipse UI frozen after changing config spec
+360 Unable to hijack files (Eclipse 4.1) 
+
+Reverted:
+
+365 An internal error occurred during: "Refreshing ClearCase Resource States". 
 
 2.2.33
 =====
