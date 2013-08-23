@@ -100,7 +100,7 @@
 			<action
 				class="net.sourceforge.eclipseccase.ui.actions.AddToClearCaseAction"
 				icon="icons/full/add.png" id="net.sourceforge.eclipseccase.popups.add"
-				label="Add" menubarPath="team.main/group1">
+				label="Add&#8230;" menubarPath="team.main/group1">
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.RefreshStateAction"
 				icon="icons/full/refresh_state.png" id="net.sourceforge.eclipseccase.popups.refresh"
@@ -120,7 +120,7 @@
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.CheckInAction"
 				icon="icons/full/checkin.png" id="net.sourceforge.eclipseccase.popups.checkin"
-				label="Checkin" menubarPath="team.main/group1">
+				label="Checkin&#8230;" menubarPath="team.main/group1">
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.CheckOutAction"
 				icon="icons/full/checkout.png" id="net.sourceforge.eclipseccase.popups.checkout"
@@ -165,7 +165,7 @@
 			<action
                 class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
                 icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.compareview2"
-                label="View" menubarPath="compareWithMenu/compareWithGroup">
+                label="View&#8230;" menubarPath="compareWithMenu/compareWithGroup">
             </action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.HistoryAction"
 				icon="icons/full/history.png" id="net.sourceforge.eclipseccase.popups.history"
@@ -193,7 +193,7 @@
 			<action
                 class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
                 icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.compareview"
-                label="Compare with View" menubarPath="team.main/group2">
+                label="Compare with View&#8230;" menubarPath="team.main/group2">
             </action>
 			<!-- mike 20100903 In popupMenus it does not follow the same concept as actionSet. As a workaround
 			     I will put the menus under Team and group2. Not nice but it works.
@@ -218,7 +218,7 @@
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.HistoryAction"
 				icon="icons/full/history.png" id="net.sourceforge.eclipseccase.popups.history"
-				label="&amp;ClearCase History" menubarPath="compareWithMenu/compareWithGroup">
+				label="&amp;ClearCase History&#8230;" menubarPath="compareWithMenu/compareWithGroup">
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.VersionTreeAction"
 				icon="icons/full/tree.png" id="net.sourceforge.eclipseccase.popups.versiontree"
@@ -303,7 +303,7 @@
 			<action
 				class="net.sourceforge.eclipseccase.ui.actions.AddToClearCaseAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.add" icon="icons/full/add.png"
-				id="net.sourceforge.eclipseccase.ui.actionset.add" label="&amp;Add"
+				id="net.sourceforge.eclipseccase.ui.actionset.add" label="&amp;Add&#8230;"
 				menubarPath="eclipseccase_menu/group1">
 				<enablement>
 					<pluginState value="activated" id="net.sourceforge.eclipseccase">
@@ -501,7 +501,7 @@
                 definitionId="net.sourceforge.eclipseccase.ui.actionset.compareview"
                 icon="icons/full/diff.png"
                 id="net.sourceforge.eclipseccase.ui.actionset.compareview"
-                label="Co&amp;mpare with View"
+                label="Co&amp;mpare with View&#8230;"
                 menubarPath="eclipseccase_menu/group2"
                 style="push"
                 toolbarPath="Normal/additions"
@@ -524,7 +524,7 @@
 			<action class="net.sourceforge.eclipseccase.ui.actions.CheckInAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.checkin"
 				icon="icons/full/checkin.png" id="net.sourceforge.eclipseccase.ui.actionset.checkin"
-				label="Check&amp;in" menubarPath="eclipseccase_menu/group1"
+				label="Check&amp;in&#8230;" menubarPath="eclipseccase_menu/group1"
 				toolbarPath="Normal/additions" tooltip="Checkin File/Directory">
 				<enablement>
 					<pluginState value="activated" id="net.sourceforge.eclipseccase">

@@ -9,6 +9,7 @@ Feature:
 
 125 	Compare with other View ( unix only).
 122 Uncheckout unmodified files when checking in 
+124 Follow ui guidelines regarding ellipses in context menu item labels 
 
 Bugs:
 
