@@ -82,19 +82,6 @@ public class CheckInAction extends ClearCaseWorkspaceAction {
 					};
 					executeInBackground(runnable, "Checking in ClearCase resources");
 				} else {
-
-					// ClearCaseProvider provider = new ClearCaseProvider();
-					// CheckinWizard wizard = new CheckinWizard(resources,
-					// provider);
-					// CheckinWizard wizard = new
-					// CheckinWizard(modified,identical,provider);
-					// CheckinWizard wizard = new
-					// CheckinWizard(resources.toArray(new
-					// IResource[resources.size()]), identical, provider)
-					// WizardDialog dialog = new WizardDialog(getShell(),
-					// wizard);
-					// dialog.open();
-					// We have identical resources
 					CheckinWizard	wizard = new CheckinWizard(modified.toArray(new IResource[modified.size()]), identical.toArray(new IResource[identical.size()]), provider);
 					WizardDialog dialog = new WizardDialog(getShell(), wizard);
 					dialog.open();

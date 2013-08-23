@@ -1,46 +1,18 @@
 package net.sourceforge.eclipseccase.ui.wizards;
 
-import net.sourceforge.eclipseccase.CheckinIdenticalDialog;
-
-import org.eclipse.ui.PlatformUI;
-
-import org.eclipse.team.core.TeamException;
-
-import org.eclipse.ui.dialogs.ListSelectionDialog;
-
-import org.eclipse.jface.window.Window;
-
-import org.eclipse.jface.viewers.LabelProvider;
-
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
-
-import org.eclipse.core.runtime.SubProgressMonitor;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import net.sourceforge.eclipseccase.ClearCasePreferences;
-import net.sourceforge.eclipseccase.ClearDlgHelper;
+import net.sourceforge.eclipseccase.*;
+import net.sourceforge.eclipseccase.ui.ClearCaseUI;
 import net.sourceforge.eclipseccase.ui.DirectoryLastComparator;
 import net.sourceforge.eclipseccase.ui.console.ConsoleOperationListener;
 import org.eclipse.core.resources.IResource;
-
-import net.sourceforge.eclipseccase.ClearCaseProvider;
-
-import net.sourceforge.eclipseccase.ui.ClearCaseUI;
-
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
-import org.eclipse.jface.operation.*;
-import java.lang.reflect.InvocationTargetException;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.CoreException;
-import java.io.*;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.team.core.TeamException;
 import org.eclipse.ui.*;
-import org.eclipse.ui.ide.IDE;
 
 /**
  * This is a sample new wizard. Its role is to create a new file resource in the
@@ -56,9 +28,9 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	private CheckinWizardPage page;
 
 	private IResource[] resources;
-	
+
 	private IResource[] identical;
-	
+
 	private IStructuredSelection selection;
 
 	private ClearCaseProvider provider;
@@ -70,19 +42,19 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	/**
 	 * Constructor for CheckinWizard.
 	 */
-	public CheckinWizard(IResource[] resources, IResource [] identical, ClearCaseProvider provider) {
+	public CheckinWizard(IResource[] resources, IResource[] identical, ClearCaseProvider provider) {
 		super(CHECKIN_WIZARD_DIALOG_SETTINGS, ClearCaseUI.getInstance().getDialogSettings());
 		setNeedsProgressMonitor(true);
 		this.resources = resources;
 		this.identical = identical;
 		this.provider = provider;
 	}
-	
-	
+
 	/**
 	 * Adding the page to the wizard.
 	 */
 
+	@Override
 	public void addPages() {
 		page = new CheckinWizardPage("Select Source", resources, provider);
 		addPage(page);
@@ -92,6 +64,7 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	 * This method is called when 'Finish' button is pressed in the wizard. We
 	 * will create an operation and run it using wizard as execution context.
 	 */
+	@Override
 	public boolean performFinish() {
 		final String comment = page.getComment();
 		final IResource[] selectedResources = page.getResourceList();
@@ -107,7 +80,7 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 					 * The method (see below) which contains the "real"
 					 * implementation code.
 					 */
-					doFinish(provider, selectedResources,comment, recursive, monitor);
+					doFinish(provider, selectedResources, comment, recursive, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -130,41 +103,43 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	}
 
 	/**
-	 * The worker method. It will check-in resources that has been modified and if there are resources that are identical we can 
-	 * optionally check-in these resources.
+	 * The worker method. It will check-in resources that has been modified and
+	 * if there are resources that are identical we can optionally check-in
+	 * these resources.
 	 */
 
-	private void doFinish(ClearCaseProvider provider, IResource[] resources, String comment,boolean isRecursive, IProgressMonitor monitor) throws CoreException {
+	private void doFinish(ClearCaseProvider provider, IResource[] resources, String comment, boolean isRecursive, IProgressMonitor monitor) throws CoreException {
 		int depth = isRecursive ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO;
 		checkinOperation(monitor, depth, "Checking in...", resources, comment);
-		
-		//We have identical resources that could be checked-in and we we don't just check them in.
-		if(identical.length > 0 && !ClearCasePreferences.isCheckinIdenticalAllowed()){
-			//Show a dialog saying that you have identical resources that are still checked out. Do you want to checkin these.
-					CheckinIdenticalDialog dialog = new CheckinIdenticalDialog(identical);
-					PlatformUI.getWorkbench().getDisplay().syncExec(dialog);
-					
-					IResource[] identicalSelectedForCheckin = (IResource [])dialog.getResult();
-					checkinOperation(monitor, depth, "Checking in identical resources ...", identicalSelectedForCheckin, comment);
+
+		// We have identical resources that could be checked-in and we we don't
+		// just check them in.
+		if (identical.length > 0 && !ClearCasePreferences.isCheckinIdenticalAllowed()) {
+			// Show a dialog saying that you have identical resources that are
+			// still checked out. Do you want to checkin these.
+			CheckinIdenticalDialog dialog = new CheckinIdenticalDialog(identical);
+			PlatformUI.getWorkbench().getDisplay().syncExec(dialog);
+
+			IResource[] identicalSelectedForCheckin = dialog.getResult();
+			checkinOperation(monitor, depth, "Checking in identical resources ...", identicalSelectedForCheckin, comment);
 		}
-		
-		
+
 	}
-	
-	private void checkinOperation(IProgressMonitor monitor,int depth,String checkinMsg,IResource [] resources, String comment) throws TeamException {
-		try{
-		monitor.beginTask("Checking in...", resources.length);
-		ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
-		Arrays.sort(resources, new DirectoryLastComparator());
-		for (int i = 0; i < resources.length; i++) {
-			IResource resource = resources[i];
-			if (provider != null) {
-				provider.setComment(comment);
-				provider.setOperationListener(opListener);
-				provider.checkin(new IResource[] { resource }, depth, new SubProgressMonitor(monitor, 1 * SCALE));
+
+	private void checkinOperation(IProgressMonitor monitor, int depth, String checkinMsg, IResource[] resources, String comment) throws TeamException {
+		try {
+			monitor.beginTask("Checking in...", resources.length);
+			ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
+			Arrays.sort(resources, new DirectoryLastComparator());
+			for (int i = 0; i < resources.length; i++) {
+				IResource resource = resources[i];
+				if (provider != null) {
+					provider.setComment(comment);
+					provider.setOperationListener(opListener);
+					provider.checkin(new IResource[] { resource }, depth, new SubProgressMonitor(monitor, 1 * SCALE));
+				}
 			}
-		}
-		}finally {
+		} finally {
 			monitor.done();
 		}
 	}
