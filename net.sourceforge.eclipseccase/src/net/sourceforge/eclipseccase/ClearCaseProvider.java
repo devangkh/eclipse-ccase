@@ -2586,6 +2586,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		return result;
 	}
 	
+
 	/**
 	 * Retrieves the view name containing user name. Notice that it will also handle the selected
 	 * view ( that has a '*' at the beginning of the line.
@@ -2622,6 +2623,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 		args.put(Integer.valueOf(ClearCase.EXEC), "exit");
 		ClearCasePlugin.getEngine().setView(ClearCase.EXEC, args, viewTag);
 		
+	}
+	public boolean isDifferent(String element){
+		return ClearCasePlugin.getEngine().isDifferent(element);
 	}
 
 }
