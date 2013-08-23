@@ -17,7 +17,7 @@ public class CheckinIdenticalDialog implements Runnable {
 		this.identical = resource;
 	}
 
-	@Override
+	
 	public void run() {
 		ElementListSelectionDialog dialog = 
 				  new ElementListSelectionDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new LabelProvider());
