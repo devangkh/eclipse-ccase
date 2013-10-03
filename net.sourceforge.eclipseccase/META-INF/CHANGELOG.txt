@@ -2,6 +2,14 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.45
+=====
+
+Bugs:
+
+368 NPE on Eclipse shutdown due to null element in state cache 
+
+
 2.2.34
 =====
 
