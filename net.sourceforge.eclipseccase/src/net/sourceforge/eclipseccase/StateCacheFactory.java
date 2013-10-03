@@ -466,10 +466,16 @@ public class StateCacheFactory implements ISaveParticipant,
 		// create XML writer
 		XMLWriter writer = new XMLWriter(os);
 		Set<IResource> knownResource = cacheMap.keySet();
-
+		 List<IResource> nonNull = new ArrayList<IResource>();
+		//Make sure we don't have any null values in sorting.
+		for (IResource iResource : knownResource) {
+			if(iResource != null ){
+				nonNull.add(iResource);
+			}
+		}
 		// get and sort resources
-		IResource[] resources = knownResource
-				.toArray(new IResource[knownResource.size()]);
+		IResource[] resources = nonNull
+				.toArray(new IResource[nonNull.size()]);
 		Arrays.sort(resources, new Comparator<Object>() {
 
 			public int compare(Object o1, Object o2) {
