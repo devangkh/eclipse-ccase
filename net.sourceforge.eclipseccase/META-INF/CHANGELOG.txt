@@ -2,13 +2,13 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
-2.2.45
+2.2.35
 =====
 
 Bugs:
 
 368 NPE on Eclipse shutdown due to null element in state cache 
-
+370 NPE from ccase plugin 
 
 2.2.34
 =====
