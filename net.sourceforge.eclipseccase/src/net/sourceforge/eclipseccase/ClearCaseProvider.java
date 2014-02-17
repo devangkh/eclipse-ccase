@@ -14,7 +14,14 @@ package net.sourceforge.eclipseccase;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +32,25 @@ import net.sourceforge.clearcase.ClearCaseInterface;
 import net.sourceforge.clearcase.MergeData;
 import net.sourceforge.clearcase.events.OperationListener;
 import net.sourceforge.clearcase.utils.Os;
-import net.sourceforge.eclipseccase.ClearCasePreferences;
 
-import org.eclipse.core.resources.*;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.team.FileModificationValidator;
 import org.eclipse.core.resources.team.IMoveDeleteHook;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.team.core.Team;
 import org.eclipse.team.core.TeamException;
@@ -121,8 +141,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 * @param monitor
 	 */
 	protected static void checkCanceled(IProgressMonitor monitor) {
-		if (null != monitor && monitor.isCanceled())
+		if ((null != monitor) && monitor.isCanceled()) {
 			throw new OperationCanceledException();
+		}
 	}
 
 	/*
@@ -155,18 +176,21 @@ public class ClearCaseProvider extends RepositoryProvider {
 	}
 
 	public static ClearCaseProvider getClearCaseProvider(IResource resource) {
-		if (null == resource)
+		if (null == resource) {
 			return null;
+		}
 		IProject project = resource.getProject();
-		if (null == project)
+		if (null == project) {
 			return null;
+		}
 		RepositoryProvider provider = RepositoryProvider.getProvider(project);
 		if (provider instanceof ClearCaseProvider) {
 			// FIXME Achim: Whats this next line for?
 			((ClearCaseProvider) provider).opListener = null;
 			return (ClearCaseProvider) provider;
-		} else
+		} else {
 			return null;
+		}
 	}
 
 	/*
@@ -539,7 +563,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				ClearCase.FORMAT, args, new String[] { element });
 		// if no checkouts findCheckouts returns null.
 
-		if (output != null && output.length > 0) {
+		if ((output != null) && (output.length > 0)) {
 			// Check if line ends with these keywords.
 			Pattern pattern = Pattern.compile(".*View:\\s(.*)\\sStatus:.*");
 			String[] safeOutput = new String[output.length];
@@ -556,8 +580,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 			// we have file checked-out in other view.
 
-			for (int i = 0; i < safeOutput.length; i++) {
-				String line = safeOutput[i];
+			for (String line : safeOutput) {
 				Matcher matcher = pattern.matcher(line);
 				if (matcher.find()) {
 					// Adding information to user.Filter out current view.
@@ -576,8 +599,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 	}
 
 	public static String getViewName(IResource resource) {
-		if (resource == null || resource.getProject() == null)
+		if ((resource == null) || (resource.getProject() == null)) {
 			return "";
+		}
 		// assume that a complete project is inside one view
 		String path;
 		try {
@@ -586,7 +610,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 			return "";
 		}
 		String res = Views.getViewLookupTable().get(path);
-		if (res == null || res.length() == 0) {
+		if ((res == null) || (res.length() == 0)) {
 			// use the originally given resource for the cleartool query
 			if (!(resource instanceof IContainer)) {
 				resource = resource.getParent();
@@ -686,12 +710,14 @@ public class ClearCaseProvider extends RepositoryProvider {
 		if (viewLocation.isPrefixOf(resourceLocation)) {
 			IPath vobLocation = resourceLocation
 					.removeFirstSegments(viewLocation.segmentCount());
-			if (!ClearCasePlugin.isWindows() && vobLocation.segmentCount() > 0) {
+			if (!ClearCasePlugin.isWindows()
+					&& (vobLocation.segmentCount() > 0)) {
 				// on unix vobs are prefixed with directory named "/vobs"
 				vobLocation = vobLocation.removeFirstSegments(1);
 			}
-			if (vobLocation.segmentCount() > 0)
+			if (vobLocation.segmentCount() > 0) {
 				return vobLocation.segment(0);
+			}
 		}
 		return "none";
 	}
@@ -713,13 +739,15 @@ public class ClearCaseProvider extends RepositoryProvider {
 		if (viewLocation.isPrefixOf(resourceLocation)) {
 			IPath vobLocation = resourceLocation
 					.removeFirstSegments(viewLocation.segmentCount());
-			if (!ClearCasePlugin.isWindows() && vobLocation.segmentCount() > 0) {
+			if (!ClearCasePlugin.isWindows()
+					&& (vobLocation.segmentCount() > 0)) {
 				// on unix vobs are prefixed with directory named "/vobs"
 				vobLocation = vobLocation.removeFirstSegments(1);
 			}
-			if (vobLocation.segmentCount() > 0)
+			if (vobLocation.segmentCount() > 0) {
 				return vobLocation.removeFirstSegments(1).makeRelative()
 						.toString();
+			}
 		}
 		return null;
 	}
@@ -832,10 +860,10 @@ public class ClearCaseProvider extends RepositoryProvider {
 		String[] output = ClearCasePlugin.getEngine().getActivity(
 				ClearCase.SHORT | ClearCase.CACT, null);
 
-		if (output == null | output.length == 0) {
+		if ((output == null) | (output.length == 0)) {
 			return result;
 		}
-		if (output[0] != null && output[0].length() > 0) {
+		if ((output[0] != null) && (output[0].length() > 0)) {
 			return output[0];
 		}
 		return result;
@@ -859,7 +887,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		String result = "";
 		String[] output = ClearCasePlugin.getEngine().getStream(
 				ClearCase.SHORT, null);
-		if (output != null && output.length > 0) {
+		if ((output != null) && (output.length > 0)) {
 			result = output[0];
 
 		}
@@ -896,7 +924,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		String[] output = ClearCasePlugin.getEngine().getStream(
 				ClearCase.FORMAT | ClearCase.VIEW, args);
 
-		if (output != null && output.length == 1) {
+		if ((output != null) && (output.length == 1)) {
 			result = output[0].split(", ");
 		}
 
@@ -926,7 +954,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 			monitor.beginTask("Moving " + source.getFullPath() + " to "
 					+ destination.getFullPath(), 100);
 			// Sanity check - can't move something that is not part of clearcase
-			if (!isClearCaseElement(source))
+			if (!isClearCaseElement(source)) {
 				return new Status(
 						IStatus.ERROR,
 						ID,
@@ -935,6 +963,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 								.format("Resource \"{0}\" is not under source control!",
 										new Object[] { source.getFullPath()
 												.toString() }), null);
+			}
 
 			IStatus result = OK_STATUS;
 			ClearCaseElementState[] state = null;
@@ -980,11 +1009,12 @@ public class ClearCaseProvider extends RepositoryProvider {
 			updateState(destination, IResource.DEPTH_INFINITE,
 					new SubProgressMonitor(monitor, 10));
 
-			if (!state[0].isMoved())
+			if (!state[0].isMoved()) {
 				return new Status(IStatus.ERROR, ID, TeamException.UNABLE,
 						"Could not move element: "
 						// + ccStatus.message
 						, null);
+			}
 			return result;
 		} finally {
 			setComment("");
@@ -1001,7 +1031,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 			// IProject's parent is the workspace directory, we want the
 			// filesystem
 			// parent if the workspace is not itself in clearcase
-			boolean flag = resource instanceof IProject
+			boolean flag = (resource instanceof IProject)
 					&& !isClearCaseElement(resource.getParent());
 			if (flag) {
 				parent = resource.getLocation().toFile().getParent().toString();
@@ -1143,7 +1173,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				}
 				// check if a symbolic link target is also in our workspace
 				if (cache.isSymbolicLink()
-						&& null != cache.getSymbolicLinkTarget()) {
+						&& (null != cache.getSymbolicLinkTarget())) {
 					File target = new File(cache.getSymbolicLinkTarget());
 					if (!target.isAbsolute()) {
 						target = null != cache.getPath() ? new File(
@@ -1153,7 +1183,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 									cache.getSymbolicLinkTarget());
 						}
 					}
-					if (null != target && target.exists()) {
+					if ((null != target) && target.exists()) {
 						IPath targetLocation = new Path(
 								target.getAbsolutePath());
 						IResource[] resources = null;
@@ -1167,8 +1197,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 									.findFilesForLocation(targetLocation);
 						}
 						if (null != resources) {
-							for (int i = 0; i < resources.length; i++) {
-								IResource foundResource = resources[i];
+							for (IResource foundResource : resources) {
 								ClearCaseProvider provider = ClearCaseProvider
 										.getClearCaseProvider(foundResource);
 								if (null != provider) {
@@ -1202,7 +1231,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 						"Adding " + resource.getFullPath().toString(), 100);
 				IStatus result = OK_STATUS;
 				// Sanity check - can't add something that already is under VC
-				if (isClearCaseElement(resource))
+				if (isClearCaseElement(resource)) {
 					// return status with severity OK
 					return new Status(
 							IStatus.OK,
@@ -1213,6 +1242,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				result = findPrivateElements(resource, monitor);
 
 				if (result.isOK()) {
@@ -1248,7 +1278,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 				// Add check recursive checkin of files.
 				if (ClearCasePreferences.isAddWithCheckin()
-						&& result == OK_STATUS) {
+						&& (result == OK_STATUS)) {
 					try {
 						for (Object element : privateElement) {
 							IResource res = (IResource) element;
@@ -1326,7 +1356,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 				}
 
-			} else if (resource instanceof IProject
+			} else if ((resource instanceof IProject)
 					&& !(isClearCaseElement(resource))) {
 				// We reached project top and it is not a cc element.
 				result = new Status(IStatus.ERROR, ID, TeamException.UNABLE,
@@ -1468,8 +1498,8 @@ public class ClearCaseProvider extends RepositoryProvider {
 				final StateCache targetElement = getFinalTargetElement(cache);
 				// Sanity check - can't process something that is not part of
 				// clearcase
-				if (targetElement == null
-						|| !targetElement.isClearCaseElement())
+				if ((targetElement == null)
+						|| !targetElement.isClearCaseElement()) {
 					return new Status(
 							IStatus.WARNING,
 							ID,
@@ -1479,9 +1509,10 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				// Sanity check - can't uncheckout something that is not checked
 				// out
-				if (!targetElement.isCheckedOut())
+				if (!targetElement.isCheckedOut()) {
 					// return severity OK
 					return new Status(IStatus.OK, ID,
 							TeamException.NOT_CHECKED_OUT,
@@ -1489,6 +1520,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 									"Resource \"{0}\" is not checked out!",
 									new Object[] { targetElement.getPath() }),
 							null);
+				}
 				IStatus result = OK_STATUS;
 
 				// Yes continue checking out.
@@ -1524,7 +1556,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				monitor.beginTask("Deleting " + resource.getFullPath(), 100);
 				// Sanity check - can't delete something that is not part of
 				// clearcase
-				if (!isClearCaseElement(resource))
+				if (!isClearCaseElement(resource)) {
 					return new Status(
 							IStatus.ERROR,
 							ID,
@@ -1534,6 +1566,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				IStatus result = checkoutParent(resource,
 						new SubProgressMonitor(monitor, 10));
 				if (result.isOK()) {
@@ -1570,8 +1603,8 @@ public class ClearCaseProvider extends RepositoryProvider {
 				IStatus result = OK_STATUS;
 				// Sanity check - can't check in something that is not part of
 				// clearcase
-				if (targetElement == null
-						|| !targetElement.isClearCaseElement())
+				if ((targetElement == null)
+						|| !targetElement.isClearCaseElement()) {
 					return new Status(
 							IStatus.WARNING,
 							ID,
@@ -1581,9 +1614,10 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				// Sanity check - can't checkin something that is not checked
 				// out
-				if (!targetElement.isCheckedOut())
+				if (!targetElement.isCheckedOut()) {
 					// return status with severity OK
 					return new Status(IStatus.OK, ID,
 							TeamException.NOT_CHECKED_OUT,
@@ -1591,6 +1625,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 									"Resource \"{0}\" is not checked out!",
 									new Object[] { targetElement.getPath() }),
 							null);
+				}
 
 				if (ClearCasePreferences.isCheckinIdenticalAllowed()) {
 					ClearCasePlugin.getEngine().checkin(
@@ -1668,8 +1703,8 @@ public class ClearCaseProvider extends RepositoryProvider {
 				final StateCache targetElement = getFinalTargetElement(cache);
 				// Sanity check - can't checkout something that is not part of
 				// clearcase
-				if (targetElement == null
-						|| !targetElement.isClearCaseElement())
+				if ((targetElement == null)
+						|| !targetElement.isClearCaseElement()) {
 					return new Status(
 							IStatus.WARNING,
 							ID,
@@ -1679,16 +1714,18 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 
 				// Sanity check - can't checkout something that is already
 				// checked out
-				if (targetElement.isCheckedOut())
+				if (targetElement.isCheckedOut()) {
 					// return status with severity OK
 					return new Status(IStatus.OK, ID,
 							TeamException.NOT_CHECKED_IN, MessageFormat.format(
 									"Resource \"{0}\" is already checked out!",
 									new Object[] { targetElement.getPath() }),
 							null);
+				}
 
 				IStatus result = OK_STATUS;
 
@@ -1696,7 +1733,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				if (ClearCasePreferences.isCheckoutLatest()
 						&& targetElement.isSnapShot()) {
 					monitor.subTask("Updating " + targetElement.getPath());
-					update(resource.getFullPath().toOSString(), 0, false);
+					update(targetElement.getPath(), 0, false);
 
 				}
 				monitor.worked(20);
@@ -1797,7 +1834,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 				// Sanity check - can't checkout something that is not part of
 				// clearcase
-				if (!isHijacked(resource))
+				if (!isHijacked(resource)) {
 					return new Status(
 							IStatus.WARNING,
 							ID,
@@ -1807,6 +1844,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 
 				IStatus result = OK_STATUS;
 
@@ -1861,7 +1899,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 				// Sanity check - can't update something that is not part of
 				// clearcase
-				if (!isClearCaseElement(resource))
+				if (!isClearCaseElement(resource)) {
 					return new Status(
 							IStatus.ERROR,
 							ID,
@@ -1871,6 +1909,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				IStatus result = OK_STATUS;
 				String element = resource.getLocation().toOSString();
 				ClearCasePlugin.getEngine().update(element, 0, false);
@@ -1896,7 +1935,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 				// Sanity check - can't update something that is not part of
 				// clearcase
-				if (!isClearCaseElement(resource))
+				if (!isClearCaseElement(resource)) {
 					return new Status(
 							IStatus.ERROR,
 							ID,
@@ -1906,6 +1945,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				IStatus result = OK_STATUS;
 				String element = resource.getLocation().toOSString();
 				ClearCasePlugin.getEngine().unreserved(
@@ -1932,7 +1972,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 				// Sanity check - can't update something that is not part of
 				// clearcase
-				if (!isClearCaseElement(resource))
+				if (!isClearCaseElement(resource)) {
 					return new Status(
 							IStatus.ERROR,
 							ID,
@@ -1942,6 +1982,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 											new Object[] { resource
 													.getFullPath().toString() }),
 							null);
+				}
 				IStatus result = OK_STATUS;
 				String element = resource.getLocation().toOSString();
 				ClearCasePlugin.getEngine().reserved(new String[] { element },
@@ -1994,7 +2035,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		// For each resource in the local resources array until we have errors.
 		try {
 			progress.beginTask("Processing", 1000 * resources.length);
-			for (int i = 0; i < resources.length
+			for (int i = 0; (i < resources.length)
 					&& !multiStatus.matches(IStatus.ERROR); i++) {
 				progress.subTask(resources[i].getFullPath().toString());
 				if (!isIgnored(resources[i])) {
@@ -2021,7 +2062,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				StringBuffer errorMsg = new StringBuffer();
 				IStatus[] status = multiStatus.getChildren();
 
-				if (status.length != 0 && status != null) {
+				if ((status.length != 0) && (status != null)) {
 					for (IStatus iStatus : status) {
 						String error = iStatus.getMessage() + "\n";
 						errorMsg.append(error);
@@ -2060,24 +2101,29 @@ public class ClearCaseProvider extends RepositoryProvider {
 			IStatus status = operation.visit(resource, new SubProgressMonitor(
 					progress, 200));
 			// If the resource is a file then the depth parameter is irrelevant.
-			if (resource.getType() == IResource.FILE)
+			if (resource.getType() == IResource.FILE) {
 				return status;
+			}
 			// If we are not considering any members of the container then we
 			// are done.
-			if (depth == IResource.DEPTH_ZERO)
+			if (depth == IResource.DEPTH_ZERO) {
 				return status;
+			}
 			// If the operation was unsuccessful, do not attempt to go deep.
-			if (status.matches(IStatus.ERROR)) // if (!status.isOK())
+			if (status.matches(IStatus.ERROR)) {
 				return status;
+			}
 
 			// if operation was cancaled, do not go deep
-			if (CANCEL_STATUS == status)
+			if (CANCEL_STATUS == status) {
 				return OK_STATUS;
+			}
 
 			// If the container has no children then we are done.
 			IResource[] members = getMembers(resource);
-			if (members.length == 0)
+			if (members.length == 0) {
 				return status;
+			}
 			// There are children and we are going deep, the response will be a
 			// multi-status.
 			MultiStatus multiStatus = new MultiStatus(status.getPlugin(),
@@ -2089,7 +2135,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 			// Collect the responses in the multistatus (use merge to flatten
 			// the tree).
 			int ticks = 800 / members.length;
-			for (int i = 0; i < members.length
+			for (int i = 0; (i < members.length)
 					&& !multiStatus.matches(IStatus.ERROR); i++) {
 				progress.subTask(members[i].getFullPath().toString());
 				if (!isIgnored(members[i])) {
@@ -2127,8 +2173,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 				throw new RuntimeException();
 			}
 		} // end-if
-		else
+		else {
 			return new IResource[0];
+		}
 	}
 
 	/**
@@ -2154,7 +2201,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		String list_csv = ClearCasePreferences.isPreventCheckOut().trim()
 				.replaceAll(" ", "");
 		String[] preventCoElements = null;
-		if (list_csv != null && list_csv.length() > 0) {
+		if ((list_csv != null) && (list_csv.length() > 0)) {
 			if (!list_csv.endsWith(",")) {
 				preventCoElements = list_csv.split(",");
 			} else {
@@ -2191,13 +2238,15 @@ public class ClearCaseProvider extends RepositoryProvider {
 		// }
 
 		// never ignore handled resources
-		if (isClearCaseElement(resource))
+		if (isClearCaseElement(resource)) {
 			return false;
+		}
 
 		// never ignore workspace root
 		IResource parent = resource.getParent();
-		if (null == parent)
+		if (null == parent) {
 			return false;
+		}
 
 		// check the global ignores from Team (includes derived resources)
 		if (Team.isIgnoredHint(resource)) {
@@ -2209,8 +2258,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 
 		// never ignore uninitialized resources
-		if (isUnknownState(resource))
+		if (isUnknownState(resource)) {
 			return false;
+		}
 
 		// ignore resources outside view
 		if (!isInsideView(resource)) {
@@ -2222,8 +2272,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 
 		// bug 904248: do not ignore if parent is a linked resource
-		if (parent.isLinked())
+		if (parent.isLinked()) {
 			return false;
+		}
 
 		// check the parent, if the parent is ignored
 		// then this resource is ignored also
@@ -2281,7 +2332,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		 * todo: we need a better check for the view root; this only supports
 		 * structures where a project is the view directory containing the vobs
 		 */
-		return null != resource && resource.getType() == IResource.PROJECT
+		return (null != resource) && (resource.getType() == IResource.PROJECT)
 				&& !isClearCaseElement(resource);
 	}
 
@@ -2363,12 +2414,13 @@ public class ClearCaseProvider extends RepositoryProvider {
 			} else {
 				return ClearCase.RESERVED;
 			}
-		} else if (ClearCasePreferences.isReservedCheckoutsAlways())
+		} else if (ClearCasePreferences.isReservedCheckoutsAlways()) {
 			return ClearCase.RESERVED;
-		else if (ClearCasePreferences.isReservedCheckoutsIfPossible())
+		} else if (ClearCasePreferences.isReservedCheckoutsIfPossible()) {
 			return ClearCase.RESERVED_IF_POSSIBLE;
-		else
+		} else {
 			return ClearCase.UNRESERVED;
+		}
 	}
 
 	public void setOperationListener(OperationListener opListener) {
@@ -2389,8 +2441,9 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 */
 	@SuppressWarnings("deprecation")
 	public StateCache getFinalTargetElement(StateCache cache) {
-		if (!cache.isSymbolicLink() || null == cache.getSymbolicLinkTarget())
+		if (!cache.isSymbolicLink() || (null == cache.getSymbolicLinkTarget())) {
 			return cache;
+		}
 		File target = new File(cache.getSymbolicLinkTarget());
 		if (!target.isAbsolute()) {
 			target = null != cache.getPath() ? new File(cache.getPath())
@@ -2399,7 +2452,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				target = new File(target, cache.getSymbolicLinkTarget());
 			}
 		}
-		if (null != target && target.exists()) {
+		if ((null != target) && target.exists()) {
 			IPath targetLocation = new Path(target.getAbsolutePath());
 			IResource[] resources = null;
 			if (target.isDirectory()) {
@@ -2410,13 +2463,13 @@ public class ClearCaseProvider extends RepositoryProvider {
 						.findFilesForLocation(targetLocation);
 			}
 			if (null != resources) {
-				for (int i = 0; i < resources.length; i++) {
-					IResource foundResource = resources[i];
+				for (IResource foundResource : resources) {
 					ClearCaseProvider provider = ClearCaseProvider
 							.getClearCaseProvider(foundResource);
-					if (null != provider)
+					if (null != provider) {
 						return StateCacheFactory.getInstance().get(
 								foundResource);
+					}
 				}
 			}
 		}
@@ -2436,8 +2489,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 		boolean success = true;
 
-		for (int i = 0; i < files.length; i++) {
-			File fromFile = files[i];
+		for (File fromFile : files) {
 			File toFile = new File(toDir, fromFile.getName());
 			success = success && fromFile.renameTo(toFile);
 		}
@@ -2591,9 +2643,8 @@ public class ClearCaseProvider extends RepositoryProvider {
 		String username = System.getProperty("user.name");
 		Pattern p = Pattern.compile(username);
 
-		for (int i = 0; i < viewList.length; i++) {
+		for (String viewInfo : viewList) {
 
-			String viewInfo = viewList[i];
 			Matcher m = p.matcher(viewInfo);
 			if (m.find()) {
 				String viewName = null;
