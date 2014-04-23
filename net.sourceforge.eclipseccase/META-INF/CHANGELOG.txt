@@ -11,6 +11,7 @@ Bugs:
 370 NPE from ccase plugin 
 371 ClearCase History sort by date not working. 
 
+
 2.2.34
 =====
 
