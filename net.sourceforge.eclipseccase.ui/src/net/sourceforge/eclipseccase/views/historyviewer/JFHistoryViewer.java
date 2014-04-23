@@ -212,7 +212,7 @@ public class JFHistoryViewer extends ViewPart {
 			@Override
 			public String getText(Object element) {
 				ElementHistory p = (ElementHistory) element;
-				return p.getDate();
+				return p.getDate().toString();
 			}
 		});
 
