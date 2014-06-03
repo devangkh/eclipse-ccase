@@ -11,6 +11,7 @@ Bugs:
 370 NPE from ccase plugin
 380 Cancel View Private Files Task
 381 update to latest in snapshot view does not work 
+373 Wrong path for update command 
 
 2.2.34
 =====
