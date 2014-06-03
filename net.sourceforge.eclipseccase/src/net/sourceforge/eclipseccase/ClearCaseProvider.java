@@ -1701,7 +1701,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				if (ClearCasePreferences.isCheckoutLatest()
 						&& targetElement.isSnapShot()) {
 					monitor.subTask("Updating " + targetElement.getPath());
-					update(resource.getFullPath().toOSString(), 0, false);
+					update(resource.getFullPath().toOSString(), ClearCase.FORCE, true);
 
 				}
 				monitor.worked(20);

@@ -802,8 +802,6 @@ public class StateCacheFactory implements ISaveParticipant,
 	 * resource state, in particular it will not consider MARKER only deltas.
 	 */
 	static boolean isAffectedBy(IResourceDelta rootDelta) {
-		// if (rootDelta == null) System.out.println("NULL DELTA");
-		// long start = System.currentTimeMillis();
 		if (rootDelta != null) {
 			// use local exception to quickly escape from delta traversal
 			class FoundRelevantDeltaException extends RuntimeException {
@@ -834,14 +832,10 @@ public class StateCacheFactory implements ISaveParticipant,
 					}
 				});
 			} catch (FoundRelevantDeltaException e) {
-				// System.out.println("RELEVANT DELTA detected in: "+
-				// (System.currentTimeMillis() - start));
 				return true;
 			} catch (CoreException e) { // ignore delta if not able to traverse
 			}
 		}
-		// System.out.println("IGNORE MARKER DELTA took: "+
-		// (System.currentTimeMillis() - start));
 		return false;
 	}
 
