@@ -11,8 +11,20 @@ Prerequesites
 - jdk 1.5.0 (check plugin.xml)   
       
 ##################### Steps ####################
-
   
+  Use this as a model for working with branches in git.
+  
+  http://nvie.com/posts/a-successful-git-branching-model/
+  
+  From develop branch make a release branch:
+  
+  release-2.2.35
+  
+  (make sure you do it for both projects).
+  
+  Working is merged into develop branch and when that is stable we make a merge over to master.
+  
+  git 
 
 1. Make sure all plug-in and feature projects (clearcase,eclipseccase,eclipseccase.feature,eclipseccase.ui) have a new version in  META-INF/MANIFEST.MF.          
   
