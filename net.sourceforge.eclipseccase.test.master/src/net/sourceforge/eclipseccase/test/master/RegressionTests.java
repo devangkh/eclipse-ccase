@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({net.sourceforge.clearcase.tests.output.AllClearCaseTests.class,net.sourceforge.eclipseccase.test.AllEclipseccaseTests.class})
+@Suite.SuiteClasses({net.sourceforge.clearcase.tests.output.AllClearCaseTests.class})
 public class RegressionTests {
   //nothing
 }
