@@ -2,6 +2,17 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.35
+=====
+
+Bugs:
+
+368 NPE on Eclipse shutdown due to null element in state cache 
+370 NPE from ccase plugin
+380 Cancel View Private Files Task
+381 update to latest in snapshot view does not work 
+373 Wrong path for update command 
+
 2.2.34
 =====
 
@@ -13,9 +24,13 @@ Feature:
 
 Bugs:
 
-#366 Better fault message
-#359 eclipse UI frozen after changing config spec
-#360 Unable to hijack files (Eclipse 4.1) 
+366 Better fault message
+359 eclipse UI frozen after changing config spec
+360 Unable to hijack files (Eclipse 4.1) 
+
+Reverted:
+
+365 An internal error occurred during: "Refreshing ClearCase Resource States". 
 
 2.2.33
 =====

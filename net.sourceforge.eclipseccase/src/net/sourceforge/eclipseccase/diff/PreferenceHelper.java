@@ -55,8 +55,6 @@ public class PreferenceHelper {
 
 		StringBuffer sb = new StringBuffer();
 		for (Map.Entry<String, String> entry : map.entrySet()) {
-			// System.out.println("Key = " + entry.getKey() + ", Value = " +
-			// entry.getValue());
 			sb.append(entry.getKey());
 			sb.append(PATH_DELIMITER);
 			sb.append(entry.getValue());

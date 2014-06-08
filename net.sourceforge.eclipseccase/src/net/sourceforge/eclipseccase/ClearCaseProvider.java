@@ -1349,10 +1349,15 @@ public class ClearCaseProvider extends RepositoryProvider {
 									new String[] { parent.getLocation()
 											.toOSString() }, getComment(),
 									ClearCase.NONE, opListener);
-					if (state[0].isCheckedOut()) {
+					if (state.length > 0 && state[0].isCheckedOut()) {
 						updateState(parent, IResource.DEPTH_ZERO,
 								new SubProgressMonitor(monitor, 10));
-					}
+					}else{
+						result = new Status(IStatus.ERROR, ID, TeamException.UNABLE,
+								"Add failed: " + "parent " + resource.getName()
+										+ " could not be checkedout!",
+								null);
+					}		
 
 				}
 
@@ -1733,7 +1738,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 				if (ClearCasePreferences.isCheckoutLatest()
 						&& targetElement.isSnapShot()) {
 					monitor.subTask("Updating " + targetElement.getPath());
-					update(targetElement.getPath(), 0, false);
+					update(targetElement.getPath(), ClearCase.FORCE, false);
 
 				}
 				monitor.worked(20);
