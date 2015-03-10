@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2013 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     eraonel - inital API and implementation
  *     IBM Corporation - concepts and ideas from Eclipse
@@ -40,7 +40,7 @@ import org.eclipse.ui.IWorkbench;
 
 /**
  * @author mike
- * 
+ *
  */
 public class LabelWizard extends ResizableWizard implements INewWizard {
 
@@ -54,10 +54,14 @@ public class LabelWizard extends ResizableWizard implements INewWizard {
 
 	LabelMainPage mainPage;
 
+	// TODO Unused!
+	@SuppressWarnings("unused")
 	private IResource[] resources;
 
+	@SuppressWarnings("unused")
 	private IStructuredSelection selection;
 
+	@SuppressWarnings("unused")
 	private ClearCaseProvider provider;
 
 	private static boolean inTest = false;
@@ -192,7 +196,7 @@ public class LabelWizard extends ResizableWizard implements INewWizard {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
 	 * org.eclipse.jface.viewers.IStructuredSelection)
 	 */
@@ -228,7 +232,7 @@ public class LabelWizard extends ResizableWizard implements INewWizard {
 	/**
 	 * Retrieve elements ( with full path) recursive ( if need) and label these
 	 * too.
-	 * 
+	 *
 	 * @param selected
 	 *            IResource []
 	 * @return elements List<String>

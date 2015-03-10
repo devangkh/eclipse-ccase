@@ -12,7 +12,7 @@ import net.sourceforge.eclipseccase.ClearCaseProvider;
 
 /**
  * @author mikael petterson
- * 
+ *
  */
 public class RuntimeSubstitution {
 
@@ -58,9 +58,9 @@ public class RuntimeSubstitution {
 		try {
 			// Obtain the Class
 			// Obtain the Class instance
-			Class cls = Class.forName(parts[0]);
+			Class<?> cls = Class.forName(parts[0]);
 
-			Method[] methods = cls.getDeclaredMethods();
+			// TODO Method[] methods = cls.getDeclaredMethods();
 
 			// Get the method
 			Method method = cls.getMethod(parts[1]);

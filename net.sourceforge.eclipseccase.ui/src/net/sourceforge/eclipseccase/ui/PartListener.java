@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Gunnar Wagenknecht - initial API and implementation
  *     IBM Corporation - concepts and ideas from Eclipse
@@ -19,14 +19,14 @@ import org.eclipse.ui.*;
 /**
  * A part listener listens to part changes and refreshes a resource state if an
  * editor is opened.
- * 
+ *
  * @author Gunnar Wagenknecht (g.wagenknecht@planet-wagenknecht.de)
  */
 class PartListener implements IPartListener2, IWindowListener {
 
 	/**
 	 * Refreshes the resource covered by the specified editor
-	 * 
+	 *
 	 * @param part
 	 */
 	private void refreshResource(IWorkbenchPart part) {
@@ -38,7 +38,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/**
 	 * Refreshes the specified resource
-	 * 
+	 *
 	 * @param resource
 	 */
 	private void refreshResource(IResource resource) {
@@ -52,7 +52,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/**
 	 * Returns the resource for the specified input
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */
@@ -64,7 +64,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -78,7 +78,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -88,7 +88,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -98,7 +98,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -108,7 +108,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -118,7 +118,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -128,7 +128,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -138,7 +138,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.
 	 * IWorkbenchPartReference)
 	 */
@@ -148,7 +148,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IWindowListener#windowActivated(org.eclipse.ui.
 	 * IWorkbenchWindow)
 	 */
@@ -158,7 +158,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.ui.IWindowListener#windowDeactivated(org.eclipse.ui.
 	 * IWorkbenchWindow)
 	 */
@@ -168,7 +168,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.IWindowListener#windowClosed(org.eclipse.ui.IWorkbenchWindow
 	 * )
@@ -179,7 +179,7 @@ class PartListener implements IPartListener2, IWindowListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.IWindowListener#windowOpened(org.eclipse.ui.IWorkbenchWindow
 	 * )

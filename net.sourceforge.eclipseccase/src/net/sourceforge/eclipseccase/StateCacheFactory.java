@@ -3,10 +3,10 @@
  * This program and the accompanying materials are made available under the
  * terms of the Common Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/cpl-v10.html
- * 
- * Contributors: 
- * 		Matthew Conway - initial API and implementation 
- * 		IBM Corporation - concepts and ideas from Eclipse 
+ *
+ * Contributors:
+ * 		Matthew Conway - initial API and implementation
+ * 		IBM Corporation - concepts and ideas from Eclipse
  *      Gunnar Wagenknecht - new features, enhancements and bug fixes
  ******************************************************************************/
 package net.sourceforge.eclipseccase;
@@ -57,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author abu
- * 
+ *
  */
 public class StateCacheFactory implements ISaveParticipant,
 		IResourceChangeListener {
@@ -85,7 +85,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return
 	 */
 	public static StateCacheFactory getInstance() {
@@ -94,7 +94,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Adds a state change listener.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void addStateChangeListerer(IResourceStateListener listener) {
@@ -109,7 +109,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Removes a state change listener.
-	 * 
+	 *
 	 * @param listener
 	 * @return
 	 */
@@ -124,7 +124,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Fires a state change for the specified state cache.
-	 * 
+	 *
 	 * @param stateCache
 	 */
 	public void fireStateChanged(IResource resource) {
@@ -212,7 +212,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Indicates if the state of the specified resource is uninitialized.
-	 * 
+	 *
 	 * @param resource
 	 * @return <code>true</code> if uninitialized
 	 */
@@ -223,7 +223,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Returns the state cache for the specified resource.
-	 * 
+	 *
 	 * @param resource
 	 * @return the state cache for the specified resource
 	 */
@@ -238,7 +238,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Gets a {@link StateCache} instance without updateing the cache status.
-	 * 
+	 *
 	 * @param resource
 	 *            The resource for which to get a {@link StateCache} instance.
 	 * @return A {@link StateCache} instance.
@@ -260,13 +260,13 @@ public class StateCacheFactory implements ISaveParticipant,
 	 * Reset the VP_STATE_VERIFIED flag for all entries. Used together with
 	 * refreshAllUnverifiedStates() to detect resources that are out of sync
 	 * with the real CC state.
-	 * 
+	 *
 	 * Before the real CC state for the view is gathered (with lsprivate,
 	 * lsco...) resetVerifiyStates() is called once. While processing the CC
 	 * output, the VP_STATE_VERIFIED flag is set for all verified entries.
 	 * Later, refreshAllUnverifiedStates() gets called which schedules a refresh
 	 * for all entries that were not verified.
-	 * 
+	 *
 	 * @see StateCacheFactory#refreshAllUnverifiedStates(boolean, boolean,
 	 *      boolean)
 	 */
@@ -279,7 +279,7 @@ public class StateCacheFactory implements ISaveParticipant,
 	/**
 	 * Schedule a state refresh for all entries with a cleared VP_STATE_VERIFIED
 	 * flag.
-	 * 
+	 *
 	 * @see StateCacheFactory#resetVerifiyStates()
 	 * @param doCheckedout
 	 * @param doNew
@@ -315,7 +315,7 @@ public class StateCacheFactory implements ISaveParticipant,
 	/**
 	 * Removes the state cache for the specified resource including all its
 	 * direct and indirect members.
-	 * 
+	 *
 	 * @param resource
 	 */
 	public void remove(IResource resource) {
@@ -345,7 +345,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Removes the state cache for the specified resource.
-	 * 
+	 *
 	 * @param resource
 	 */
 	void removeSingle(IResource resource) {
@@ -358,7 +358,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.resources.ISaveParticipant#doneSaving(org.eclipse.core
 	 * .resources.ISaveContext)
@@ -374,7 +374,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.resources.ISaveParticipant#prepareToSave(org.eclipse
 	 * .core.resources.ISaveContext)
@@ -385,7 +385,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.resources.ISaveParticipant#rollback(org.eclipse.core
 	 * .resources.ISaveContext)
@@ -396,7 +396,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.resources.ISaveParticipant#saving(org.eclipse.core.resources
 	 * .ISaveContext)
@@ -525,7 +525,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Loads the state cache from the specified context.
-	 * 
+	 *
 	 * @param context
 	 */
 	void load(ISavedState context) {
@@ -559,7 +559,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Builds (reads) the state cache from the specified input stream.
-	 * 
+	 *
 	 * @param stateFile
 	 * @throws Exception
 	 * @throws CoreException
@@ -580,7 +580,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
 			 * java.lang.String, java.lang.String, org.xml.sax.Attributes)
@@ -662,7 +662,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org
 	 * .eclipse.core.resources.IResourceChangeEvent)
@@ -734,7 +734,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Refreshes the state of the specified resources.
-	 * 
+	 *
 	 * @param resources
 	 *            The resources to refresh.
 	 */
@@ -744,9 +744,9 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Refreshes the state of the specified resources.
-	 * 
+	 *
 	 * The refresh will take place using high priority.
-	 * 
+	 *
 	 * @param resources
 	 *            to refresh.
 	 */
@@ -757,7 +757,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Refreshes the state of the specified resources.
-	 * 
+	 *
 	 * @param resources
 	 */
 	void refreshState(IResource[] resources, int priority) {
@@ -772,7 +772,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Indicates if the resource delta is really interesting for a refresh.
-	 * 
+	 *
 	 * @param delta
 	 * @return
 	 */
@@ -855,7 +855,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Returns the job queue.
-	 * 
+	 *
 	 * @return the job queue
 	 */
 	StateCacheJobQueue getJobQueue() {
@@ -865,7 +865,7 @@ public class StateCacheFactory implements ISaveParticipant,
 	/**
 	 * Determine if there are any resources in the queue for async CC state
 	 * refresh
-	 * 
+	 *
 	 * @return true if there is at least one element in update queue
 	 */
 	public boolean hasPendingUpdates() {
@@ -874,7 +874,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Ensures the state cache for the specified resource is initialized.
-	 * 
+	 *
 	 * @param resource
 	 */
 	void ensureInitialized(IResource resource) {
@@ -886,7 +886,7 @@ public class StateCacheFactory implements ISaveParticipant,
 
 	/**
 	 * Indicates if the state cache factory is completly initialized.
-	 * 
+	 *
 	 * @return <code>true</code> if initialized, <code>false</code> otherwise
 	 */
 	public boolean isInitialized() {

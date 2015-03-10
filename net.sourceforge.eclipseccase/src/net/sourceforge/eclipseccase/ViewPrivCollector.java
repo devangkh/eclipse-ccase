@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Tobias Sodergren - initial API and implementation
  *     Achim Bursian    - complete reworked for v2.2...
@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
  * The constructor takes an array of {@link IResource}s which should be
  * directories in which the search commands shall be performed. Typically, it is
  * called with one directory per used view.
- * 
+ *
  * Strategy:
  * <ol>
  * <li>For each directory, find out if it exists in a snapshot or dynamic view.</li>
@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
  * <li>For all dynamic views, perform the "cleartool lsprivate" command</li>
  * <li>For all resources in a snapshot view, perform "cleartools ls -view_only"</li>
  * </ol>
- * 
+ *
  * <p>
  * Assumptions made by this class:
  * <ul>
@@ -45,10 +45,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
  * view.
  * <li>A project can be associated with a dynamic or a snapshot view.
  * </ul>
- * 
+ *
  * @author Achim Bursian
  * @author Tobias Sodergren
- * 
+ *
  */
 public class ViewPrivCollector {
 
@@ -160,7 +160,7 @@ public class ViewPrivCollector {
 	/**
 	 * Two step process for a dynamic view, find the checked-out elements (via
 	 * lsco) and the view-private stuff (via lsprivate)
-	 * 
+	 *
 	 * @param workingdir
 	 *            the top level dir
 	 * @param viewName
@@ -176,8 +176,8 @@ public class ViewPrivCollector {
 
 			if (monitor.isCanceled())
 				throw new OperationCanceledException();
-			int steps = 0;
-			
+			// TODO int steps = 0;
+
 			// STEP 1:
 			if (findCheckedouts) {
 				addCheckedOutFiles(viewName, monitor, workingdir.getLocation(),
@@ -207,7 +207,7 @@ public class ViewPrivCollector {
 	 * Three step process for a snapshot view, find the checked-out elements
 	 * (via lsco), then the hijacked elements (via a non-destructive update) and
 	 * finally the view-private stuff (via ls -view_only)
-	 * 
+	 *
 	 * @param workingdir
 	 *            the top level dir, hijacked elements are searched recursively
 	 *            from here down
@@ -285,7 +285,7 @@ public class ViewPrivCollector {
 				isSnapshot,
 				new ViewprivOperationListenerCO("Checked out in " + viewName,
 						monitor));
-		
+
 	}
 
 	public ClearCaseElementState getElementState(StateCache stateCache) {

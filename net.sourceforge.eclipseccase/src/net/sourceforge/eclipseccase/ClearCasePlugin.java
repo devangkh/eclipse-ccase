@@ -1,19 +1,16 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Conway - initial API and implementation
  *     IBM Corporation - concepts and ideas taken from Eclipse code
  *     Gunnar Wagenknecht - reworked to Eclipse 3.0 API and code clean-up
  *******************************************************************************/
 package net.sourceforge.eclipseccase;
-
-
-
 
 
 import java.io.BufferedInputStream;
@@ -49,14 +46,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Preferences;
+// TODO import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.preference.IPreferenceStore;
+// TODO import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.osgi.service.environment.Constants;
 import org.eclipse.team.core.TeamException;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+// TODO import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -72,9 +69,12 @@ import sun.misc.BASE64Encoder;
  */
 @SuppressWarnings("deprecation")
 public class ClearCasePlugin extends Plugin {
-
+	
+	//TODO: replace with org.apache.commons.codec.binary.Base64
+	@SuppressWarnings("restriction")
 	private static final BASE64Decoder BASE64_DECODER = new BASE64Decoder();
-
+	//TODO: replace with org.apache.commons.codec.binary.Base64
+	@SuppressWarnings("restriction")
 	private static final BASE64Encoder BASE64_ENCODER = new BASE64Encoder();
 
 	/** job family for all clearcase operations */
@@ -160,14 +160,14 @@ public class ClearCasePlugin extends Plugin {
 	/** debug option */
 	private static final String DEBUG_OPTION_SUBPROCESS = ClearCasePlugin.PLUGIN_ID
 			+ "/debug/subprocess"; //$NON-NLS-1$
-	
+
 	/** debug option */
 	private static final String DEBUG_OPTION_UCM = ClearCasePlugin.PLUGIN_ID
 			+ "/debug/ucm"; //$NON-NLS-1$
 
 	/** indicates if debugging is enabled */
 	public static boolean DEBUG = false;
-	
+
 	// the list of all repositories currently handled by this provider
 	private ClearCaseRepositories repositories;
 
@@ -201,7 +201,7 @@ public class ClearCasePlugin extends Plugin {
 				trace("debugging " + DEBUG_OPTION_UPDATE_QUEUE); //$NON-NLS-1$
 				ClearCasePlugin.DEBUG_UPDATE_QUEUE = true;
 			}
-			
+
 			if (getDebugOption(DEBUG_OPTION_UCM)) {
 				trace("debugging " + DEBUG_OPTION_UCM); //$NON-NLS-1$
 				ClearCasePlugin.DEBUG_UCM = true;
@@ -225,7 +225,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Returns the value of the specified debug option.
-	 * 
+	 *
 	 * @param optionId
 	 * @return <code>true</code> if the option is enabled
 	 */
@@ -236,7 +236,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Prints out a trace message.
-	 * 
+	 *
 	 * @param message
 	 */
 	public static void trace(String message) {
@@ -245,7 +245,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Prints out a trace message.
-	 * 
+	 *
 	 * @param traceId
 	 * @param message
 	 */
@@ -258,7 +258,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Prints out a debug string.
-	 * 
+	 *
 	 * @param id
 	 * @param message
 	 */
@@ -311,7 +311,7 @@ public class ClearCasePlugin extends Plugin {
 	 * <p>
 	 * If no engine is available <code>null</code> is returned.
 	 * </p>
-	 * 
+	 *
 	 * @return the ClearCase engine (maybe <code>null</code>)
 	 */
 	public static ClearCaseInterface getEngine() {
@@ -327,7 +327,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static ClearCasePlugin getDefault() {
@@ -336,7 +336,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Returns the workspace.
-	 * 
+	 *
 	 * @return the workspace
 	 */
 	public static IWorkspace getWorkspace() {
@@ -345,7 +345,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Indicates if debug output is enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if debug mode is enabled
 	 */
 	public static boolean isDebug() {
@@ -354,7 +354,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Logs an exception with the specified severity an message.
-	 * 
+	 *
 	 * @param severity
 	 * @param message
 	 * @param ex
@@ -368,7 +368,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Logs an error message with the specified exception.
-	 * 
+	 *
 	 * @param message
 	 * @param ex
 	 *            (maybe <code>null</code>)
@@ -390,7 +390,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/** debug flag */
 	public static boolean DEBUG_UPDATE_QUEUE = false;
-	
+
 	/** debug flag */
 	public static boolean DEBUG_UCM = false;
 
@@ -404,7 +404,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Method addComment.
-	 * 
+	 *
 	 * @param string
 	 */
 	public void addComment(String comment) {
@@ -433,7 +433,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.clearcase.simple.IClearCaseDebugger#debugClearCase(java
 	 * .lang.String, java.lang.String)
@@ -445,13 +445,13 @@ public class ClearCasePlugin extends Plugin {
 	/**
 	 * Returns the current ClearCase engine that can be used for performing
 	 * ClearCase operations.
-	 * 
+	 *
 	 * <p>
 	 * The engine type depends on the current platform and on preference
 	 * settings. It is cached internally. After changing the preferences you
 	 * have to do a reset (see {@link #resetClearCase()}.
 	 * </p>
-	 * 
+	 *
 	 * @return the ClearCase engine
 	 * @throws CoreException
 	 *             if no engine is available
@@ -492,7 +492,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Answer the list of comments that were previously used when committing.
-	 * 
+	 *
 	 * @return String[]
 	 */
 	public String[] getPreviousComments() {
@@ -509,7 +509,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Indicates if this plugin runs on a Microsoft Windows operating system.
-	 * 
+	 *
 	 * @return <code>true</code> if this is a Windows operating system,
 	 *         <code>false</code> otherwise
 	 */
@@ -551,7 +551,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Builds (reads) the comment history from the specified input stream.
-	 * 
+	 *
 	 * @param stream
 	 * @throws CoreException
 	 */
@@ -624,7 +624,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Indicates if there are state refreshes pending.
-	 * 
+	 *
 	 * @return <code>true</code> if there are state refreshes pending
 	 */
 	public boolean hasPendingRefreshes() {
@@ -640,7 +640,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Saves the comment history.
-	 * 
+	 *
 	 * @throws CoreException
 	 */
 	private void saveCommentHistory() throws CoreException {
@@ -676,7 +676,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
@@ -743,7 +743,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
@@ -753,7 +753,7 @@ public class ClearCasePlugin extends Plugin {
 
 		getWorkspace().removeResourceChangeListener(
 				StateCacheFactory.getInstance());
-		
+
 		// save the state which includes the known repositories
 		if (repositories != null) {
 			repositories.shutdown();
@@ -771,7 +771,7 @@ public class ClearCasePlugin extends Plugin {
 
 	/**
 	 * Writes the comment history to the specified writer.
-	 * 
+	 *
 	 * @param writer
 	 * @throws IOException
 	 */
@@ -792,7 +792,7 @@ public class ClearCasePlugin extends Plugin {
 	 * Allthough this method is exposed in API it is not inteded to be called by
 	 * clients.
 	 * </p>
-	 * 
+	 *
 	 * @return returns the ClearCase modification handler
 	 */
 	ClearCaseModificationHandler getClearCaseModificationHandler() {
@@ -805,7 +805,7 @@ public class ClearCasePlugin extends Plugin {
 	 * Allthough this method is exposed in API it is not inteded to be called by
 	 * clients.
 	 * </p>
-	 * 
+	 *
 	 * @param clearCaseModificationHandler
 	 *            the ClearCase modification handler to set
 	 */
@@ -813,7 +813,7 @@ public class ClearCasePlugin extends Plugin {
 			ClearCaseModificationHandler clearCaseModificationHandler) {
 		this.clearCaseModificationHandler = clearCaseModificationHandler;
 	}
-	
+
 	/**
 	 * get all the known repositories
 	 */

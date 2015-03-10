@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- * 
+ *
  * @author Mattias Rundgren
  *
  */
@@ -325,6 +325,6 @@ public class JFHistoryViewer extends ViewPart {
 	}
 
 	private void open() {
-	
+
 	}
 }

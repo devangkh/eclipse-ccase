@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Conway - initial API and implementation
  *     IBM Corporation - concepts and ideas taken from Eclipse code
@@ -84,6 +84,8 @@ public interface IClearCasePreferenceConstants {
 	String PREVENT_UNNEEDED_CHILDREN_REFRESH = ClearCasePlugin.PLUGIN_ID
 			+ ".preventRefreshChildren"; //$NON-NLS-1$
 
+	String AUTO_CONNECT = ClearCasePlugin.PLUGIN_ID + ".autoConnect";
+
 	/** ClearCase preference */
 	String CLEARCASE_PRIMARY_GROUP = ClearCasePlugin.PLUGIN_ID
 			+ ".clearcasePrimaryGroup"; //$NON-NLS-1$
@@ -152,7 +154,7 @@ public interface IClearCasePreferenceConstants {
 
 	/** ClearCase preference */
 	String COMPARE_EXTERNAL = ClearCasePlugin.PLUGIN_ID + ".compare.external"; //$NON-NLS-1$
-	
+
 	/** ClearCase preference */
 	String MERGE_EXTERNAL = ClearCasePlugin.PLUGIN_ID + ".merge.external"; //$NON-NLS-1$
 
@@ -167,16 +169,16 @@ public interface IClearCasePreferenceConstants {
 			+ ".activityFormatHelpString";//$NON-NLS-1$
 	/** ClearCase preference */
 	String EXTERNAL_DIFF_TOOL = ClearCasePlugin.PLUGIN_ID + ".ext.diff.tool"; //$NON-NLS-1$
-	
+
 	/** ClearCase preference */
 	String EXTERNAL_DIFF_TOOL_EXEC_PATH = ClearCasePlugin.PLUGIN_ID + ".ext.diff.tool.exec.path"; //$NON-NLS-1$
-	
+
 	/** ClearCase preference */
 	String EXTERNAL_MERGE_TOOL = ClearCasePlugin.PLUGIN_ID + ".ext.merge.tool"; //$NON-NLS-1$
-	
+
 	/** ClearCase preference */
 	String EXTERNAL_MERGE_TOOL_EXEC_PATH = ClearCasePlugin.PLUGIN_ID + ".ext.merge.tool.exec.path"; //$NON-NLS-1$
-	
+
 	String AUTOMATIC_MERGE = ClearCasePlugin.PLUGIN_ID + ".auto.merge";
 
 }

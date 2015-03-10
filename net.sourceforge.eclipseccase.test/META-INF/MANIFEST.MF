@@ -4,6 +4,6 @@ Bundle-Name: Test
 Bundle-SymbolicName: net.sourceforge.eclipseccase.test
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: net.sourceforge.eclipseccase
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.junit4
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit4;resolution:=optional
 Export-Package: net.sourceforge.eclipseccase.test

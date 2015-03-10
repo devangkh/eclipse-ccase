@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Conway - initial API and implementation
  *     IBM Corporation - concepts and ideas taken from Eclipse code
@@ -50,7 +50,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 			{ PreferenceMessages.getString("Never"), NEVER } ,
 			{ PreferenceMessages.getString("Prompt"), PROMPT }}; //$NON-NLS-1$
 
-	static final String[][] PRIORITIES = new String[][] { { PreferenceMessages.getString("HighPriority"), Integer.toString(Job.LONG) }, //$NON-NLS-1$ 
+	static final String[][] PRIORITIES = new String[][] { { PreferenceMessages.getString("HighPriority"), Integer.toString(Job.LONG) }, //$NON-NLS-1$
 			{ PreferenceMessages.getString("DefaultPriority"), Integer.toString(Job.DECORATE) } }; //$NON-NLS-1$
 
 	private RadioGroupFieldEditor reservedCo;
@@ -69,7 +69,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
@@ -79,7 +79,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
 	 * ()
@@ -92,6 +92,9 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 				getFieldEditorParent(GENERAL)));
 
 		addField(new BooleanFieldEditor(PREVENT_UNNEEDED_CHILDREN_REFRESH, PreferenceMessages.getString("Preferences.General.RefreshChildren"), //$NON-NLS-1$
+				getFieldEditorParent(GENERAL)));
+
+		addField(new BooleanFieldEditor(AUTO_CONNECT, PreferenceMessages.getString("Preferences.General.AutoAssociation"), //$NON-NLS-1$
 				getFieldEditorParent(GENERAL)));
 
 		//		addField(new BooleanFieldEditor(IGNORE_NEW, PreferenceMessages.getString("Preferences.General.IgnoreNew"), //$NON-NLS-1$
@@ -169,13 +172,13 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 				getFieldEditorParent(SOURCE_MANAGEMENT)));
 
 
-//		addField(new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$ 
+//		addField(new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$
 //				ALWAYS_IF_POSSIBLE_NEVER, getFieldEditorParent(SOURCE_MANAGEMENT), true));
-//		
+//
 //		addField(new BooleanFieldEditor(ADD_WITH_MASTER, PreferenceMessages.getString("Preferences.Source.AddWithMaster"), //$NON-NLS-1$
 //				getFieldEditorParent(SOURCE_MANAGEMENT)));
-		
-		reservedCo = new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$ 
+
+		reservedCo = new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$
 				ALWAYS_IF_POSSIBLE_NEVER, getFieldEditorParent(SOURCE_MANAGEMENT), true);
 
 		addField(reservedCo);
@@ -213,13 +216,13 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		addField(new BooleanFieldEditor(COMMENT_CHECKOUT, PreferenceMessages.getString("Preferences.Comments.CommentCheckout"), //$NON-NLS-1$
 				getFieldEditorParent(COMMENTS)));
 
-		addField(new BooleanFieldEditor(COMMENT_CHECKOUT_NEVER_ON_AUTO, PreferenceMessages.getString("Preferences.Comments.CommentCheckoutNeverOnAuto"), //$NON-NLS-1$ 
+		addField(new BooleanFieldEditor(COMMENT_CHECKOUT_NEVER_ON_AUTO, PreferenceMessages.getString("Preferences.Comments.CommentCheckoutNeverOnAuto"), //$NON-NLS-1$
 				getFieldEditorParent(COMMENTS)));
 
 		addField(new StringFieldEditor(BRANCH_PREFIX, PreferenceMessages.getString("Preferences.Comments.BranchPrefix"), //$NON-NLS-1$
 				getFieldEditorParent(COMMENTS)));
 
-		//		addField(new BooleanFieldEditor(COMMENT_ADD_NEVER_ON_AUTO, PreferenceMessages.getString("Preferences.Comments.CommentAddNeverOnAuto"), //$NON-NLS-1$ 
+		//		addField(new BooleanFieldEditor(COMMENT_ADD_NEVER_ON_AUTO, PreferenceMessages.getString("Preferences.Comments.CommentAddNeverOnAuto"), //$NON-NLS-1$
 		// getFieldEditorParent(COMMENTS)));
 
 		//		addField(new BooleanFieldEditor(COMMENT_ESCAPE, PreferenceMessages.getString("Preferences.Comments.CommentEscapeXml"), //$NON-NLS-1$
@@ -228,7 +231,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.preference.IPreferencePage#performOk()
 	 */
 	@Override
@@ -242,7 +245,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sourceforge.eclipseccase.ui.preferences.TabFieldEditorPreferencePage
 	 * #getCategories()
@@ -254,7 +257,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seenet.sourceforge.eclipseccase.ui.preferences.
 	 * FieldEditorPreferencePageWithCategories#getDescription(java.lang.String)
 	 */
@@ -283,8 +286,8 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/**
 	 * This is used to handle changes in reservedCo, RadioGroupFieldEditor.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param event
 	 *            the property change event object describing which property
 	 *            changed and how
@@ -299,7 +302,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	}
 
 	private void setNmasterEnabledState(String oldValue, String newValue) {
-		
+
 		if(oldValue.equals(newValue)){
 			//Avoid same value. This happens each time a value is set, Bug in eclipse?
 			return;
@@ -321,7 +324,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 			nMaster.setEnabled(true, getFieldEditorParent(SOURCE_MANAGEMENT));
 		}
 
-		
+
 	}
 
 }

@@ -1,7 +1,9 @@
 package net.sourceforge.eclipseccase.ui.actions;
 
 import net.sourceforge.eclipseccase.ClearCasePreferences;
+
 import org.eclipse.core.resources.IResource;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.sourceforge.eclipseccase.ClearCaseProvider;
@@ -15,12 +17,11 @@ import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.ui.IDecoratorManager;
 import org.eclipse.ui.PlatformUI;
 
-public class AssociateProjectAction extends ClearCaseWorkspaceAction {
+public class AssociateProjectActionNotUsed extends ClearCaseWorkspaceAction {
 
 	/**
 	 * (non-Javadoc) Method declared on IDropActionDelegate
 	 */
-	@SuppressWarnings("restriction")
 	@Override
 	public void execute(IAction action) {
 
@@ -37,16 +38,8 @@ public class AssociateProjectAction extends ClearCaseWorkspaceAction {
 
 					for (int i = 0; i < projects.length; i++) {
 						IProject project = projects[i];
-
-						if (!project.isOpen()) {
-							continue;
-						}
-
-						ClearCaseProvider testProvider = ClearCaseProvider.getClearCaseProvider(project);
-						if (testProvider != null) {
-							continue;
-						}
-
+						// the map() call automatically refreshes all labels (at
+						// least in Eclipse 3.5)
 						RepositoryProvider.map(project, ClearCaseProvider.ID);
 						StateCacheFactory.getInstance().remove(project);
 						// StateCacheFactory.getInstance().fireStateChanged(project);
@@ -77,28 +70,6 @@ public class AssociateProjectAction extends ClearCaseWorkspaceAction {
 							submonitor.worked(1);
 							if (submonitor.isCanceled())
 								break;
-						}
-
-						// Now, we will check project view, if it is empty, we have to dissociate.
-						ClearCaseProvider projectProvider = ClearCaseProvider.getClearCaseProvider(project);
-						if (projectProvider != null) {
-
-							boolean dissociateProject = false;
-
-							String viewName = ClearCaseProvider.getViewName(project);
-							if (viewName == null) {
-								dissociateProject = true;
-							} else {
-								if (viewName.isEmpty()) {
-									dissociateProject = true;
-								}
-							}
-
-							if (dissociateProject) {
-								RepositoryProvider.unmap(project);
-								StateCacheFactory.getInstance().remove(project);
-								StateCacheFactory.getInstance().fireStateChanged(project);
-							}
 						}
 
 						// To get correct state for project.
@@ -148,7 +119,6 @@ public class AssociateProjectAction extends ClearCaseWorkspaceAction {
 	 * @see
 	 * org.eclipse.team.internal.ui.actions.TeamAction#getSelectedProjects()
 	 */
-	@SuppressWarnings("restriction")
 	@Override
 	protected IProject[] getSelectedProjects() {
 		return super.getSelectedProjects();

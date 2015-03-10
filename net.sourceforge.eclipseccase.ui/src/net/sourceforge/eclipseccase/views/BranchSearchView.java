@@ -227,7 +227,7 @@ public class BranchSearchView extends ViewPart {
 
 	/**
 	 * Select new active project.
-	 * 
+	 *
 	 * @param project
 	 *            current active project.
 	 */

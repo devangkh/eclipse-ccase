@@ -7,20 +7,23 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
+// TODO import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
+
+// FIXME All the methods are using deprecated methods!
 
 /**
  * Class for setting default clearcase preferences.
- * 
+ *
  * @author mike
- * 
+ *
  */
 public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	/**
 	 * Returns the preference value for <code>ADD_AUTO</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isAddAuto() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.ADD_AUTO);
@@ -28,9 +31,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>ADD_AUTO</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isAddWithCheckin() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.ADD_WITH_CHECKIN);
@@ -38,15 +42,17 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_AUTO</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCheckoutAutoAlways() {
 		return IClearCasePreferenceConstants.ALWAYS.equals(ClearCasePlugin
 				.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.CHECKOUT_AUTO));
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void setCheckoutAutoAlways() {
 		ClearCasePlugin
 				.getDefault()
@@ -57,15 +63,17 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_AUTO</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCheckoutAutoNever() {
 		return IClearCasePreferenceConstants.NEVER.equals(ClearCasePlugin
 				.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.CHECKOUT_AUTO));
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void setCheckoutAutoNever() {
 		ClearCasePlugin
 				.getDefault()
@@ -76,14 +84,16 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_LATEST</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCheckoutLatest() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.CHECKOUT_LATEST);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isFullRefreshOnAssociate() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.FULL_REFRESH);
@@ -91,9 +101,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>COMMENT_ADD</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCommentAdd() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.COMMENT_ADD);
@@ -101,9 +112,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>COMMENT_ADD_NEVER_ON_AUTO</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCommentAddNeverOnAuto() {
 		return ClearCasePlugin
 				.getDefault()
@@ -114,9 +126,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>COMMENT_CHECKIN</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCommentCheckin() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.COMMENT_CHECKIN);
@@ -124,9 +137,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>COMMENT_CHECKOUT</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCommentCheckout() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.COMMENT_CHECKOUT);
@@ -135,9 +149,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	/**
 	 * Returns the preference value for
 	 * <code>COMMENT_CHECKOUT_NEVER_ON_AUTO</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCommentCheckoutNeverOnAuto() {
 		return ClearCasePlugin
 				.getDefault()
@@ -148,9 +163,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>COMMENT_ESCAPE</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isCommentEscape() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.COMMENT_ESCAPE);
@@ -158,9 +174,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>IGNORE_NEW</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isIgnoreNew() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.IGNORE_NEW);
@@ -168,9 +185,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>PRESERVE_TIMES</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isPreserveTimes() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.PRESERVE_TIMES);
@@ -178,9 +196,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>RECURSIVE</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isRecursive() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.RECURSIVE);
@@ -188,9 +207,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_RESERVED</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isReservedCheckoutsAlways() {
 		return IClearCasePreferenceConstants.ALWAYS.equals(ClearCasePlugin
 				.getDefault().getPluginPreferences()
@@ -199,9 +219,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_RESERVED</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isReservedCheckoutsIfPossible() {
 		return IClearCasePreferenceConstants.IF_POSSIBLE.equals(ClearCasePlugin
 				.getDefault().getPluginPreferences()
@@ -210,9 +231,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_RESERVED</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isReservedCheckoutsNever() {
 		return IClearCasePreferenceConstants.NEVER.equals(ClearCasePlugin
 				.getDefault().getPluginPreferences()
@@ -221,9 +243,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>CHECKOUT_RESERVED</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isAskCoType() {
 		return IClearCasePreferenceConstants.PROMPT.equals(ClearCasePlugin
 				.getDefault().getPluginPreferences()
@@ -232,9 +255,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>USE_SINGLE_PROCESS</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isUseSingleProcess() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.USE_SINGLE_PROCESS);
@@ -243,9 +267,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	/**
 	 * Returns the preference value for <code>HIDE_REFRESH_STATE_ACTIVITY</code>
 	 * .
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isHideRefreshActivity() {
 		return ClearCasePlugin
 				.getDefault()
@@ -256,9 +281,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Returns the preference value for <code>USE_CLEARDLG</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isUseClearDlg() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.USE_CLEARDLG);
@@ -267,9 +293,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	/**
 	 * Returns the preference value for
 	 * <code>PREVENT_UNNEEDED_CHILDREN_REFRESH</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isUnneededChildrenRefreshPrevented() {
 		return ClearCasePlugin
 				.getDefault()
@@ -278,10 +305,16 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.PREVENT_UNNEEDED_CHILDREN_REFRESH);
 	}
 
+	@SuppressWarnings("deprecation")
+	public static boolean isAutoConnectEnabled() {
+		return ClearCasePlugin.getDefault().getPluginPreferences().getBoolean(IClearCasePreferenceConstants.AUTO_CONNECT);
+	}
+
 	/**
-	 * 
+	 *
 	 * @return the preference value
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isUCM() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.USE_UCM);
@@ -289,9 +322,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Gets the preference value for <code>CLEARCASE_PRIMARY_GROUP</code>.
-	 * 
+	 *
 	 * @return the CLEARCASE_PRIMARY_GROUP name
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getClearCasePrimaryGroup() {
 		return ClearCasePlugin
 				.getDefault()
@@ -300,11 +334,13 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.CLEARCASE_PRIMARY_GROUP);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getBranchPrefix() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.BRANCH_PREFIX);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isCheckinIdenticalAllowed() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.CHECKIN_IDENTICAL);
@@ -314,6 +350,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	 * @return True if changes should be kept in a "keep" file after uncheckout,
 	 *         false if not.
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isKeepChangesAfterUncheckout() {
 		return ClearCasePlugin
 				.getDefault()
@@ -326,6 +363,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	 * @return True if refresh should traverse the link parent during refresh,
 	 *         which is an optimization for linked directories.
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isTestLinkedParentInClearCase() {
 		return ClearCasePlugin
 				.getDefault()
@@ -334,6 +372,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.TEST_LINKED_PARENT_IN_CLEARCASE);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isAutoCheckinParentAfterMoveAllowed() {
 		return ClearCasePlugin
 				.getDefault()
@@ -342,11 +381,13 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.AUTO_PARENT_CHECKIN_AFTER_MOVE);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static int jobQueuePriority() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getInt(IClearCasePreferenceConstants.JOB_QUEUE_PRIORITY);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean useGraphicalExternalUpdateView() {
 		return ClearCasePlugin
 				.getDefault()
@@ -357,9 +398,10 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Used to know if config spec modification has been forbidden
-	 * 
+	 *
 	 * @return true if modification forbidden; false else.
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isConfigSpecModificationForbidden() {
 		return ClearCasePlugin
 				.getDefault()
@@ -370,51 +412,60 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 
 	/**
 	 * Used for a
-	 * 
+	 *
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean isUseMasterForAdd() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.ADD_WITH_MASTER);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isCompareExternal() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.COMPARE_EXTERNAL);
 	}
-	
 
+
+	@SuppressWarnings("deprecation")
 	public static boolean isMergeExternal() {
 		return ClearCasePlugin.getDefault().getPluginPreferences().getBoolean(
 				IClearCasePreferenceConstants.MERGE_EXTERNAL);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	public static String isPreventCheckOut() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.PREVENT_CHECKOUT);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isSilentPrevent() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.SILENT_PREVENT);
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void setSilentPrevent() {
 		ClearCasePlugin.getDefault().getPluginPreferences()
 				.setValue(IClearCasePreferenceConstants.SILENT_PREVENT, true);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String activityPattern() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.ACTIVITY_PATTERN);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getNewActivityFormatMsg() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.ACTIVITY_MSG_FORMAT);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getActivityIdFormatHelpString() {
 		return ClearCasePlugin
 				.getDefault()
@@ -423,6 +474,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.ACTIVITY_FORMAT_HELP_STRING);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getExtDiffExecPath() {
 		return ClearCasePlugin
 				.getDefault()
@@ -431,11 +483,13 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.EXTERNAL_DIFF_TOOL_EXEC_PATH);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getExtDiffTool() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.EXTERNAL_DIFF_TOOL);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getExtMergeExecPath() {
 		return ClearCasePlugin
 				.getDefault()
@@ -444,16 +498,19 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 						IClearCasePreferenceConstants.EXTERNAL_MERGE_TOOL_EXEC_PATH);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String getExtMergeTool() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getString(IClearCasePreferenceConstants.EXTERNAL_MERGE_TOOL);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isMergeAutomatic() {
 		return ClearCasePlugin.getDefault().getPluginPreferences()
 				.getBoolean(IClearCasePreferenceConstants.AUTOMATIC_MERGE);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void setMergeAutomatic(boolean value) {
 		ClearCasePlugin.getDefault().getPluginPreferences()
 				.setValue(IClearCasePreferenceConstants.AUTOMATIC_MERGE, value);
@@ -464,6 +521,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 	 * the preference initializer when the appropriate default preference node
 	 * is accessed
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void initializeDefaultPreferences() {
 		IEclipsePreferences defaults = new DefaultScope()
@@ -474,6 +532,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 		defaults.putBoolean(
 				IClearCasePreferenceConstants.PREVENT_UNNEEDED_CHILDREN_REFRESH,
 				true);
+		defaults.putBoolean(IClearCasePreferenceConstants.AUTO_CONNECT, true);
 		String sClearCasePrimaryGroup = System
 				.getenv("CLEARCASE_PRIMARY_GROUP");
 		if (sClearCasePrimaryGroup == null) {
@@ -542,6 +601,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 		setGraphicalToolTimeout();
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void setGraphicalToolTimeout() {
 		/* Set timeout as an environment variable */
 		System.setProperty(

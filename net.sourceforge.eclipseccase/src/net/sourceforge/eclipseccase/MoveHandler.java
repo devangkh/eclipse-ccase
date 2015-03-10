@@ -1,6 +1,6 @@
 package net.sourceforge.eclipseccase;
 
-import java.text.MessageFormat;
+// TODO import java.text.MessageFormat;
 import java.util.LinkedList;
 
 import net.sourceforge.clearcase.ClearCaseError;
@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.team.core.TeamException;
 
 public class MoveHandler implements IMoveDeleteHook {
-	
+
 	public static final String ID = "net.sourceforge.eclipseccase.MoveHandler"; //$NON-NLS-1$
 
 	ClearCaseProvider provider;
@@ -277,12 +277,12 @@ public class MoveHandler implements IMoveDeleteHook {
 						ID,
 						TeamException.UNABLE
 						,"An Error occurred! "+e.getMessage(), e));
-				
+
 			} finally {
 				provider.refreshResources = true;
 				monitor.done();
 			}
-			
+
 			return true;
 		}
 	}

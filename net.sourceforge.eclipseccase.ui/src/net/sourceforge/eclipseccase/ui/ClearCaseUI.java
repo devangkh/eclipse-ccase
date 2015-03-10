@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Conway - initial API and implementation
  *     IBM Corporation - concepts and ideas taken from Eclipse code
@@ -12,6 +12,10 @@
  *******************************************************************************/
 package net.sourceforge.eclipseccase.ui;
 
+import net.sourceforge.eclipseccase.autoconnect.ProjectsAutoConnect;
+
+import org.eclipse.ui.PlatformUI;
+import net.sourceforge.eclipseccase.ClearCasePreferences;
 import java.util.*;
 import net.sourceforge.eclipseccase.ClearCasePlugin;
 import net.sourceforge.eclipseccase.ui.preferences.ClearCaseUIPreferences;
@@ -25,7 +29,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * UI plugin for the ClearCase plugin.
- * 
+ *
  * @author Gunnar Wagenknecht
  */
 public class ClearCaseUI extends AbstractUIPlugin {
@@ -37,7 +41,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/** debug option */
 	private static final String DEBUG_OPTION_DECORATION = ClearCaseUI.PLUGIN_ID + "/debug/decoration"; //$NON-NLS-1$
-	
+
 	/** debug option */
 	private static final String DEBUG_OPTION_VIEWPRIV = ClearCaseUI.PLUGIN_ID + "/debug/viewpriv"; //$NON-NLS-1$
 
@@ -60,7 +64,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 				trace("debugging " + DEBUG_OPTION_DECORATION); //$NON-NLS-1$
 				ClearCaseUI.DEBUG_DECORATION = true;
 			}
-			
+
 			if (getDebugOption(DEBUG_OPTION_VIEWPRIV)) {
 				trace("debugging " + DEBUG_OPTION_VIEWPRIV); //$NON-NLS-1$
 				ClearCaseUI.DEBUG_VIEWPRIV = true;
@@ -75,7 +79,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/**
 	 * Returns the value of the specified debug option.
-	 * 
+	 *
 	 * @param optionId
 	 * @return <code>true</code> if the option is enabled
 	 */
@@ -86,7 +90,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
@@ -103,7 +107,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/**
 	 * Prints out a trace message.
-	 * 
+	 *
 	 * @param message
 	 */
 	public static void trace(String message) {
@@ -112,7 +116,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/**
 	 * Prints out a trace message.
-	 * 
+	 *
 	 * @param traceId
 	 * @param message
 	 */
@@ -122,7 +126,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param descriptor
 	 */
 	public ClearCaseUI() {
@@ -132,7 +136,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
@@ -145,11 +149,20 @@ public class ClearCaseUI extends AbstractUIPlugin {
 		ClearCasePlugin.getDefault().setClearCaseModificationHandler(new ClearCaseUIModificationHandler());
 
 		PlatformUI.getWorkbench().addWindowListener(partListener);
+
+		// Running clearcase auto-connect.
+		if (ClearCasePreferences.isAutoConnectEnabled()) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					ProjectsAutoConnect.doAutoConnect();
+				}
+			});
+		}
 	}
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return the default instance
 	 */
 	public static ClearCaseUI getInstance() {
@@ -160,7 +173,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 	 * Returns an array of all editors that have an unsaved content. If the
 	 * identical content is presented in more than one editor, only one of those
 	 * editor parts is part of the result.
-	 * 
+	 *
 	 * @return an array of all dirty editor parts.
 	 */
 	public static IEditorPart[] getDirtyEditors() {
@@ -188,7 +201,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 	/**
 	 * Returns the preference value for
 	 * <code>TEXT_PREFIX_VIEW_PRIVATE_ELEMENTS</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
 	public static String getTextPrefixNew() {
@@ -197,7 +210,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/**
 	 * Returns the preference value for <code>TEXT_PREFIX_DIRTY_ELEMENTS</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
 	public static String getTextPrefixDirty() {
@@ -207,7 +220,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 	/**
 	 * Returns the preference value for
 	 * <code>TEXT_PREFIX_UNKNOWN_ELEMENTS</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
 	public static String getTextPrefixUnknown() {
@@ -217,7 +230,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 	/**
 	 * Returns the preference value for
 	 * <code>TEXT_PREFIX_HIJACKED_ELEMENTS</code>.
-	 * 
+	 *
 	 * @return the preference value
 	 */
 	public static String getTextPrefixHijacked() {
@@ -227,7 +240,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 	/**
 	 * Returns the preference value for <code>TEXT_PREFIX_EDITED_ELEMENTS</code>
 	 * .
-	 * 
+	 *
 	 * @return the preference value
 	 */
 	public static String getTextPrefixEdited() {
@@ -236,7 +249,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse
 	 * .jface.resource.ImageRegistry)
@@ -273,7 +286,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#createImageRegistry()
 	 */
 	@Override
@@ -298,7 +311,7 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 	/**
 	 * Returns the workbench display
-	 * 
+	 *
 	 * @return the workbench display
 	 */
 	public static Display getDisplay() {

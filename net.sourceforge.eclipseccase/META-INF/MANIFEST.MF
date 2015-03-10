@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: net.sourceforge.eclipseccase; singleton:=true
-Bundle-Version: 2.2.32.qualifier
+Bundle-Version: 2.2.36.qualifier
 Bundle-Activator: net.sourceforge.eclipseccase.ClearCasePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -20,4 +20,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0";visibility:=reex
  org.eclipse.jface,
  org.eclipse.ui;bundle-version="3.3.1"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
