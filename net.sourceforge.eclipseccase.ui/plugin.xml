@@ -112,6 +112,14 @@
 			-->
 		</objectContribution>
 	</extension>
+	
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution objectClass="org.eclipse.core.resources.IFile"
+			adaptable="true" id="net.sourceforge.eclipseccase.popups.BuiltIn">
+			
+				</objectContribution>
+	</extension>
+	
 	<extension point="org.eclipse.ui.popupMenus">
 		<objectContribution objectClass="org.eclipse.core.resources.IResource"
 			adaptable="true" id="net.sourceforge.eclipseccase.popups.BuiltIn">
@@ -134,7 +142,7 @@
 			<action
 				class="net.sourceforge.eclipseccase.ui.actions.AddToClearCaseAction"
 				icon="icons/full/add.png" id="net.sourceforge.eclipseccase.popups.add"
-				label="Add" menubarPath="team.main/group1">
+				label="Add&#8230;" menubarPath="team.main/group1">
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.RefreshStateAction"
 				icon="icons/full/refresh_state.png" id="net.sourceforge.eclipseccase.popups.refresh"
@@ -154,7 +162,7 @@
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.CheckInAction"
 				icon="icons/full/checkin.png" id="net.sourceforge.eclipseccase.popups.checkin"
-				label="Checkin" menubarPath="team.main/group1">
+				label="Checkin&#8230;" menubarPath="team.main/group1">
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.CheckOutAction"
 				icon="icons/full/checkout.png" id="net.sourceforge.eclipseccase.popups.checkout"
@@ -181,13 +189,13 @@
 				icon="icons/full/arrow_merge.png"
 				menubarPath="team.main/group2">
 			</action>
-			<!--<action
+			<action
 				class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
 				id="net.sourceforge.eclipseccase.ui.popups.label"
 				label="Label"
-				icon="icons/full/arrow_merge.png"
+				icon="icons/full/tag_green.png"
 				menubarPath="team.main/group2">
-			</action>-->
+			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.MkBrTypeAction"
 				icon="icons/full/branch.png" id="net.sourceforge.eclipseccase.popups.mkbrtype"
 				label="Make &amp;Branch Type" menubarPath="team.main/group2">
@@ -196,6 +204,11 @@
 				icon="icons/full/findMerge.png" id="net.sourceforge.eclipseccase.popups.findmerge"
 				label="Find Merge (Rebase, external tool)" menubarPath="team.main/group2">
 			</action>
+			<action
+                class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
+                icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.compareview2"
+                label="View&#8230;" menubarPath="compareWithMenu/compareWithGroup">
+            </action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.HistoryAction"
 				icon="icons/full/history.png" id="net.sourceforge.eclipseccase.popups.history"
 				label="&amp;History" menubarPath="team.main/group2">
@@ -219,6 +232,11 @@
 				icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.comparepredecessor"
 				label="Compare with Predecessor (external tool)" menubarPath="team.main/group2">
 			</action>
+			<action
+                class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
+                icon="icons/full/diff.png" id="net.sourceforge.eclipseccase.popups.compareview"
+                label="Compare with View&#8230;" menubarPath="team.main/group2">
+            </action>
 			<!-- mike 20100903 In popupMenus it does not follow the same concept as actionSet. As a workaround
 			     I will put the menus under Team and group2. Not nice but it works.
 			<menu id="net.sourceforge.eclipseccase.ui.popups.checkedoutstate"
@@ -242,7 +260,7 @@
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.HistoryAction"
 				icon="icons/full/history.png" id="net.sourceforge.eclipseccase.popups.history"
-				label="&amp;ClearCase History" menubarPath="compareWithMenu/compareWithGroup">
+				label="&amp;ClearCase History&#8230;" menubarPath="compareWithMenu/compareWithGroup">
 			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.VersionTreeAction"
 				icon="icons/full/tree.png" id="net.sourceforge.eclipseccase.popups.versiontree"
@@ -329,7 +347,7 @@
 			<action
 				class="net.sourceforge.eclipseccase.ui.actions.AddToClearCaseAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.add" icon="icons/full/add.png"
-				id="net.sourceforge.eclipseccase.ui.actionset.add" label="&amp;Add"
+				id="net.sourceforge.eclipseccase.ui.actionset.add" label="&amp;Add&#8230;"
 				menubarPath="eclipseccase_menu/group1">
 				<enablement>
 					<pluginState value="activated" id="net.sourceforge.eclipseccase">
@@ -362,10 +380,8 @@
 				menubarPath="eclipseccase_menu/group2" toolbarPath="Normal/additions"
 				tooltip="Open a View to show all CheckedOut, Hijacked and View-Private Files">
 				<enablement>
-					<and>
 						<pluginState value="activated" id="net.sourceforge.eclipseccase">
 						</pluginState>
-					</and>
 				</enablement>
 			</action>
 			<action
@@ -398,16 +414,16 @@
 					</pluginState>
 				</enablement>
 			</action>
-			<!--
+			
 			<action class="net.sourceforge.eclipseccase.ui.actions.LabelAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.label"
-				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
+				icon="icons/full/tag_green.png" id="net.sourceforge.eclipseccase.ui.actionset.label"
 				label="Label" menubarPath="eclipseccase_menu/group2" toolbarPath="Normal/additions">
 				<enablement>
 					<pluginState id="net.sourceforge.eclipseccase" value="activated">
 					</pluginState>
 				</enablement>
-			</action>-->
+			</action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.MergeAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.mergebranch"
 				icon="icons/full/arrow_merge.png" id="net.sourceforge.eclipseccase.ui.actionset.mergebranch"
@@ -487,10 +503,8 @@
 				label="Reserved --&gt;Unreserved"
 				menubarPath="eclipseccase_menu/group2">
 				<enablement>
-					<and>
 						<pluginState value="activated" id="net.sourceforge.eclipseccase">
 						</pluginState>
-					</and>
 				</enablement>
 			</action>
 			<action
@@ -501,10 +515,8 @@
 				label="UnReserved --&gt;Reserved"
 				menubarPath="eclipseccase_menu/group2">
 				<enablement>
-					<and>
 						<pluginState value="activated" id="net.sourceforge.eclipseccase">
 						</pluginState>
-					</and>
 				</enablement>
 			</action>
 			
@@ -528,6 +540,21 @@
 					</pluginState>
 				</enablement>	
 			</action>
+			<action
+                class="net.sourceforge.eclipseccase.ui.actions.CompareWithViewAction"
+                definitionId="net.sourceforge.eclipseccase.ui.actionset.compareview"
+                icon="icons/full/diff.png"
+                id="net.sourceforge.eclipseccase.ui.actionset.compareview"
+                label="Co&amp;mpare with View&#8230;"
+                menubarPath="eclipseccase_menu/group2"
+                style="push"
+                toolbarPath="Normal/additions"
+                tooltip="Compare with View">
+                <enablement>
+                    <pluginState value="activated" id="net.sourceforge.eclipseccase">
+                    </pluginState>
+                </enablement>
+            </action>
 			<action class="net.sourceforge.eclipseccase.ui.actions.UndoCheckOutAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.uncheckout"
 				icon="icons/full/uncheckout.png" id="net.sourceforge.eclipseccase.ui.actionset.uncheckout"
@@ -541,7 +568,7 @@
 			<action class="net.sourceforge.eclipseccase.ui.actions.CheckInAction"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.checkin"
 				icon="icons/full/checkin.png" id="net.sourceforge.eclipseccase.ui.actionset.checkin"
-				label="Check&amp;in" menubarPath="eclipseccase_menu/group1"
+				label="Check&amp;in&#8230;" menubarPath="eclipseccase_menu/group1"
 				toolbarPath="Normal/additions" tooltip="Checkin File/Directory">
 				<enablement>
 					<pluginState value="activated" id="net.sourceforge.eclipseccase">
@@ -663,6 +690,11 @@
 			categoryId="net.sourceforge.eclipseccase.category"
 			id="net.sourceforge.eclipseccase.ui.actionset.comparepredecessor">
 		</command>
+		<command name="Compare with View"
+            description="Opens the clearcase compare tool on the selected resource"
+            categoryId="net.sourceforge.eclipseccase.category"
+            id="net.sourceforge.eclipseccase.ui.actionset.compareview">
+        </command>
 		<command name="Find Checkouts"
 			description="Opens the clearcase find checkouts tool on the selected resource (external tool)"
 			categoryId="net.sourceforge.eclipseccase.category" id="net.sourceforge.eclipseccase.ui.actionset.findcheckouts">
@@ -690,6 +722,10 @@
 		<command categoryId="net.sourceforge.eclipseccase.category"
 			description="UnHijack an Hijacked file" id="net.sourceforge.eclipseccase.ui.actionset.unhijack"
 			name="UnHijack">
+		</command>
+		<command categoryId="net.sourceforge.eclipseccase.category"
+			description="Hijack a file" id="net.sourceforge.eclipseccase.ui.actionset.hijack"
+			name="Hijack">
 		</command>
 		<command categoryId="net.sourceforge.eclipseccase.category"
 			description="Search File in Branch" id="net.sourceforge.eclipseccase.ui.actionset.branchsearch"
@@ -774,11 +810,14 @@
   </view>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
-		<page objectClass="org.eclipse.core.resources.IResource"
-			adaptable="true" name="ClearCase"
+		<page  name="ClearCase"
 			class="net.sourceforge.eclipseccase.ElementPropertyPage" id="net.sourceforge.eclipseccase.elementPropertyPage">
+			<enabledWhen>
+             	<instanceof value="org.eclipse.core.resources.IResource"/>
+          </enabledWhen>
 		</page>
 	</extension>
+	
 	<extension point="org.eclipse.team.core.projectSets">
 		<projectSets
 			class="net.sourceforge.eclipseccase.ClearCaseProjectSetSerializer"
@@ -838,6 +877,10 @@
 			contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Alt+C Alt+C">
 		</key>
+		<key commandId="net.sourceforge.eclipseccase.ui.actionset.compareview"
+            contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="Alt+C Alt+W">
+        </key>
 		<key commandId="net.sourceforge.eclipseccase.ui.actionset.cancelRefreshes"
 			contextId="org.eclipse.ui.contexts.window" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Alt+C Alt+Z">
@@ -912,6 +955,10 @@
 			commandId="net.sourceforge.eclipseccase.ui.actionset.comparepredecessor"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C C">
 		</key>
+		<key platform="gtk"
+            commandId="net.sourceforge.eclipseccase.ui.actionset.compareview"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C W">
+        </key>
 		<key platform="gtk"
 			commandId="net.sourceforge.eclipseccase.ui.actionset.cancelRefreshes"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="Alt+C Z">

@@ -74,7 +74,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	DeleteOperation DELETE = new DeleteOperation();
 
-
 	private final IMoveDeleteHook moveHandler = new MoveHandler(this);
 
 	private String comment = ""; //$NON-NLS-1$
@@ -319,7 +318,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 			setComment("");
 		}
 	}
-
 
 	/*
 	 * @see SimpleAccessOperations#moved(IPath, IResource, IProgressMonitor)
@@ -770,39 +768,36 @@ public class ClearCaseProvider extends RepositoryProvider {
 		return new ArrayList<String>(Arrays.asList(output));
 
 	}
-	
+
 	/**
-	 * output from cc should be:
-	 * (BUG_2234, BUG_267)
-	 * We make a list out of this.
+	 * output from cc should be: (BUG_2234, BUG_267) We make a list out of this.
+	 * 
 	 * @param resources
 	 * @return
 	 */
 	public List<String> getLabels(IResource[] resources) {
-		
+
 		List<String> result = new ArrayList<String>();
-		
+
 		if (resources.length > 0) {
 			IResource aResource = resources[0];
 			String element = aResource.getLocation().toOSString();
 			HashMap<Integer, String> args = new HashMap<Integer, String>();
 			args.put(Integer.valueOf(ClearCase.FORMAT), "%l");
-			String[] output = ClearCasePlugin.getEngine().describe(ClearCase.FORMAT,
-					args, element);
-			
+			String[] output = ClearCasePlugin.getEngine().describe(
+					ClearCase.FORMAT, args, element);
+
 			for (String line : output) {
-				line.replaceAll("[()]","");
-				String [] labels = line.split(",");
+				line.replaceAll("[()]", "");
+				String[] labels = line.split(",");
 				for (String aLabel : labels) {
 					result.add(aLabel);
 				}
 			}
-			
-			 
-			
+
 		}
 		return result;
-		//return new ArrayList<String>(Arrays.asList(output));
+		// return new ArrayList<String>(Arrays.asList(output));
 	}
 
 	/**
@@ -1324,10 +1319,15 @@ public class ClearCaseProvider extends RepositoryProvider {
 									new String[] { parent.getLocation()
 											.toOSString() }, getComment(),
 									ClearCase.NONE, opListener);
-					if (state[0].isCheckedOut()) {
+					if (state.length > 0 && state[0].isCheckedOut()) {
 						updateState(parent, IResource.DEPTH_ZERO,
 								new SubProgressMonitor(monitor, 10));
-					}
+					}else{
+						result = new Status(IStatus.ERROR, ID, TeamException.UNABLE,
+								"Add failed: " + "parent " + resource.getName()
+										+ " could not be checkedout!",
+								null);
+					}		
 
 				}
 
@@ -1888,8 +1888,6 @@ public class ClearCaseProvider extends RepositoryProvider {
 			}
 		}
 	}
-
-	
 
 	private final class CheckoutUnreservedOperation implements
 			IIterativeOperation {
@@ -2584,6 +2582,49 @@ public class ClearCaseProvider extends RepositoryProvider {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Retrieves the view name containing user name. Notice that it will also
+	 * handle the selected view ( that has a '*' at the beginning of the line.
+	 * 
+	 * @return a list of view names related to the user.
+	 */
+	public String[] getViewNames() {
+		ArrayList<String> userViews = new ArrayList<String>();
+		String[] viewList = ClearCasePlugin.getEngine().getViewNames(0, null);
+		String username = System.getProperty("user.name");
+		Pattern p = Pattern.compile(username);
+
+		for (int i = 0; i < viewList.length; i++) {
+
+			String viewInfo = viewList[i];
+			Matcher m = p.matcher(viewInfo);
+			if (m.find()) {
+				String viewName = null;
+				// selected view has a 'star' and space at the beginning.
+				if (viewInfo.indexOf('*') != -1) {
+					viewName = viewInfo.trim().split(" ")[1];
+					userViews.add(viewName);
+				} else {
+					viewName = viewInfo.trim().split(" ")[0];
+					userViews.add(viewName);
+				}
+			}
+
+		}
+		return userViews.toArray(new String[userViews.size()]);
+	}
+
+	public void setView(String viewTag) {
+		HashMap<Integer, String> args = new HashMap<Integer, String>();
+		args.put(Integer.valueOf(ClearCase.EXEC), "exit");
+		ClearCasePlugin.getEngine().setView(ClearCase.EXEC, args, viewTag);
+
+	}
+
+	public boolean isDifferent(String element) {
+		return ClearCasePlugin.getEngine().isDifferent(element);
 	}
 
 }

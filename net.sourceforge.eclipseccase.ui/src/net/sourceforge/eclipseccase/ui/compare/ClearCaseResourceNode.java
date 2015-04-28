@@ -52,6 +52,17 @@ public class ClearCaseResourceNode extends BufferedContent implements ITypedElem
 		this.vextPath = resource.getLocation().toOSString() + "@@" + version;
 		this.provider = provider;
 	}
+	
+		public ClearCaseResourceNode(IResource resource, String version, ClearCaseProvider provider, boolean differentView) {
+				this.resource = resource;
+				this.provider = provider;
+				if (differentView) {
+					this.vextPath = "/view/" + version + resource.getLocation().toOSString();
+				} else {
+					this.vextPath = resource.getLocation().toOSString() + "@@" + version;
+				}
+			}
+			
 
 	/**
 	 * Returns the corresponding resource for this object.

@@ -34,20 +34,20 @@
          id="net.sourceforge.clearcase"
          download-size="1000"
          install-size="1800"
-         version="2.2.32.qualifier"/>
+         version="2.2.34.qualifier"/>
 
    <plugin
          id="net.sourceforge.eclipseccase"
          download-size="400"
          install-size="800"
-         version="2.2.32.qualifier"
+         version="2.2.34.qualifier"
          unpack="false"/>
 
    <plugin
          id="net.sourceforge.eclipseccase.ui"
          download-size="400"
          install-size="800"
-         version="2.2.32.qualifier"
+         version="2.2.34.qualifier"
          unpack="false"/>
 
 </feature>

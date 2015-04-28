@@ -1,5 +1,7 @@
 package net.sourceforge.eclipseccase.views;
 
+import net.sourceforge.eclipseccase.ui.actions.CompareWithVersionAction;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.sourceforge.eclipseccase.ClearCaseProvider;
@@ -339,18 +341,17 @@ public class BranchSearchView extends ViewPart {
 
 	private void compare(String version1, String version2) {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName.getText());
-
-		CompareWithVersionAction action = new CompareWithVersionAction();
+		CompareWithVersionAction action = new CompareWithVersionAction(getSite().getPage());
 		action.setResource(project);
 		action.setVersionA(version1);
 		action.setVersionB(version2);
 
 		action.execute((IAction) null);
-
-		ClearCaseProvider p = ClearCaseProvider.getClearCaseProvider(project);
-		if (p != null) {
-			p.compareWithVersion(version1, version2);
-		}
+//TODO: Seems to be duplication of code.
+//		ClearCaseProvider p = ClearCaseProvider.getClearCaseProvider(project);
+//		if (p != null) {
+//			p.compareWithVersion(version1, version2);
+//		}
 	}
 
 	private void showVersionTree() {

@@ -2,6 +2,57 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.36
+=====
+
+Bugs:
+
+382 Sort by History Version in Windows
+
+
+2.2.35
+=====
+
+Bugs:
+
+368 NPE on Eclipse shutdown due to null element in state cache 
+370 NPE from ccase plugin 
+371 ClearCase History sort by date not working. 
+
+
+2.2.34
+=====
+
+Feature:
+
+125 	Compare with other View ( unix only).
+122 Uncheckout unmodified files when checking in 
+124 Follow ui guidelines regarding ellipses in context menu item labels 
+
+Bugs:
+
+366 Better fault message
+359 eclipse UI frozen after changing config spec
+360 Unable to hijack files (Eclipse 4.1) 
+
+Reverted:
+
+365 An internal error occurred during: "Refreshing ClearCase Resource States". 
+
+2.2.33
+=====
+
+Bugs:
+
+#362 exetrnel comapre not working after updating to latest plugin release.
+#364 SingleProcess timed out! Process will be restarted! 
+#365 An internal error occurred during: "Refreshing ClearCase Resource States". 
+
+
+Features:
+
+#120 Add Capability To Label Files Upon Check-In 
+
 2.2.32
 =====
 

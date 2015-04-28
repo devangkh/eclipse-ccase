@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -71,7 +72,7 @@ public class StateCacheFactory implements ISaveParticipant,
 	private static StateCacheFactory instance = new StateCacheFactory();
 
 	/** maps resources to caches */
-	Map<IResource, StateCache> cacheMap = new HashMap<IResource, StateCache>();
+	Map<IResource, StateCache> cacheMap = new ConcurrentHashMap<IResource, StateCache>();
 
 	/** the listeners */
 	private List<IResourceStateListener> listeners = new ArrayList<IResourceStateListener>();
@@ -349,11 +350,7 @@ public class StateCacheFactory implements ISaveParticipant,
 	 * @param resource
 	 */
 	void removeSingle(IResource resource) {
-		if (cacheMap.containsKey(resource)) {
-			synchronized (cacheMap) {
-				cacheMap.remove(resource);
-			}
-		}
+		cacheMap.remove(resource);
 	}
 
 	/*
@@ -367,8 +364,8 @@ public class StateCacheFactory implements ISaveParticipant,
 		int previousSaveNumber = context.getPreviousSaveNumber();
 		String oldFileName = SAVE_FILE_NAME
 				+ Integer.toString(previousSaveNumber);
-		File file = ClearCasePlugin.getDefault().getStateLocation().append(
-				oldFileName).toFile();
+		File file = ClearCasePlugin.getDefault().getStateLocation()
+				.append(oldFileName).toFile();
 		file.delete();
 	}
 
@@ -411,14 +408,6 @@ public class StateCacheFactory implements ISaveParticipant,
 						+ Integer.toString(saveNumber);
 				IPath statePath = ClearCasePlugin.getDefault()
 						.getStateLocation().append(saveFileName);
-
-				// save state cache
-				// ObjectOutputStream os = new ObjectOutputStream(
-				// new FileOutputStream(statePath.toFile()));
-				// Collection serList = new LinkedList(cacheMap.values());
-				// os.writeObject(serList);
-				// os.flush();
-				// os.close();
 				OutputStream os = new BufferedOutputStream(
 						new FileOutputStream(statePath.toFile()));
 				try {
@@ -477,15 +466,21 @@ public class StateCacheFactory implements ISaveParticipant,
 		// create XML writer
 		XMLWriter writer = new XMLWriter(os);
 		Set<IResource> knownResource = cacheMap.keySet();
-
+		 List<IResource> nonNull = new ArrayList<IResource>();
+		//Make sure we don't have any null values in sorting.
+		for (IResource iResource : knownResource) {
+			if(iResource != null ){
+				nonNull.add(iResource);
+			}
+		}
 		// get and sort resources
-		IResource[] resources = knownResource
-				.toArray(new IResource[knownResource.size()]);
+		IResource[] resources = nonNull
+				.toArray(new IResource[nonNull.size()]);
 		Arrays.sort(resources, new Comparator<Object>() {
 
 			public int compare(Object o1, Object o2) {
-				return ((IResource) o1).getFullPath().toString().compareTo(
-						((IResource) o2).getFullPath().toString());
+				return ((IResource) o1).getFullPath().toString()
+						.compareTo(((IResource) o2).getFullPath().toString());
 			}
 		});
 
@@ -507,8 +502,8 @@ public class StateCacheFactory implements ISaveParticipant,
 			attributes = new HashMap<String, String>(5);
 			attributes.put(ATTR_PATH, resource.getFullPath().toString());
 			attributes.put(ATTR_STATE, Integer.toString(cache.flags));
-			attributes.put(ATTR_TIME_STAMP, Long
-					.toString(cache.updateTimeStamp));
+			attributes.put(ATTR_TIME_STAMP,
+					Long.toString(cache.updateTimeStamp));
 			if (null != cache.version) {
 				attributes.put(ATTR_VERSION, cache.version);
 			}
@@ -546,8 +541,7 @@ public class StateCacheFactory implements ISaveParticipant,
 			}
 		} catch (Exception ex) {
 			ClearCasePlugin
-					.log(
-							IStatus.WARNING,
+					.log(IStatus.WARNING,
 							"Could not load saved clearcase state cache, resetting cache", //$NON-NLS-1$
 							ex);
 		} finally {
@@ -625,10 +619,8 @@ public class StateCacheFactory implements ISaveParticipant,
 												.getValue(ATTR_TIME_STAMP));
 
 								// store cache
-								synchronized (cacheMap) {
-									cacheMap.put(resource, cache);
-								}
-
+								cacheMap.put(resource, cache);
+								
 								// make sure we know the view name for all
 								// cached elements
 								ClearCaseProvider.getViewName(resource);
@@ -680,13 +672,15 @@ public class StateCacheFactory implements ISaveParticipant,
 
 				for (int i = 0; i < projectDeltas.length; i++) {
 					IResourceDelta projectDelta = projectDeltas[i];
-					
-					//Fix for bug 3487493.
-					//check if the resource is attached to clearcase if not continue with next resource
-					//this is to avoid projects shared with other repository.
-					if(ClearCaseProvider.getClearCaseProvider(projectDelta.getResource()) == null)
-					continue;
-					
+
+					// Fix for bug 3487493.
+					// check if the resource is attached to clearcase if not
+					// continue with next resource
+					// this is to avoid projects shared with other repository.
+					if (ClearCaseProvider.getClearCaseProvider(projectDelta
+							.getResource()) == null)
+						continue;
+
 					// filter only shared projects
 					if (RepositoryProvider.isShared((IProject) projectDelta
 							.getResource())) {
@@ -892,12 +886,13 @@ public class StateCacheFactory implements ISaveParticipant,
 	public boolean isInitialized() {
 		return isStateCacheLoaded;
 	}
-	
+
 	/**
 	 * Sets isStateCacheLoaded. Needed for ClearCaseDecorator.decorate().
+	 * 
 	 * @param initialized
 	 */
-	public void setIsInitialized(boolean initialized){
+	public void setIsInitialized(boolean initialized) {
 		isStateCacheLoaded = initialized;
 	}
 
