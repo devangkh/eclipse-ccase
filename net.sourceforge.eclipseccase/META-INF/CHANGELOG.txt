@@ -5,6 +5,8 @@
 2.2.36
 =====
 
+Feature: auto_association added, 'Associate All' button added ( Many thanks to ZF Engineering Plzen s.r.o)
+
 Bugs:
 
 382 Sort by History Version in Windows
