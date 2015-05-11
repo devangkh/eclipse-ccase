@@ -1,8 +1,9 @@
 package net.sourceforge.eclipseccase.views.historyviewer;
 
 
-import net.sourceforge.clearcase.ElementHistory;
+import java.util.regex.Pattern;
 
+import net.sourceforge.clearcase.ElementHistory;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
@@ -13,6 +14,7 @@ import org.eclipse.swt.SWT;
  *
  */
 public class HistoryViewerComparator extends ViewerComparator {
+	private static final Pattern VERSION_NUMBER = Pattern.compile("\\d+");
 	private int propertyIndex;
 	private static final int DESCENDING = 1;
 	private int direction = DESCENDING;
@@ -50,16 +52,7 @@ public class HistoryViewerComparator extends ViewerComparator {
 			rc = e1.getuser().compareTo(e2.getuser());
 			break;
 		case 2:
-			rc = e1.getVersion().compareTo(e2.getVersion());
-			String e1V = e1.getVersion();
-			String e2V = e2.getVersion();
-			int i1 = e1V.lastIndexOf("/");
-			int i2 = e2V.lastIndexOf("/");
-			rc = e1V.substring(0, i1).compareTo(e2V.substring(0, i2));
-			if(rc==0)
-			{
-				rc = Integer.parseInt(e1V.substring(i1+1)) - Integer.parseInt(e2V.substring(i2+1));
-			}
+			rc = compareVersion(e1.getVersion(), e2.getVersion());
 			break;
 		case 3:
 			rc = e1.getLabel().compareTo(e2.getLabel());
@@ -77,5 +70,72 @@ public class HistoryViewerComparator extends ViewerComparator {
 		return rc;
 	}
 
+	private int compareVersion(String version1, String version2) {
+		int rc = 0;
+		
+		if (version1 == null || version2 == null) {
+			if (version1 != version2) {
+				if (version1 == null) {
+					rc = -1;
+				}
+
+				if (version2 == null) {
+					rc = 1;
+				}
+			}
+		} else if (version1.isEmpty() || version2.isEmpty()) {
+			if (version1.length() == version2.length()) {
+				// They are both empty
+				return 0;
+			}
+			
+			if (version1.isEmpty()) {
+				rc = -1;
+			}
+
+			if (version2.isEmpty()) {
+				rc = 1;
+			}
+		} else {
+			// Handle platform dependent delimiter
+			final String delim = version1.substring(0, 1);
+			
+			final int i1 = version1.lastIndexOf(delim);
+			final int i2 = version2.lastIndexOf(delim);
+			
+			final int n1 = parseVersionNumber(version1.substring(i1 + 1));
+			final int n2 = parseVersionNumber(version2.substring(i2 + 1));
+			
+			final String b1 = parseBranchName(version1, n1, i1);
+			final String b2 = parseBranchName(version2, n2, i2);
+			
+			rc = b1.compareTo(b2);
+			
+			if (rc == 0) {
+				rc = n1 - n2;
+			}
+		}
+		
+		return rc;
+	}
+	
+	private int parseVersionNumber(String versionNumber) {
+		if (VERSION_NUMBER.matcher(versionNumber).matches()) {
+			return Integer.parseInt(versionNumber);
+		} else {
+			return -1;
+		}
+		
+	}
+	
+	private String parseBranchName(String version, int number, int index) {
+		if (number > -1) {
+			return version.substring(0, index);
+		} else {
+			return version;
+		}
+	}
 }
+
+
 

@@ -16,7 +16,7 @@ public class CreateLabelPage extends WizardPage implements Listener {
 	Text labelCommentText;
 
 	Button createLabelButton;
-	
+
 	private static boolean inTest = false;
 
 	private static final String EMPTY_STRING = "";
@@ -28,6 +28,8 @@ public class CreateLabelPage extends WizardPage implements Listener {
 
 	private String myComment = EMPTY_STRING;
 
+	// TODO Unused
+	@SuppressWarnings("unused")
 	private LabelData data;
 
 
@@ -134,7 +136,7 @@ public class CreateLabelPage extends WizardPage implements Listener {
 				setPageComplete(true);
 				setStatus(new Status(IStatus.OK, "not_used", 0, "Created label " + myLabel, null));
 			}
-					
+
 		}
 
 	}
@@ -199,7 +201,7 @@ public class CreateLabelPage extends WizardPage implements Listener {
 	public boolean canFlipToNextPage() {
 		return false;
 	}
-	
+
 	public static boolean isInTest() {
 		return inTest;
 	}

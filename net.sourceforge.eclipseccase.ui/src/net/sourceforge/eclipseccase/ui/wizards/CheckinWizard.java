@@ -29,8 +29,10 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 
 	private IResource[] resources;
 
+	
+	// TODO: Unused!
+	@SuppressWarnings("unused")
 	private IResource[] identical;
-
 	private IStructuredSelection selection;
 
 	private ClearCaseProvider provider;
@@ -147,7 +149,7 @@ public class CheckinWizard extends ResizableWizard implements INewWizard {
 	/**
 	 * We will accept the selection in the workbench to see if we can initialize
 	 * from it.
-	 * 
+	 *
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {

@@ -3,7 +3,7 @@
 <plugin>
 
     <!-- 3571949 Shortcut for Save/Clear/Refresh actions in configspec editor -->
-   
+
  	<extension
          point="org.eclipse.ui.commands" >
          <category id="net.sourceforge.eclipseccase.views.configspecview" name="configspecview"/>
@@ -29,8 +29,50 @@
 	<extension point="org.eclipse.ui.popupMenus">
 		<objectContribution objectClass="org.eclipse.core.resources.IProject"
 			adaptable="true" id="net.sourceforge.eclipseccase.popups.Associate">
+     <action
+           class="net.sourceforge.eclipseccase.ui.actions.DissociateAllProjectsAction"
+           icon="icons/full/plugin_delete_all.png"
+           id="net.sourceforge.eclipseccase.popups.associate"
+           label="Dissociate All with ClearCase"
+           menubarPath="team.main/projectGroup">
+        <enablement>
+           <and>
+              <objectState
+                    name="open"
+                    value="true">
+              </objectState>
+              <not>
+                 <objectState
+                       name="projectPersistentProperty"
+                       value="org.eclipse.team.core.repository=net.sourceforge.eclipseccase.ClearCaseProvider">
+                 </objectState>
+              </not>
+           </and>
+        </enablement>
+     </action>
+     <action
+           class="net.sourceforge.eclipseccase.ui.actions.AssociateAllProjectsAction"
+           icon="icons/full/plugin_add_all.png"
+           id="net.sourceforge.eclipseccase.popups.associate"
+           label="Associate All with ClearCase"
+           menubarPath="team.main/projectGroup">
+        <enablement>
+           <and>
+              <objectState
+                    name="open"
+                    value="true">
+              </objectState>
+              <not>
+                 <objectState
+                       name="projectPersistentProperty"
+                       value="org.eclipse.team.core.repository=net.sourceforge.eclipseccase.ClearCaseProvider">
+                 </objectState>
+              </not>
+           </and>
+        </enablement>
+     </action>
 			<action
-				class="net.sourceforge.eclipseccase.ui.actions.DissociateProjectAction"
+				class="net.sourceforge.eclipseccase.ui.actions.DissociateProjectActionNotUsed"
 				icon="icons/full/plugin_delete.png" id="net.sourceforge.eclipseccase.popups.dissociate"
 				label="Dissociate from ClearCase" menubarPath="team.main/projectGroup">
 				<enablement>
@@ -44,7 +86,7 @@
 				</enablement>
 			</action>
 			<action
-				class="net.sourceforge.eclipseccase.ui.actions.AssociateProjectAction"
+				class="net.sourceforge.eclipseccase.ui.actions.AssociateProjectActionNotUsed"
 				icon="icons/full/plugin_add.png" id="net.sourceforge.eclipseccase.popups.associate"
 				label="Associate with ClearCase" menubarPath="team.main/projectGroup">
 				<enablement>
@@ -232,16 +274,18 @@
 			<menu label="C&amp;learCase" id="eclipseccase_menu">
 				<separator name="projectGroup">
 				</separator>
+				<separator name="projectGroup2">
+				</separator>
 				<separator name="group1">
 				</separator>
 				<separator name="group2">
 				</separator>
 				<separator name="group3">
 				</separator>
-				
+
 			</menu>
 			<action
-				class="net.sourceforge.eclipseccase.ui.actions.DissociateProjectAction"
+				class="net.sourceforge.eclipseccase.ui.actions.DissociateProjectActionNotUsed"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.dissociate"
 				icon="icons/full/plugin_delete.png" id="net.sourceforge.eclipseccase.ui.actionset.dissociate"
 				label="Dissociat&amp;e Project" menubarPath="eclipseccase_menu/projectGroup">
@@ -256,7 +300,7 @@
 				</enablement>
 			</action>
 			<action
-				class="net.sourceforge.eclipseccase.ui.actions.AssociateProjectAction"
+				class="net.sourceforge.eclipseccase.ui.actions.AssociateProjectActionNotUsed"
 				definitionId="net.sourceforge.eclipseccase.ui.actionset.associate"
 				icon="icons/full/plugin_add.png" id="net.sourceforge.eclipseccase.ui.actionset.associate"
 				label="A&amp;ssociate Project" menubarPath="eclipseccase_menu/projectGroup">
@@ -541,6 +585,48 @@
 					</pluginState>
 				</enablement>
 			</action>
+   <action
+         class="net.sourceforge.eclipseccase.ui.actions.DissociateAllProjectsAction"
+         definitionId="net.sourceforge.eclipseccase.ui.actionset.dissociate"
+         icon="icons/full/plugin_delete_all.png"
+         id="net.sourceforge.eclipseccase.ui.actionset.dissociate"
+         label="Dissociate All Projects"
+         menubarPath="eclipseccase_menu/projectGroup2">
+      <enablement>
+         <and>
+            <objectState
+                  name="open"
+                  value="true">
+            </objectState>
+            <objectState
+                  name="projectPersistentProperty"
+                  value="org.eclipse.team.core.repository=net.sourceforge.eclipseccase.ClearCaseProvider">
+            </objectState>
+         </and>
+      </enablement>
+   </action>
+   <action
+         class="net.sourceforge.eclipseccase.ui.actions.AssociateAllProjectsAction"
+         definitionId="net.sourceforge.eclipseccase.ui.actionset.associate"
+         icon="icons/full/plugin_add_all.png"
+         id="net.sourceforge.eclipseccase.ui.actionset.associate"
+         label="Associate All Projects"
+         menubarPath="eclipseccase_menu/projectGroup2">
+      <enablement>
+         <and>
+            <objectState
+                  name="open"
+                  value="true">
+            </objectState>
+            <not>
+               <objectState
+                     name="projectPersistentProperty"
+                     value="org.eclipse.team.core.repository=net.sourceforge.eclipseccase.ClearCaseProvider">
+               </objectState>
+            </not>
+         </and>
+      </enablement>
+   </action>
 		</actionSet>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
@@ -645,6 +731,18 @@
 			description="Search File in Branch" id="net.sourceforge.eclipseccase.ui.actionset.branchsearch"
 			name="Search File in Branch">
 		</command>
+  <command
+        categoryId="net.sourceforge.eclipseccase.category"
+        description="Associates all the projects with the clearcase plugin"
+        id="net.sourceforge.eclipseccase.ui.actionset.associate"
+        name="Associate All">
+  </command>
+  <command
+        categoryId="net.sourceforge.eclipseccase.category"
+        description="Dissociates all the projects from the clearcase plugin"
+        id="net.sourceforge.eclipseccase.ui.actionset.dissociate"
+        name="Dissociate All">
+  </command>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page name="%clearcasePreferences.name" category="org.eclipse.team.ui.TeamPreferences"

@@ -1,6 +1,9 @@
 package net.sourceforge.eclipseccase.ui.actions;
 
 import net.sourceforge.eclipseccase.ClearCasePreferences;
+
+import net.sourceforge.eclipseccase.ClearCasePlugin;
+
 import net.sourceforge.eclipseccase.ClearCaseProvider;
 import net.sourceforge.eclipseccase.StateCacheFactory;
 import net.sourceforge.eclipseccase.ui.ClearCaseDecorator;
@@ -13,14 +16,14 @@ import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.ui.IDecoratorManager;
 import org.eclipse.ui.PlatformUI;
 
-public class DissociateProjectAction extends ClearCaseWorkspaceAction {
+public class DissociateProjectActionNotUsed extends ClearCaseWorkspaceAction {
 
 	/**
 	 * (non-Javadoc) Method declared on IDropActionDelegate
 	 */
-	@SuppressWarnings("restriction")
 	@Override
 	public void execute(IAction action) {
+		final StringBuffer message = new StringBuffer();
 
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 
@@ -30,29 +33,31 @@ public class DissociateProjectAction extends ClearCaseWorkspaceAction {
 					IProject[] projects = getSelectedProjects();
 					monitor.beginTask("Dissociating from ClearCase", 10 * projects.length);
 
+					if (projects.length == 1) {
+						message.append("Dissociated project ");
+					} else {
+						message.append("Dissociated projects: \n");
+					}
+
 					StateCacheFactory.getInstance().operationBegin();
 					StateCacheFactory.getInstance().cancelPendingRefreshes();
 
 					for (int i = 0; i < projects.length; i++) {
 						IProject project = projects[i];
-
-						if (!project.isOpen()) {
-							continue;
-						}
-
-						ClearCaseProvider testProvider = ClearCaseProvider.getClearCaseProvider(project);
-						if (testProvider == null) {
-							continue;
-						}
-
 						monitor.subTask(project.getName());
 						RepositoryProvider.unmap(project);
 						StateCacheFactory.getInstance().remove(project);
 						StateCacheFactory.getInstance().fireStateChanged(project);
-
+						if (i > 1) {
+							message.append(", ");
+						}
+						message.append(project.getName());
+						if (projects.length > 1) {
+							message.append("\n");
+						}
 						monitor.worked(5);
 
-						// Refresh the decorator.
+						// refresh the decorator
 						IDecoratorManager manager = PlatformUI.getWorkbench().getDecoratorManager();
 						if (manager.getEnabled(ClearCaseDecorator.ID)) {
 							ClearCaseDecorator activeDecorator = (ClearCaseDecorator) manager.getBaseLabelProvider(ClearCaseDecorator.ID);
@@ -65,6 +70,7 @@ public class DissociateProjectAction extends ClearCaseWorkspaceAction {
 						}
 						monitor.worked(5);
 					}
+					message.append(" from ClearCase");
 				} finally {
 					StateCacheFactory.getInstance().operationEnd();
 					updateActionEnablement();
@@ -74,6 +80,9 @@ public class DissociateProjectAction extends ClearCaseWorkspaceAction {
 		};
 
 		executeInForeground(runnable, PROGRESS_DIALOG, "Dissociating from ClearCase");
+
+		// MessageDialog.openInformation(getShell(), "ClearCase Plugin", message
+		// .toString());
 	}
 
 	@Override
@@ -92,11 +101,10 @@ public class DissociateProjectAction extends ClearCaseWorkspaceAction {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.eclipse.team.internal.ui.actions.TeamAction#getSelectedProjects()
 	 */
-	@SuppressWarnings("restriction")
 	@Override
 	protected IProject[] getSelectedProjects() {
 		return super.getSelectedProjects();
@@ -104,7 +112,7 @@ public class DissociateProjectAction extends ClearCaseWorkspaceAction {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @seenet.sourceforge.eclipseccase.ui.actions.ClearCaseWorkspaceAction#
 	 * getSchedulingRule()
 	 */

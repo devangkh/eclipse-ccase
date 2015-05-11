@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2002, 2004 eclipse-ccase.sourceforge.net.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ *
  * Contributors:
  *     Matthew Conway - initial API and implementation
  *     IBM Corporation - concepts and ideas from Eclipse
@@ -137,7 +137,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Checks if the monitor has been canceled.
-	 * 
+	 *
 	 * @param monitor
 	 */
 	protected static void checkCanceled(IProgressMonitor monitor) {
@@ -148,7 +148,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.team.core.RepositoryProvider#configureProject()
 	 */
 	@Override
@@ -158,7 +158,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.team.core.RepositoryProvider#getID()
 	 */
 	@Override
@@ -168,7 +168,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
 	public void deconfigure() throws CoreException {
@@ -224,7 +224,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Invalidates the state cache of all specified resources.
-	 * 
+	 *
 	 * @param resourceToRefresh
 	 * @param monitor
 	 * @throws CoreException
@@ -266,7 +266,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Invalidates the state of the specified resource and only of the specified
 	 * resource, not recursive
-	 * 
+	 *
 	 * @param resource
 	 */
 	public void refresh(IResource resource) {
@@ -287,7 +287,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.team.core.RepositoryProvider#getRuleFactory()
 	 */
 	@Override
@@ -360,7 +360,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Indicates if the specified resource is contained in a Snapshot view.
-	 * 
+	 *
 	 * @param resource
 	 * @return
 	 */
@@ -490,7 +490,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Creates a label in clearcase.
-	 * 
+	 *
 	 * @param name
 	 * @param comment
 	 * @return
@@ -511,7 +511,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Attaches a label to all elements.
-	 * 
+	 *
 	 * @param element
 	 * @param comment
 	 * @param labelName
@@ -544,7 +544,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Parsers single/multiple line/-s of output. Type.java Predecessor:
 	 * /main/dev/0 View:eraonel_w12b2 Status: unreserved
-	 * 
+	 *
 	 * @param element
 	 * @return
 	 */
@@ -653,7 +653,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Returns the view type of the view containing the resource.
-	 * 
+	 *
 	 * @param resource
 	 *            The resource inside a view.
 	 * @return "dynamic" or "snapshot"
@@ -684,7 +684,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Returns the root of the view. An empty view root indicates a dynamic
 	 * view.
-	 * 
+	 *
 	 * @param resource
 	 * @return
 	 */
@@ -695,7 +695,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Returns the name of the vob that contains the specified element
-	 * 
+	 *
 	 * @param resource
 	 * @return
 	 */
@@ -724,7 +724,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Returns the vob relative path of the specified element
-	 * 
+	 *
 	 * @param resource
 	 * @return the vob relativ path (maybe <code>null</code> if outside vob)
 	 */
@@ -773,7 +773,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Returns a list of actvities. Makes a new request each time and does not
 	 * cache.
-	 * 
+	 *
 	 * @param viewName
 	 * @return
 	 */
@@ -829,7 +829,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean activityAssociated(String viewName) {
@@ -852,7 +852,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Get name of set activity in current view.
-	 * 
+	 *
 	 * @return
 	 */
 	public String getCurrentActivity() {
@@ -897,7 +897,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Extract pvob tag. (Unix) activity:<activity_name>@/vobs/$pvob or
 	 * /vob/$pvob (Windows) activity:<activity_name@\$pvob
-	 * 
+	 *
 	 * @param activitySelector
 	 * @return pVobTag $pvob
 	 */
@@ -912,7 +912,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 * actvities in stream we have one element.
 	 * activity:<activityId>@/vobs/$pvob,activity:<activityId>@/vobs/$pvob,
 	 * activity: ... All activities are on one line.
-	 * 
+	 *
 	 * @return array of activities or an empty array.
 	 */
 	public String[] getActivitySelectors(String view) {
@@ -941,7 +941,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 * move operation and there is no need to send this information to the
 	 * clearcase package. So an evetual checkin will be performed in this
 	 * method.
-	 * 
+	 *
 	 * @param source
 	 * @param destination
 	 * @param monitor
@@ -1117,7 +1117,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.team.core.RepositoryProvider#getFileModificationValidator2()
 	 */
@@ -1128,7 +1128,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Gets the comment.
-	 * 
+	 *
 	 * @return Returns a String
 	 */
 	public String getComment() {
@@ -1137,7 +1137,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Sets the comment.
-	 * 
+	 *
 	 * @param comment
 	 *            The comment to set
 	 */
@@ -1324,7 +1324,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 		/**
 		 * Recursively from bottom of file path to top until clearcase element
 		 * is found.
-		 * 
+		 *
 		 * @param resource
 		 * @param monitor
 		 * @return
@@ -2005,7 +2005,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * These interfaces are to operations that can be performed on the array of
 	 * resources, and on all resources identified by the depth parameter.
-	 * 
+	 *
 	 * @see execute(IOperation, IResource[], int, IProgressMonitor)
 	 */
 	public static interface IOperation {
@@ -2198,7 +2198,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Used to prevent co of resources like .project, .cproject ..
-	 * 
+	 *
 	 * @param resource
 	 * @return
 	 */
@@ -2228,7 +2228,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 * <p>
 	 * Resources are never ignored, if they have a remote resource.
 	 * </p>
-	 * 
+	 *
 	 * @param resource
 	 * @return
 	 */
@@ -2315,7 +2315,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Indicates if the specified resource is edited (checked out) by someone
 	 * else.
-	 * 
+	 *
 	 * @param childResource
 	 * @return <code>true</code> if the specified resource is edited (checked
 	 *         out) by someone else, <code>false</code> otherwise
@@ -2327,7 +2327,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	/**
 	 * Indicates if the specified resource is a view root directory containing
 	 * vobs.
-	 * 
+	 *
 	 * @param resource
 	 * @return <code>true</code> if the specified resource is a view root
 	 *         directory
@@ -2343,7 +2343,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Indicates if the specified resource is a vob root directory.
-	 * 
+	 *
 	 * @param resource
 	 * @return <code>true</code> if the specified resource is a vob root
 	 *         directory
@@ -2360,7 +2360,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Indicates if the specified resource is inside a view directory.
-	 * 
+	 *
 	 * @param resource
 	 * @return <code>true</code> if the specified resource is a view directory
 	 */
@@ -2370,7 +2370,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Get the StateCache for an element
-	 * 
+	 *
 	 * @param resource
 	 * @return the corresponding StateCache
 	 */
@@ -2380,7 +2380,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Ensures the specified resource is initialized.
-	 * 
+	 *
 	 * @param resource
 	 */
 	public void ensureInitialized(IResource resource) {
@@ -2388,10 +2388,10 @@ public class ClearCaseProvider extends RepositoryProvider {
 	}
 
 	/**
-	 * 
+	 *
 	 * Helper method that retrieves the branch name. Handles both win and unix
 	 * versions.
-	 * 
+	 *
 	 * @param version
 	 * @return
 	 */
@@ -2438,7 +2438,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 * directory element, it is returned verbatim. If it is a symlink, we try to
 	 * resolve the symlink to the final element and return a StateCache for
 	 * that.
-	 * 
+	 *
 	 * @param cache
 	 *            a valid StateCache which maybe points to a symlink
 	 * @return the final CC element, no symlink. If the symlink can't be
@@ -2506,7 +2506,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Shows a message dialog where user can select: Yes=0 No=1 Cancel=2
-	 * 
+	 *
 	 * @param operationType
 	 * @param msg
 	 * @return result
@@ -2519,7 +2519,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 
 	/**
 	 * Request mastership and then checkout sequence.
-	 * 
+	 *
 	 * @param returnCode
 	 * @param targetElement
 	 * @param opListener
@@ -2556,7 +2556,7 @@ public class ClearCaseProvider extends RepositoryProvider {
 	 * been checkedout. When the file is checked out in another view and the
 	 * user don't want to proceed we cancel checkout and return fail status.
 	 * This is due to undo operation is not working.
-	 * 
+	 *
 	 * @param resource
 	 * @param monitor
 	 * @param opListener

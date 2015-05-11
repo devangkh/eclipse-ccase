@@ -7,7 +7,7 @@ import java.util.List;
 import net.sourceforge.eclipseccase.ClearCaseProvider;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.wizard.IWizardPage;
+// TODO import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -98,9 +98,9 @@ public class UseExistingLabelPage extends WizardPage implements ISelectionChange
 		LabelWizard wizard = (LabelWizard) getWizard();
 		LabelData data = wizard.getData();
 		data.setLabelName(myLabel);
-		
+
 	}
-	
+
 	public void doubleClick(DoubleClickEvent event) {
 		final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 		myLabel = (String) selection.getFirstElement();

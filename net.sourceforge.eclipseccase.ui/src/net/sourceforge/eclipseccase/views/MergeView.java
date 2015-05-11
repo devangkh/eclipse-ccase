@@ -105,7 +105,8 @@ public class MergeView extends ViewPart implements PropertyChangeListener {
 			public void selectionChanged(final SelectionChangedEvent event) {
 				selection = (IStructuredSelection) event.getSelection();
 
-				for (Iterator<MergeData> iterator = selection.iterator(); iterator.hasNext();) {
+				for (@SuppressWarnings("unchecked")
+				Iterator<MergeData> iterator = selection.iterator(); iterator.hasNext();) {
 					MergeData data = iterator.next();
 					if (data.isMerged()) {
 						mergeMenuItem.setEnabled(false);
@@ -311,7 +312,8 @@ public class MergeView extends ViewPart implements PropertyChangeListener {
 
 			IStructuredSelection sel = selection;
 
-			for (Iterator<MergeData> iterator = sel.iterator(); iterator.hasNext();) {
+			for (@SuppressWarnings("unchecked")
+			Iterator<MergeData> iterator = sel.iterator(); iterator.hasNext();) {
 				MergeData data = iterator.next();
 				// Make IResource of file path.
 				IResource resource = null;
@@ -375,7 +377,7 @@ public class MergeView extends ViewPart implements PropertyChangeListener {
 	/**
 	 * When using grpahical merge this method will receive notifications when
 	 * merge was successfully performed.
-	 * 
+	 *
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 

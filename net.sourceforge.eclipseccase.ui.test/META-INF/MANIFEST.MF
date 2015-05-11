@@ -4,4 +4,4 @@ Bundle-Name: Test
 Bundle-SymbolicName: net.sourceforge.eclipseccase.ui.test
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: net.sourceforge.eclipseccase.ui
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

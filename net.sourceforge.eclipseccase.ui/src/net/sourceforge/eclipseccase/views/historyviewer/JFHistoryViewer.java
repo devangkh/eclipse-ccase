@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- * 
+ *
  * @author Mattias Rundgren
  *
  */
@@ -212,7 +212,7 @@ public class JFHistoryViewer extends ViewPart {
 			@Override
 			public String getText(Object element) {
 				ElementHistory p = (ElementHistory) element;
-				return p.getDate();
+				return p.getDate().toString();
 			}
 		});
 
@@ -329,6 +329,6 @@ public class JFHistoryViewer extends ViewPart {
 	}
 
 	private void open() {
-	
+
 	}
 }

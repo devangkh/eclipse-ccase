@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Master
 Bundle-SymbolicName: net.sourceforge.eclipseccase.test.master
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: net.sourceforge.clearcase,
  net.sourceforge.eclipseccase,
  net.sourceforge.eclipseccase.ui

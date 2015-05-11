@@ -5,15 +5,15 @@ import org.eclipse.core.runtime.Status;
 
 import net.sourceforge.clearcase.ClearCase;
 import net.sourceforge.clearcase.ClearCaseElementState;
-import net.sourceforge.clearcase.ClearCaseException;
+// TODO import net.sourceforge.clearcase.ClearCaseException;
 import net.sourceforge.eclipseccase.ClearCasePlugin;
 
 /**
  * Class implements the commands for ClearCase to perform compare and merge
  * operations.
- * 
+ *
  * @author mikael petterson
- * 
+ *
  */
 public class ClearCaseCommands extends AbstractExternalToolCommands {
 
@@ -44,7 +44,7 @@ public class ClearCaseCommands extends AbstractExternalToolCommands {
 			return new Status(IStatus.OK, ClearCasePlugin.PLUGIN_ID,
 					Messages.getString("ClearCaseCommands.threeWayMerge.ok"));
 		}
-		
+
 		return new Status(IStatus.ERROR,ClearCasePlugin.PLUGIN_ID,Messages.getString("ClearCaseCommands.threeWayMerge.fail.unknown"));
 
 	}
