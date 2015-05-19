@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="lib/powermock-easymock-junit-1.4.10/junit-4.8.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/net.sourceforge.clearcase"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/1.7.0_25_64bit"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
