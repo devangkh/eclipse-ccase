@@ -12,10 +12,9 @@
  *******************************************************************************/
 package net.sourceforge.eclipseccase.ui;
 
-import net.sourceforge.eclipseccase.autoconnect.ProjectsAutoConnect;
+import net.sourceforge.eclipseccase.autoconnect.AutoCheckingThread;
 
 import org.eclipse.ui.PlatformUI;
-import net.sourceforge.eclipseccase.ClearCasePreferences;
 import java.util.*;
 import net.sourceforge.eclipseccase.ClearCasePlugin;
 import net.sourceforge.eclipseccase.ui.preferences.ClearCaseUIPreferences;
@@ -150,14 +149,9 @@ public class ClearCaseUI extends AbstractUIPlugin {
 
 		PlatformUI.getWorkbench().addWindowListener(partListener);
 
-		// Running clearcase auto-connect.
-		if (ClearCasePreferences.isAutoConnectEnabled()) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					ProjectsAutoConnect.doAutoConnect();
-				}
-			});
-		}
+		// First we need to start the auto-checking thread, it will do everything.
+		AutoCheckingThread thread = new AutoCheckingThread();
+		thread.start();
 	}
 
 	/**

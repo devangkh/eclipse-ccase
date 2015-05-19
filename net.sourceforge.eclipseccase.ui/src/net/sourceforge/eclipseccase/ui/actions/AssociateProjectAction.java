@@ -1,5 +1,5 @@
 package net.sourceforge.eclipseccase.ui.actions;
-
+import net.sourceforge.eclipseccase.ui.actions.ClearCaseWorkspaceAction;
 import net.sourceforge.eclipseccase.ClearCasePreferences;
 import org.eclipse.core.resources.IResource;
 import java.util.ArrayList;
@@ -17,6 +17,19 @@ import org.eclipse.ui.PlatformUI;
 
 public class AssociateProjectAction extends ClearCaseWorkspaceAction {
 
+	private IProject singleProject = null;
+
+	public AssociateProjectAction()
+	{
+		super();
+	}
+
+	public AssociateProjectAction(IProject project)
+	{
+		super();
+		singleProject = project;
+	}
+
 	/**
 	 * (non-Javadoc) Method declared on IDropActionDelegate
 	 */
@@ -28,7 +41,12 @@ public class AssociateProjectAction extends ClearCaseWorkspaceAction {
 
 			public void run(IProgressMonitor monitor) throws CoreException {
 				try {
-					IProject[] projects = getSelectedProjects();
+					IProject[] projects = new IProject[] { singleProject };
+					if (singleProject == null)
+					{
+						projects = getSelectedProjects();
+					}
+
 					// each project gets 200 ticks
 					monitor.setTaskName("Associating projects with ClearCase");
 					monitor.beginTask("", 200 * projects.length);
@@ -164,6 +182,11 @@ public class AssociateProjectAction extends ClearCaseWorkspaceAction {
 	protected ISchedulingRule getSchedulingRule() {
 		// we run on the workspace root
 		return ResourcesPlugin.getWorkspace().getRoot();
+	}
+
+	public void forceToExecute() {
+		IAction dummy = null;
+		this.execute(dummy);
 	}
 
 }
