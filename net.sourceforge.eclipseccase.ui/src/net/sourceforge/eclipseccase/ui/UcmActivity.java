@@ -11,12 +11,14 @@
  *******************************************************************************/
 package net.sourceforge.eclipseccase.ui;
 
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.team.core.TeamException;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import net.sourceforge.eclipseccase.ClearCaseProvider;
 import net.sourceforge.eclipseccase.ui.dialogs.ActivityDialog;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -26,9 +28,8 @@ import org.eclipse.swt.widgets.Shell;
  * 
  */
 public class UcmActivity {
-	
-	
-	//private class
+
+	// private class
 	private static class ActivityDialogRunnable implements Runnable {
 
 		private Shell shell;
@@ -39,7 +40,7 @@ public class UcmActivity {
 
 		private boolean checkout;
 
-		public ActivityDialogRunnable(ClearCaseProvider provider,  IResource[] resources,  Shell shell) {
+		public ActivityDialogRunnable(ClearCaseProvider provider, IResource[] resources, Shell shell) {
 			this.provider = provider;
 			this.resources = resources;
 			this.shell = shell;
@@ -47,26 +48,28 @@ public class UcmActivity {
 
 		public void run() {
 			final IResource resource = resources[0];
-			if (resource != null) {
-				final String view = ClearCaseProvider.getViewName(resource);
-				ActivityDialog dlg = new ActivityDialog(shell, provider, resource);
-				dlg.setBlockOnOpen(true);
-				if (dlg.open() == Window.OK) {
-
-					String activity = dlg.getSelectedActivity();
-					if (activity != null) {
-						provider.setActivity(activity, view);
-						setCheckout(true);
-					}
-
-				} else {
-					// Answer was N or Cancel.
-					setCheckout(false);
-				}
-
+			String view = ClearCaseProvider.getViewName(resource);
+			if (view == "") {
+				setCheckout(false);
+				return;
 			}
-			// resource null don't check-out.
-			setCheckout(false);
+			ActivityDialog dlg = new ActivityDialog(shell, provider, resource);
+			dlg.setBlockOnOpen(true);
+			if (dlg.open() == Window.OK) {
+				String activity = dlg.getSelectedActivity();
+				if (activity != null) {
+					provider.setActivity(activity, view);
+					try {
+						provider.checkout(resources, IResource.DEPTH_ZERO, new NullProgressMonitor());
+					} catch (TeamException e) {
+						setCheckout(false);
+					}
+					setCheckout(true);
+				}
+			} else {
+				// Answer was N or Cancel.
+				setCheckout(false);
+			}
 		}
 
 		public void setCheckout(boolean checkout) {
@@ -86,7 +89,7 @@ public class UcmActivity {
 	 * @param shell
 	 * @return
 	 */
-	public static boolean checkoutWithActivity( ClearCaseProvider provider, IResource[] resources, Shell shell) {
+	public static boolean checkoutWithActivity(ClearCaseProvider provider, IResource[] resources, Shell shell) {
 
 		ActivityDialogRunnable activityDialog = new ActivityDialogRunnable(provider, resources, shell);
 		Display.getDefault().syncExec(activityDialog);

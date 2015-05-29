@@ -13,14 +13,15 @@
  *******************************************************************************/
 package net.sourceforge.eclipseccase.ui.preferences;
 
+import java.util.regex.Matcher;
+
+import java.util.regex.Pattern;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.jface.util.PropertyChangeEvent;
-
 import org.eclipse.jface.util.IPropertyChangeListener;
-
 import net.sourceforge.eclipseccase.ClearCasePreferences;
-
 import org.eclipse.jface.dialogs.MessageDialog;
-
 import net.sourceforge.eclipseccase.ClearCasePlugin;
 import net.sourceforge.eclipseccase.IClearCasePreferenceConstants;
 import org.eclipse.core.runtime.jobs.Job;
@@ -32,7 +33,11 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The main preference page for the Eclipse ClearCase integration.
  */
 public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCategories implements IWorkbenchPreferencePage, IClearCasePreferenceConstants {
-
+	
+	private static final String EMPTY_STRING = "";
+	
+	private static final String COLON = ":";
+	
 	private static final String GENERAL = PreferenceMessages.getString("Preferences.Category.General"); //$NON-NLS-1$
 
 	private static final String SOURCE_MANAGEMENT = PreferenceMessages.getString("Preferences.Category.Source"); //$NON-NLS-1$
@@ -47,8 +52,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	static final String[][] ALWAYS_IF_POSSIBLE_NEVER = new String[][] { { PreferenceMessages.getString("Always"), ALWAYS }, //$NON-NLS-1$
 			{ PreferenceMessages.getString("IfPossible"), IF_POSSIBLE }, //$NON-NLS-1$
-			{ PreferenceMessages.getString("Never"), NEVER } ,
-			{ PreferenceMessages.getString("Prompt"), PROMPT }}; //$NON-NLS-1$
+			{ PreferenceMessages.getString("Never"), NEVER }, { PreferenceMessages.getString("Prompt"), PROMPT } }; //$NON-NLS-1$
 
 	static final String[][] PRIORITIES = new String[][] { { PreferenceMessages.getString("HighPriority"), Integer.toString(Job.LONG) }, //$NON-NLS-1$
 			{ PreferenceMessages.getString("DefaultPriority"), Integer.toString(Job.DECORATE) } }; //$NON-NLS-1$
@@ -56,6 +60,8 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	private RadioGroupFieldEditor reservedCo;
 
 	private BooleanFieldEditor nMaster;
+
+	private StringFieldEditor historyRecords;
 
 	/**
 	 * Creates a new instance.
@@ -69,7 +75,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
@@ -79,7 +85,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
 	 * ()
@@ -171,12 +177,12 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		addField(new BooleanFieldEditor(CHECKOUT_LATEST, PreferenceMessages.getString("Preferences.Source.CheckoutLatest"), //$NON-NLS-1$
 				getFieldEditorParent(SOURCE_MANAGEMENT)));
 
-
-//		addField(new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$
-//				ALWAYS_IF_POSSIBLE_NEVER, getFieldEditorParent(SOURCE_MANAGEMENT), true));
-//
-//		addField(new BooleanFieldEditor(ADD_WITH_MASTER, PreferenceMessages.getString("Preferences.Source.AddWithMaster"), //$NON-NLS-1$
-//				getFieldEditorParent(SOURCE_MANAGEMENT)));
+		//		addField(new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$
+		// ALWAYS_IF_POSSIBLE_NEVER, getFieldEditorParent(SOURCE_MANAGEMENT),
+		// true));
+		//
+		//		addField(new BooleanFieldEditor(ADD_WITH_MASTER, PreferenceMessages.getString("Preferences.Source.AddWithMaster"), //$NON-NLS-1$
+		// getFieldEditorParent(SOURCE_MANAGEMENT)));
 
 		reservedCo = new RadioGroupFieldEditor(IClearCasePreferenceConstants.CHECKOUT_RESERVED, PreferenceMessages.getString("Preferences.Source.CheckoutReserved"), 4, //$NON-NLS-1$
 				ALWAYS_IF_POSSIBLE_NEVER, getFieldEditorParent(SOURCE_MANAGEMENT), true);
@@ -197,13 +203,17 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 		addField(nMaster);
 
-
-		// comment settings
-
 		addField(new BooleanFieldEditor(SILENT_PREVENT, PreferenceMessages.getString("Preferences.Source.SilentPrevent"), //$NON-NLS-1$
 				getFieldEditorParent(SOURCE_MANAGEMENT)));
 		addField(new StringFieldEditor(PREVENT_CHECKOUT, PreferenceMessages.getString("Preferences.Source.PreventCheckOut"), //$NON-NLS-1$
 				getFieldEditorParent(SOURCE_MANAGEMENT)));
+
+		// history settings
+		Composite fieldEditorParent = getFieldEditorParent(SOURCE_MANAGEMENT);
+		historyRecords = new StringFieldEditor(HISTORY_RECORDS, PreferenceMessages.getString("Preferences.History.Records"), fieldEditorParent);
+		final Label label = historyRecords.getLabelControl(fieldEditorParent);
+		label.setToolTipText("Examples: 5:2015-05-20 or 5: or :2015-05-20");
+		addField(historyRecords);
 
 		// comment settings
 
@@ -227,25 +237,41 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 		//		addField(new BooleanFieldEditor(COMMENT_ESCAPE, PreferenceMessages.getString("Preferences.Comments.CommentEscapeXml"), //$NON-NLS-1$
 		// getFieldEditorParent(COMMENTS)));
+
+		//addField(new StringFieldEditor(HISTORY_RECORDS, PreferenceMessages.getString("Preferences.History.Records"), //$NON-NLS-1$
+		// getFieldEditorParent(COMMENTS)));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.eclipse.jface.preference.IPreferencePage#performOk()
 	 */
 	@Override
 	public boolean performOk() {
-		if (super.performOk()) {
-			ClearCasePlugin.getDefault().resetClearCase();
+		String hr = historyRecords.getStringValue();
+		if(validateHistoryRecordFormat(hr)){
+			setValid(true);
+			setErrorMessage(null);
+			historyRecords.store();
 			return true;
+		}else{
+			
+			setValid(false);
+			setErrorMessage("Error: Format should be 5: or :2015-05-20 or 5:2015-05-20");
+			return false;
 		}
-		return false;
+		//TODO: DOn't know why we need this.
+//		if (super.performOk()) {
+//			ClearCasePlugin.getDefault().resetClearCase();
+//			return true;
+//		}
+//		return false;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * net.sourceforge.eclipseccase.ui.preferences.TabFieldEditorPreferencePage
 	 * #getCategories()
@@ -257,7 +283,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @seenet.sourceforge.eclipseccase.ui.preferences.
 	 * FieldEditorPreferencePageWithCategories#getDescription(java.lang.String)
 	 */
@@ -283,7 +309,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		}
 
 	}
-
+	
 	/**
 	 * This is used to handle changes in reservedCo, RadioGroupFieldEditor.
 	 *
@@ -293,28 +319,66 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	 *            changed and how
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		super.propertyChange(event);
 		if (event.getSource().equals(reservedCo)) {
 			setNmasterEnabledState((String) event.getOldValue(), (String) event.getNewValue());
 
 		}
+	}
 
+		
+	
+	private boolean validateHistoryRecordFormat(String newValue) {
+		
+		if (newValue.indexOf(COLON) != -1) {
+			if (newValue.startsWith(COLON)) {
+				// should have a date here..
+				return verifyDateFormat(newValue.replace(COLON, EMPTY_STRING));
+			} else if (newValue.endsWith(COLON)) {
+				// should have an int here.
+				return verifyNumber(newValue.replace(COLON, EMPTY_STRING));
+			} else {
+				// we should have both
+				String[] parts = newValue.split(COLON);
+				return verifyNumber(parts[0]) && verifyDateFormat(parts[1]);
+			}
+		}
+		return false;
+	}
+
+	private boolean verifyDateFormat(String dateStr) {
+		Pattern datePattern = Pattern.compile("((19|20)\\d{2})-([1-9]|0[1-9]|1[0-2])-(0[1-9]|[1-9]|[12][0-9]|3[01])");
+		Matcher dateMatcher = datePattern.matcher(dateStr);
+		if (!dateMatcher.matches()) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean verifyNumber(String number) {
+		Pattern numberPattern = Pattern.compile("\\d+");
+		Matcher numberMatcher = numberPattern.matcher(number);
+
+		if (!numberMatcher.matches()) {
+			return false;
+		}
+		return true;
 	}
 
 	private void setNmasterEnabledState(String oldValue, String newValue) {
 
-		if(oldValue.equals(newValue)){
-			//Avoid same value. This happens each time a value is set, Bug in eclipse?
+		if (oldValue.equals(newValue)) {
+			// Avoid same value. This happens each time a value is set, Bug in
+			// eclipse?
 			return;
 		}
 		if (newValue.equals(IClearCasePreferenceConstants.ALWAYS) | newValue.equals(IClearCasePreferenceConstants.IF_POSSIBLE)) {
 
 			nMaster.setEnabled(false, getFieldEditorParent(SOURCE_MANAGEMENT));
 			if (getPreferenceStore().getBoolean(IClearCasePreferenceConstants.ADD_WITH_MASTER) == true) {
-				//load changes value.
+				// load changes value.
 				reservedCo.load();
 				getPreferenceStore().setValue(IClearCasePreferenceConstants.CHECKOUT_RESERVED, oldValue);
-				//move back to old value.
+				// move back to old value.
 				reservedCo.load();
 				reservedCo.store();
 				MessageDialog.openError(getShell(), "Error", "Since master option is set. \"Reserved Checkouts\" option cannot be set to ALWAYS/IF POSSIBLE since reserved checkouts are not allowed.");
@@ -323,7 +387,6 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		} else {
 			nMaster.setEnabled(true, getFieldEditorParent(SOURCE_MANAGEMENT));
 		}
-
 
 	}
 

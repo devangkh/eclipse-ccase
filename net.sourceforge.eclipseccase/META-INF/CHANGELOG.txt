@@ -2,6 +2,21 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.37
+======
+
+Feature: 
+
+auto_association updated. ( Not merged yet).
+auto_association been registered to listeners that reacts on "Open Project" event, "Create/Import Project" event.( Many thanks to ZF Engineering Plzen s.r.o)
+
+#134 Possiblity to set number of element for lshistory command
+
+Bug: 
+
+#385 Checkout with UCM don't work ( Thanks Hakim).
+
+
 2.2.36
 =====
 
