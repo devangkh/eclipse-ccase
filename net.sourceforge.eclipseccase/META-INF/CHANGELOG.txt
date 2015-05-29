@@ -17,6 +17,7 @@ auto_association been registered to listeners that reacts on "Open Project" even
 Bug: 
 
 #385 Checkout with UCM don't work ( Thanks Hakim).
+#386 With UCM, SetActivity don't work if you confirm directly the dialog (Thanks again Hakim).
 
 >>>>>>> 71a96e2 #385 Checkout with UCM don't work
 

@@ -95,7 +95,28 @@ public class ActivityDialog extends Dialog {
 			activities = provider.listMyActivities();
 		}
 		comboViewer = createComboViewer(composite, activities.toArray(new String[activities.size()]));
+		comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				if (ClearCasePlugin.DEBUG_UCM) {
+					ClearCasePlugin.trace(TRACE_ACTIVITYDIALOG, "Selected: " + selection.getFirstElement()); //$NON-NLS-1$
+				}
+				setSelectedActivity((String) (selection.getFirstElement()));
+			}
+		});
+
+		comboViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				if (ClearCasePlugin.DEBUG_UCM) {
+					ClearCasePlugin.trace(TRACE_ACTIVITYDIALOG, "Double Clicked: " + selection.getFirstElement()); //$NON-NLS-1$
+				}
+
+				setSelectedActivity((String) (selection.getFirstElement()));
+			}
+		});
+		
 		// if we have activity set as selected otherwise let sorter in list
 		// decide which to set.
 		if (provider != null) {
@@ -133,27 +154,7 @@ public class ActivityDialog extends Dialog {
 		// comboViewer.refresh();
 		// }
 
-		comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				if (ClearCasePlugin.DEBUG_UCM) {
-					ClearCasePlugin.trace(TRACE_ACTIVITYDIALOG, "Selected: " + selection.getFirstElement()); //$NON-NLS-1$
-				}
-				setSelectedActivity((String) (selection.getFirstElement()));
-			}
-		});
-
-		comboViewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				if (ClearCasePlugin.DEBUG_UCM) {
-					ClearCasePlugin.trace(TRACE_ACTIVITYDIALOG, "Double Clicked: " + selection.getFirstElement()); //$NON-NLS-1$
-				}
-
-				setSelectedActivity((String) (selection.getFirstElement()));
-			}
-		});
+		
 
 		addButtons(composite);
 
