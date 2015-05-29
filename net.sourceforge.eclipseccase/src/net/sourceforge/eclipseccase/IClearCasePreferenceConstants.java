@@ -171,14 +171,19 @@ public interface IClearCasePreferenceConstants {
 	String EXTERNAL_DIFF_TOOL = ClearCasePlugin.PLUGIN_ID + ".ext.diff.tool"; //$NON-NLS-1$
 
 	/** ClearCase preference */
-	String EXTERNAL_DIFF_TOOL_EXEC_PATH = ClearCasePlugin.PLUGIN_ID + ".ext.diff.tool.exec.path"; //$NON-NLS-1$
+	String EXTERNAL_DIFF_TOOL_EXEC_PATH = ClearCasePlugin.PLUGIN_ID
+			+ ".ext.diff.tool.exec.path"; //$NON-NLS-1$
 
 	/** ClearCase preference */
 	String EXTERNAL_MERGE_TOOL = ClearCasePlugin.PLUGIN_ID + ".ext.merge.tool"; //$NON-NLS-1$
 
 	/** ClearCase preference */
-	String EXTERNAL_MERGE_TOOL_EXEC_PATH = ClearCasePlugin.PLUGIN_ID + ".ext.merge.tool.exec.path"; //$NON-NLS-1$
-
+	String EXTERNAL_MERGE_TOOL_EXEC_PATH = ClearCasePlugin.PLUGIN_ID
+			+ ".ext.merge.tool.exec.path"; //$NON-NLS-1$
+	/** ClearCase preference */
 	String AUTOMATIC_MERGE = ClearCasePlugin.PLUGIN_ID + ".auto.merge";
+	/** ClearCase preference */
+	String HISTORY_RECORDS = ClearCasePlugin.PLUGIN_ID
+			+ ".history.records";
 
 }

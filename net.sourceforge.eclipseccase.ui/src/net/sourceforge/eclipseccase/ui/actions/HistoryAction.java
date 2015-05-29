@@ -1,9 +1,12 @@
 package net.sourceforge.eclipseccase.ui.actions;
 
+import net.sourceforge.clearcase.ClearCase;
+
+import java.util.HashMap;
+import java.util.Map;
+import net.sourceforge.eclipseccase.ClearCasePreferences;
 import net.sourceforge.eclipseccase.views.historyviewer.JFHistoryViewer;
-
 import net.sourceforge.eclipseccase.ClearCasePlugin;
-
 import java.util.Vector;
 import net.sourceforge.clearcase.*;
 import net.sourceforge.eclipseccase.ClearCaseProvider;
@@ -19,6 +22,8 @@ import org.eclipse.ui.PlatformUI;
  * Pulls up the clearcase history
  */
 public class HistoryAction extends ClearCaseWorkspaceAction {
+
+	String recordLimit;
 	IResource[] resources = null;
 	String fileVersion = null;
 	IResource forceResource = null;
@@ -96,17 +101,35 @@ public class HistoryAction extends ClearCaseWorkspaceAction {
 							path = resource.getLocation().toOSString();
 						}
 						
-						// ClearCaseInterface cci =
-						// ClearCase.createInterface(ClearCase.INTERFACE_CLI);
+												
+						recordLimit = ClearCasePreferences.getHistoryRecord();
 						ClearCaseInterface cci = ClearCasePlugin.getEngine();
-						Vector<ElementHistory> result = cci.getElementHistory(path);
-						view.setHistoryInformation(resource, result);
-//						ModelProvider.INSTANCE.setElements(result);
-//						Display.getDefault().asyncExec(new Runnable() {
-//				               public void run() {
-//									view.getViewer().refresh(true);
-//				               }
-//				            });
+						Vector<ElementHistory> result;
+													
+							HashMap<Integer, String> args = new HashMap<Integer, String>();
+							if(recordLimit.startsWith(":")){
+								//3. lshistory -long -since <date> <file>
+								recordLimit = recordLimit.replace(":", "");
+								args.put(Integer.valueOf(ClearCase.SINCE), recordLimit);
+								result = cci.getElementHistory(path, ClearCase.SINCE, args);
+							}else if(recordLimit.endsWith(":")){
+								//2. lshistory -long -last # <file>
+								recordLimit = recordLimit.replace(":", "");
+								args.put(Integer.valueOf(ClearCase.LAST), recordLimit);
+								result = cci.getElementHistory(path, ClearCase.LAST, args);
+							}else if(recordLimit.indexOf(":") != -1){
+								//4. lshistory -long -last # -since <date> <file>
+								String [] types = recordLimit.split(":");		
+								args.put(Integer.valueOf(ClearCase.LAST), types[0]);
+								args.put(Integer.valueOf(ClearCase.SINCE), types[1]);
+								result = cci.getElementHistory(path, ClearCase.LAST|ClearCase.SINCE, args);
+							}else{
+								//default
+								//1. lshistory -long <file> (current version and should be the default in upgraded version)
+								result = cci.getElementHistory(path,0,new HashMap<Integer, String>());
+							}
+							view.setHistoryInformation(resource, result);
+
 					}
 				} catch (Exception e) {
 					System.out.println(e);

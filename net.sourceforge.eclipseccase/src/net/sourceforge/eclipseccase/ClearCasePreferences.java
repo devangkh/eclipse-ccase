@@ -515,6 +515,23 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 		ClearCasePlugin.getDefault().getPluginPreferences()
 				.setValue(IClearCasePreferenceConstants.AUTOMATIC_MERGE, value);
 	}
+	
+	
+	@SuppressWarnings("deprecation")
+	public static void setHistoryRecords(String value) {
+		ClearCasePlugin.getDefault().getPluginPreferences()
+				.setValue(IClearCasePreferenceConstants.HISTORY_RECORDS, value);
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	public static String getHistoryRecord() {
+		return ClearCasePlugin
+				.getDefault()
+				.getPluginPreferences()
+				.getString(
+						IClearCasePreferenceConstants.CLEARCASE_PRIMARY_GROUP);
+	}
 
 	/**
 	 * Clients should not call this method. It will be called automatically by
@@ -598,6 +615,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 		defaults.putBoolean(IClearCasePreferenceConstants.MERGE_EXTERNAL,false);
 		defaults.putBoolean(IClearCasePreferenceConstants.COMPARE_EXTERNAL,
 				false);
+		defaults.put(IClearCasePreferenceConstants.HISTORY_RECORDS, "");
 		setGraphicalToolTimeout();
 	}
 
