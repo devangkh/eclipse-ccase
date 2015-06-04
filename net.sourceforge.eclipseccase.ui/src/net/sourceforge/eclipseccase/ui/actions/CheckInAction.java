@@ -45,30 +45,9 @@ public class CheckInAction extends ClearCaseWorkspaceAction {
 
 			// final IResource[] resources = getSelectedResources();
 			final List<IResource> selectedResources = createList((getSelectedResources()));
-			final List<IResource> identical = new ArrayList<IResource>();
-			List<IResource> modified = new ArrayList<IResource>();
-			final ClearCaseProvider provider = new ClearCaseProvider();
 
 			if (selectedResources.size() > 0) {
-				// check for identical resources
-				for (Iterator iterator = selectedResources.iterator(); iterator.hasNext();) {
-					IResource iResource = (IResource) iterator.next();
-					if (!provider.isDifferent(iResource.getLocation().toOSString())) {
-						identical.add(iResource);
-					}
-				}
-
-				if (identical.size() > 0 && !ClearCasePreferences.isCheckinIdenticalAllowed()) {
-					// We have identical resources and we should not check them
-					// in.
-					// Remove from list of selectedResources
-					modified = sortOutIdentical(selectedResources, identical);
-				} else {
-					modified = selectedResources;
-				}
-
 				if (ClearCasePreferences.isUseClearDlg()) {
-
 					IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 						public void run(IProgressMonitor monitor) throws CoreException {
 							try {
@@ -82,6 +61,26 @@ public class CheckInAction extends ClearCaseWorkspaceAction {
 					};
 					executeInBackground(runnable, "Checking in ClearCase resources");
 				} else {
+					final List<IResource> identical = new ArrayList<IResource>();
+					List<IResource> modified = new ArrayList<IResource>();
+					final ClearCaseProvider provider = new ClearCaseProvider();
+					// check for identical resources
+					for (Iterator iterator = selectedResources.iterator(); iterator.hasNext();) {
+						IResource iResource = (IResource) iterator.next();
+						if (!provider.isDifferent(iResource.getLocation().toOSString())) {
+							identical.add(iResource);
+						}
+					}
+
+					if (identical.size() > 0 && !ClearCasePreferences.isCheckinIdenticalAllowed()) {
+						// We have identical resources and we should not check them
+						// in.
+						// Remove from list of selectedResources
+						modified = sortOutIdentical(selectedResources, identical);
+					} else {
+						modified = selectedResources;
+					}
+
 					CheckinWizard	wizard = new CheckinWizard(modified.toArray(new IResource[modified.size()]), identical.toArray(new IResource[identical.size()]), provider);
 					WizardDialog dialog = new WizardDialog(getShell(), wizard);
 					dialog.open();
