@@ -16,6 +16,7 @@ Bug:
 
 #385 Checkout with UCM don't work ( Thanks Hakim).
 #386 With UCM, SetActivity don't work if you confirm directly the dialog (Thanks again Hakim).
+#390 Do not use CheckinIdenticalAllowed preference when checking in with cleardlg.
 
 
 2.2.36
