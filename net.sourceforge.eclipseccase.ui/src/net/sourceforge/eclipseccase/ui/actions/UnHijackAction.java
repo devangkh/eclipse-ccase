@@ -1,11 +1,6 @@
 package net.sourceforge.eclipseccase.ui.actions;
 
-import net.sourceforge.eclipseccase.ClearCasePreferences;
-
-import net.sourceforge.eclipseccase.ClearDlgHelper;
-
 import java.util.*;
-import net.sourceforge.eclipseccase.ClearCasePlugin;
 import net.sourceforge.eclipseccase.ClearCaseProvider;
 import net.sourceforge.eclipseccase.ui.DirectoryLastComparator;
 import net.sourceforge.eclipseccase.ui.console.ConsoleOperationListener;
@@ -48,33 +43,27 @@ public class UnHijackAction extends ClearCaseWorkspaceAction {
 					IResource[] resources = getSelectedResources();
 					beginTask(monitor, "Removing Hijacked files...", resources.length);
 
-					if (ClearCasePreferences.isUseClearDlg()) {
-						monitor.subTask("Executing ClearCase user interface...");
-						ClearDlgHelper.uncheckout(resources);
-					} else {
+					UnHijackQuestion question = new UnHijackQuestion();
 
-						UnHijackQuestion question = new UnHijackQuestion();
+					PlatformUI.getWorkbench().getDisplay().syncExec(question);
 
-						PlatformUI.getWorkbench().getDisplay().syncExec(question);
+					/* Yes=0 No=1 Cancel=2 */
+					if (question.getReturncode() == 0) {
+						// Sort resources with directories last so that the
+						// modification of a
+						// directory doesn't abort the modification of files
+						// within
+						// it.
+						List resList = Arrays.asList(resources);
+						Collections.sort(resList, new DirectoryLastComparator());
 
-						/* Yes=0 No=1 Cancel=2 */
-						if (question.getReturncode() == 0) {
-							// Sort resources with directories last so that the
-							// modification of a
-							// directory doesn't abort the modification of files
-							// within
-							// it.
-							List resList = Arrays.asList(resources);
-							Collections.sort(resList, new DirectoryLastComparator());
-
-							ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
-							for (int i = 0; i < resources.length; i++) {
-								IResource resource = resources[i];
-								ClearCaseProvider provider = ClearCaseProvider.getClearCaseProvider(resource);
-								if (provider != null) {
-									provider.setOperationListener(opListener);
-									provider.unhijack(new IResource[] { resource }, IResource.DEPTH_ZERO, subMonitor(monitor));
-								}
+						ConsoleOperationListener opListener = new ConsoleOperationListener(monitor);
+						for (int i = 0; i < resources.length; i++) {
+							IResource resource = resources[i];
+							ClearCaseProvider provider = ClearCaseProvider.getClearCaseProvider(resource);
+							if (provider != null) {
+								provider.setOperationListener(opListener);
+								provider.unhijack(new IResource[] { resource }, IResource.DEPTH_ZERO, subMonitor(monitor));
 							}
 						}
 					}
