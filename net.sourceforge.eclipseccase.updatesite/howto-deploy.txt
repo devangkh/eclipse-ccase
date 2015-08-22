@@ -113,6 +113,10 @@ http://www.vogella.de/articles/EclipseP2Update/article.html#introduction
      https://sourceforge.net/project/admin/explorer.php?group_id=50595
       
      For shell based:  sftp eraonel,eclipse-ccase@web.sourceforge.net
+     
+     Note: 
+     
+     Could it be something with password
    
  2. TAG all projects. First checkin code.
     Use the following tags with current version ( below is just examples):
