@@ -2,6 +2,9 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.38
+======
+
 2.2.37
 ======
 
@@ -17,6 +20,7 @@ Bug:
 #385 Checkout with UCM don't work ( Thanks Hakim).
 #386 With UCM, SetActivity don't work if you confirm directly the dialog (Thanks again Hakim).
 #390 Do not use CheckinIdenticalAllowed preference when checking in with cleardlg (Thanks Hakim).
+#392 Unhijack with Clearcase dialog 
 
 
 2.2.36
