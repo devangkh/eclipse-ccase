@@ -9,11 +9,11 @@
 Bug:
 
 #393 Error: Format should be 5: or :2015-05-20 or 5:2015-05-20 
-#395 Perform a "clean" checkin/checkout like 
+#395 Perform a "clean" checkin 
 
 Feature:
 
-
+auto_association: Autoassocation has been registered to listeners that reacts on "Open Project" event, "Create/Import Project" event.
 
 2.2.37
 ======
