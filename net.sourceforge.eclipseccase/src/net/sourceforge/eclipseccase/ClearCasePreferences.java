@@ -615,7 +615,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 		defaults.putBoolean(IClearCasePreferenceConstants.MERGE_EXTERNAL,false);
 		defaults.putBoolean(IClearCasePreferenceConstants.COMPARE_EXTERNAL,
 				false);
-		defaults.put(IClearCasePreferenceConstants.HISTORY_RECORDS, "");
+		defaults.put(IClearCasePreferenceConstants.HISTORY_RECORDS, "5:");
 		setGraphicalToolTimeout();
 	}
 

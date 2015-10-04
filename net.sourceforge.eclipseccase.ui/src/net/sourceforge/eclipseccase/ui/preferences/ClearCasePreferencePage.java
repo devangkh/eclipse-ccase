@@ -33,11 +33,11 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * The main preference page for the Eclipse ClearCase integration.
  */
 public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCategories implements IWorkbenchPreferencePage, IClearCasePreferenceConstants {
-	
+
 	private static final String EMPTY_STRING = "";
-	
+
 	private static final String COLON = ":";
-	
+
 	private static final String GENERAL = PreferenceMessages.getString("Preferences.Category.General"); //$NON-NLS-1$
 
 	private static final String SOURCE_MANAGEMENT = PreferenceMessages.getString("Preferences.Category.Source"); //$NON-NLS-1$
@@ -69,8 +69,6 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	public ClearCasePreferencePage() {
 		setDescription(PreferenceMessages.getString("Preferences.Description")); //$NON-NLS-1$
 
-		// Set the preference store for the preference page.
-		setPreferenceStore(new ClearCasePreferenceStore());
 	}
 
 	/*
@@ -80,7 +78,8 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
-		// ignore
+		// Set the preference store for the preference page.
+		setPreferenceStore(new ClearCasePreferenceStore());
 	}
 
 	/*
@@ -250,23 +249,19 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	@Override
 	public boolean performOk() {
 		String hr = historyRecords.getStringValue();
-		if(validateHistoryRecordFormat(hr)){
+		
+		
+		if (validateHistoryRecordFormat(hr)) {
 			setValid(true);
-			setErrorMessage(null);
 			historyRecords.store();
 			return true;
-		}else{
-			
+		} else {
+			historyRecords.setFocus();
 			setValid(false);
-			setErrorMessage("Error: Format should be 5: or :2015-05-20 or 5:2015-05-20");
+			setErrorMessage("Error: "+PreferenceMessages.getString("Preferences.History.Records")+"Format should be 5: or :2015-05-20 or 5:2015-05-20");
+
 			return false;
 		}
-		//TODO: DOn't know why we need this.
-//		if (super.performOk()) {
-//			ClearCasePlugin.getDefault().resetClearCase();
-//			return true;
-//		}
-//		return false;
 	}
 
 	/*
@@ -309,7 +304,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		}
 
 	}
-	
+
 	/**
 	 * This is used to handle changes in reservedCo, RadioGroupFieldEditor.
 	 *
@@ -325,10 +320,8 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		}
 	}
 
-		
-	
 	private boolean validateHistoryRecordFormat(String newValue) {
-		
+
 		if (newValue.indexOf(COLON) != -1) {
 			if (newValue.startsWith(COLON)) {
 				// should have a date here..
