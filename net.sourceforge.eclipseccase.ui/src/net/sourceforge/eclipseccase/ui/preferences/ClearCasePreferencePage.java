@@ -68,6 +68,8 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	 */
 	public ClearCasePreferencePage() {
 		setDescription(PreferenceMessages.getString("Preferences.Description")); //$NON-NLS-1$
+		// Set the preference store for the preference page.
+		setPreferenceStore(new ClearCasePreferenceStore());
 
 	}
 
@@ -78,8 +80,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
-		// Set the preference store for the preference page.
-		setPreferenceStore(new ClearCasePreferenceStore());
+
 	}
 
 	/*
@@ -249,8 +250,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 	@Override
 	public boolean performOk() {
 		String hr = historyRecords.getStringValue();
-		
-		
+
 		if (validateHistoryRecordFormat(hr)) {
 			setValid(true);
 			historyRecords.store();
@@ -258,7 +258,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		} else {
 			historyRecords.setFocus();
 			setValid(false);
-			setErrorMessage("Error: "+PreferenceMessages.getString("Preferences.History.Records")+"Format should be 5: or :2015-05-20 or 5:2015-05-20");
+			setErrorMessage("Error: " + PreferenceMessages.getString("Preferences.History.Records") + "Format should be 5: or :2015-05-20 or 5:2015-05-20");
 
 			return false;
 		}
