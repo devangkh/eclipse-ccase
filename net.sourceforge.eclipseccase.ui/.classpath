@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/powermock-easymock-junit-1.4.10/objenesis-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/powermock-easymock-junit-1.4.10/powermock-easymock-1.4.10-full.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/net.sourceforge.eclipseccase"/>
-	<classpathentry kind="lib" path="/net.sourceforge.clearcase/clearcase.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

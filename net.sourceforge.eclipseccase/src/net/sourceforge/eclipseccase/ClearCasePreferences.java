@@ -549,7 +549,7 @@ public class ClearCasePreferences extends AbstractPreferenceInitializer {
 		defaults.putBoolean(
 				IClearCasePreferenceConstants.PREVENT_UNNEEDED_CHILDREN_REFRESH,
 				true);
-		defaults.putBoolean(IClearCasePreferenceConstants.AUTO_CONNECT, true);
+		defaults.putBoolean(IClearCasePreferenceConstants.AUTO_CONNECT, false);
 		String sClearCasePrimaryGroup = System
 				.getenv("CLEARCASE_PRIMARY_GROUP");
 		if (sClearCasePrimaryGroup == null) {
