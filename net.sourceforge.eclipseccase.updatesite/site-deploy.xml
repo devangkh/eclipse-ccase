@@ -133,7 +133,7 @@
 	<!-- ==================================================================== -->
 	<target name="back-up-update-site" depends="init" unless="site.local">
 		<echo message="backing up site release to ${frs.root.dir} ..." />
-		<scp verbose="true" trust="true" todir="${webuser}:${password}@${site.deploy.host}:${site.deploy.root}">
+		<scp verbose="false" trust="true" todir="${webuser}:${password}@${site.deploy.host}:${site.deploy.root}">
 			<fileset refid="site.deploy.files" />
 		</scp>
 	</target>

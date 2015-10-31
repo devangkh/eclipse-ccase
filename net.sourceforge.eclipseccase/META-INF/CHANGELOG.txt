@@ -4,6 +4,15 @@
 
 
 
+2.2.39
+======
+
+Bug:
+
+#396 Preference "Automatically associate to ClearCase on startup" cannot be disabled
+
+
+
 2.2.38
 ======
 
@@ -35,7 +44,7 @@ Bug:
 #390 Do not use CheckinIdenticalAllowed preference when checking in with cleardlg (Thanks Hakim).
 #392 Unhijack with Clearcase dialog 
 
->>>>>>> 71a96e2 #385 Checkout with UCM don't work
+
 
 2.2.36
 =====

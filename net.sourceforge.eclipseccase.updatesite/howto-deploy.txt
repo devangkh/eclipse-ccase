@@ -128,7 +128,13 @@ http://www.vogella.de/articles/EclipseP2Update/article.html#introduction
  	Use content of this release from CHANGELOG.txt ( not the whole since there
  	is a limit on mailing list mail size).
  
- 4. Post the same release info to News.   
+ 4. Post the same release info to News.
+ 
+ Since we have an agreement with
+ 
+ Use the following in the message:
+ 
+ Plugin is sponsored by ALMtoolbox – productivity ClearCase add-on tools (http://almtoolbox.com)   
     
     Good to do "once in a while"
     ============================
