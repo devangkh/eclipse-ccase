@@ -2,6 +2,14 @@
 =                                                          Change Log                                                                                              =
 ===============================================================================
 
+2.2.39
+======
+
+Bug:
+
+#396 Preference "Automatically associate to ClearCase on startup" cannot be disabled
+
+
 2.2.38
 ======
 
