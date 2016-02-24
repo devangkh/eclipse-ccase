@@ -254,7 +254,7 @@ public class ClearCasePreferencePage extends FieldEditorPreferencePageWithCatego
 		if (validateHistoryRecordFormat(hr)) {
 			setValid(true);
 			historyRecords.store();
-			return true;
+			return super.performOk();
 		} else {
 			historyRecords.setFocus();
 			setValid(false);
